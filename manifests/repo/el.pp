@@ -35,13 +35,20 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs (
-  $version        = $fhgfs::params::version,
-  $repo_baseurl   = $fhgfs::params::repo_baseurl,
-  $repo_gpgkey    = $fhgfs::params::repo_gpgkey
+class fhgfs::repo::el {
 
-) inherits fhgfs::params {
+  include fhgfs
 
-  include fhgfs::repo
+  $descr    = $fhgfs::repo_descr
+  $baseurl  = $fhgfs::repo_baseurl
+  $gpgkey   = $fhgfs::repo_gpgkey
+
+  yumrepo { 'fhgfs':
+    descr     => $descr,
+    baseurl   => $baseurl,
+    gpgkey    => $gpgkey,
+    gpgcheck  => '0',
+    enabled   => '1',
+  }
 
 }

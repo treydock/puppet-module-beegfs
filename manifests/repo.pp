@@ -35,11 +35,45 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::repo {
+class fhgfs::repo (
+  $version,
+  $repo_baseurl,
+  $repo_gpgkey,
+  $repo_descr
+
+) {
 
   include fhgfs::params
-  $repo_class = $fhgfs::params::repo_class
 
-  class { $repo_class: }
+  $baseurl = $repo_baseurl ? {
+    'UNSET'   => inline_template("<%= \"${fhgfs::params::repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>"),
+    default   => $repo_baseurl,
+  }
+  $gpgkey = $repo_gpgkey ? {
+    'UNSET'   => inline_template("<%= \"${fhgfs::params::repo_gpgkey}\".gsub(/VERSION/, \"${version}\") %>"),
+    default   => $repo_gpgkey,
+  }
+  $descr = $repo_descr ? {
+    'UNSET'   => inline_template("<%= \"${fhgfs::params::repo_descr}\".gsub(/VERSION/, \"${version}\") %>"),
+    default   => $repo_descr,
+  }
+
+  case $::osfamily {
+    'RedHat': {
+      yumrepo { 'fhgfs':
+        descr     => $descr,
+        baseurl   => $baseurl,
+        gpgkey    => $gpgkey,
+        gpgcheck  => '0',
+        enabled   => '1',
+      }
+    }
+
+    default: {
+      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only supports osfamily RedHat")
+    }
+  }
+
+
 
 }

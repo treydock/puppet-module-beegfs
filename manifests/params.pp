@@ -2,6 +2,14 @@
 #
 #   The fhgfs configuration settings.
 #
+# === Variables
+#
+# [*fhgfs_version*]
+#
+# [*fhgfs_store_storage_directory*]
+#
+# [*fhgfs_mgmtd_host*]
+#
 # === Authors
 #
 # Trey Dockendorf <treydock@gmail.com>
@@ -17,18 +25,27 @@ class fhgfs::params {
     default => $::fhgfs_version,
   }
 
+  $store_storage_directory  = $::fhgfs_store_storage_directory ? {
+    undef   => '',
+    default => $::fhgfs_store_storage_directory,
+  }
+
+  $mgmtd_host               = $::fhgfs_mgmtd_host ? {
+    undef   => '',
+    default => $::fhgfs_mgmtd_host,
+  }
+
   $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
 
   case $::osfamily {
     'RedHat': {
-      $repo_class                     = 'fhgfs::repo::el'
-      $repo_descr                     = "FhGFS ${version} (RHEL${os_major})"
-      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_${version}/dists/rhel${os_major}"
-      $repo_gpgkey                    = "http://www.fhgfs.com/release/fhgfs_${version}/gpg/RPM-GPG-KEY-fhgfs"
-      $with_optional_packages         = true
-      $rdma_service_name              = 'rdma'
-      $rdma_service_has_status        = true
-      $rdma_service_has_restart       = true
+      $repo_dir                       = "rhel${os_major}"
+      $repo_descr                     = "FhGFS VERSION (RHEL${os_major})"
+      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_VERSION/dists/${repo_dir}"
+      $repo_gpgkey                    = 'http://www.fhgfs.com/release/fhgfs_VERSION/gpg/RPM-GPG-KEY-fhgfs'
+      $package_require                = Yumrepo['fhgfs']
+      $storage_package_name           = 'fhgfs-storage'
+      $storage_service_name           = 'fhgfs-storage'
     }
 
     default: {

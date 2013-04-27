@@ -52,7 +52,7 @@ class fhgfs::storage (
   }
 
   service { 'fhgfs-storage':
-    ensure      => 'present',
+    ensure      => 'running',
     enable      => true,
     name        => $service_name,
     hasstatus   => true,

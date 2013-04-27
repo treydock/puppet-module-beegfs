@@ -34,7 +34,7 @@ describe 'fhgfs::storage' do
   
   it do
     should contain_service('fhgfs-storage').with({
-      'ensure'      => 'present',
+      'ensure'      => 'running',
       'enable'      => 'true',
       'name'        => 'fhgfs-storage',
       'hasstatus'   => 'true',

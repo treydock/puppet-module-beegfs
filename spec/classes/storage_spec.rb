@@ -39,7 +39,7 @@ describe 'fhgfs::storage' do
       'name'        => 'fhgfs-storage',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'Package[fhgfs-storage]',
+      'require'     => 'File[/etc/fhgfs/fhgfs-storage.conf]',
     })
   end
   
@@ -60,6 +60,8 @@ describe 'fhgfs::storage' do
       .with_content(/^sysMgmtdHost\s+=\s+$/)
   end
   
+  it { should_not contain_file('') }
+  
   context "with conf values defined" do
     let(:params) {
       {
@@ -72,6 +74,13 @@ describe 'fhgfs::storage' do
       should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
         .with_content(/^storeStorageDirectory\s+=\s#{params[:store_storage_directory]}$/) \
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
+    end
+    
+    it do
+      should contain_file('/tank/fhgfs').with({
+        'ensure'  => 'directory',
+        'before'  => 'Service[fhgfs-storage]',
+      })
     end
   end
 end

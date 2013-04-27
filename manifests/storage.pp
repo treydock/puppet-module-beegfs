@@ -57,7 +57,7 @@ class fhgfs::storage (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => Package['fhgfs-storage'],
+    require     => File['/etc/fhgfs/fhgfs-storage.conf'],
   }
 
   file { '/etc/fhgfs/fhgfs-storage.conf':
@@ -68,6 +68,13 @@ class fhgfs::storage (
     mode    => '0644',
     require => Package['fhgfs-storage'],
     notify  => Service['fhgfs-storage'],
+  }
+
+  if $store_storage_directory != '' {
+    file { $store_storage_directory:
+      ensure  => 'directory',
+      before  => Service['fhgfs-storage'],
+    }
   }
 
 }

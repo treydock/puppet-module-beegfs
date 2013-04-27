@@ -29,11 +29,24 @@ class fhgfs::params {
     undef   => '',
     default => $::fhgfs_store_storage_directory,
   }
+  $store_meta_directory     = $::fhgfs_store_meta_directory ? {
+    undef   => '',
+    default => $::fhgfs_store_meta_directory,
+  }
 
   $mgmtd_host               = $::fhgfs_mgmtd_host ? {
     undef   => '',
     default => $::fhgfs_mgmtd_host,
   }
+
+  $mgmtd_tune_num_workers             = '4'
+  $tune_meta_node_auto_remove_mins    = '0'
+  $tune_storage_node_auto_remove_mins = '0'
+  $tune_client_node_auto_remove_mins  = '0'
+  $tune_meta_space_low_limit          = '20G'
+  $tune_meta_space_emergency_limit    = '5G'
+  $tune_storage_space_low_limit       = '2T'
+  $tune_storage_space_emergency_limit = '1T'
 
   $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
 

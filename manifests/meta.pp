@@ -66,7 +66,8 @@ class fhgfs::meta (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-meta'],
+    before  => Package['fhgfs-meta'],
+    require => File['/etc/fhgfs'],
     notify  => Service['fhgfs-meta'],
   }
 

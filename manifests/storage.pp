@@ -66,7 +66,8 @@ class fhgfs::storage (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-storage'],
+    before  => Package['fhgfs-storage'],
+    require => File['/etc/fhgfs'],
     notify  => Service['fhgfs-storage'],
   }
 

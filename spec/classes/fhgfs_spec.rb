@@ -12,6 +12,11 @@ describe 'fhgfs' do
   it { should contain_class('fhgfs::params') }
   it { should contain_class('fhgfs::repo') }
 
+  it do
+    should contain_file('/etc/fhgfs').with({
+      'ensure'  => 'directory',
+    })
+  end
 
   context 'fhgfs::repo' do
     it { should contain_class('fhgfs::params') }

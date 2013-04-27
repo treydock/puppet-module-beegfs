@@ -42,6 +42,12 @@ describe 'fhgfs::storage' do
       'require'     => 'File[/etc/fhgfs/fhgfs-storage.conf]',
     })
   end
+
+  it do
+    should contain_file('/etc/fhgfs').with({
+      'ensure'  => 'directory',
+    })
+  end
   
   it do
     should contain_file('/etc/fhgfs/fhgfs-storage.conf').with({
@@ -49,7 +55,8 @@ describe 'fhgfs::storage' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-storage]',
+      'before'  => 'Package[fhgfs-storage]',
+      'require' => 'File[/etc/fhgfs]',
       'notify'  => 'Service[fhgfs-storage]',
     })
   end

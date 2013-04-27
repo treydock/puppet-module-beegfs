@@ -42,6 +42,12 @@ describe 'fhgfs::mgmtd' do
       'require'     => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
     })
   end
+
+  it do
+    should contain_file('/etc/fhgfs').with({
+      'ensure'  => 'directory',
+    })
+  end
   
   it do
     should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
@@ -49,7 +55,8 @@ describe 'fhgfs::mgmtd' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-mgmtd]',
+      'before'  => 'Package[fhgfs-mgmtd]',
+      'require' => 'File[/etc/fhgfs]',
       'notify'  => 'Service[fhgfs-mgmtd]',
     })
   end

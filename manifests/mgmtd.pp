@@ -73,7 +73,8 @@ class fhgfs::mgmtd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-mgmtd'],
+    before  => Package['fhgfs-mgmtd'],
+    require => File['/etc/fhgfs'],
     notify  => Service['fhgfs-mgmtd'],
   }
 

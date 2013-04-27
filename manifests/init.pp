@@ -42,6 +42,10 @@ class fhgfs (
 
 ) inherits fhgfs::params {
 
+  file { '/etc/fhgfs':
+    ensure  => 'directory',
+  }
+
   class { 'fhgfs::repo':
     version       => $version,
     repo_baseurl  => $repo_baseurl,

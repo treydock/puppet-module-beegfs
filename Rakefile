@@ -2,8 +2,16 @@ require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 
+RSpec::Core::RakeTask.new(:system_test) do |c|
+  c.pattern = "spec/system/**/*_spec.rb"
+end
+
 # Default Rake task
-task :all => [ :spec, :lint ]
+namespace :spec do
+  desc 'Run system tests'
+  task :system => :system_test
+  task :all => [:spec, :lint]
+end
 
 # Disable puppet-lint checks
 ## Add check name to array to disable

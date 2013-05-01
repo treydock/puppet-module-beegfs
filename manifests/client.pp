@@ -41,6 +41,7 @@ class fhgfs::client (
 ) inherits fhgfs {
 
   include fhgfs::params
+  include fhgfs::helperd
 
   $package_name     = $fhgfs::params::client_package_name
   $service_name     = $fhgfs::params::client_service_name
@@ -66,7 +67,7 @@ class fhgfs::client (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-client.conf'],
+    require     => [ File['/etc/fhgfs/fhgfs-client.conf'], Service['fhgfs-helperd'] ],
   }
 
   file { '/etc/fhgfs/fhgfs-client.conf':

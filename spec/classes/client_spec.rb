@@ -13,6 +13,7 @@ describe 'fhgfs::client' do
   it { should contain_class('fhgfs') }
   it { should contain_class('fhgfs::repo') }
   it { should contain_class('fhgfs::params') }
+  it { should contain_class('fhgfs::helperd') }
 
   it do
     should contain_yumrepo('fhgfs').with({
@@ -39,7 +40,7 @@ describe 'fhgfs::client' do
       'name'        => 'fhgfs-client',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-client.conf]',
+      'require'     => [ 'File[/etc/fhgfs/fhgfs-client.conf]', 'Service[fhgfs-helperd]' ],
     })
   end
 

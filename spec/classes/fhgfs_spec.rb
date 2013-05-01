@@ -18,6 +18,13 @@ describe 'fhgfs' do
     })
   end
 
+  it do
+    should contain_package('kernel-devel').with({
+      'ensure'  => 'installed',
+      'before'  => 'File[/etc/fhgfs]',
+    })
+  end
+
   context 'fhgfs::repo' do
     it { should contain_class('fhgfs::params') }
 

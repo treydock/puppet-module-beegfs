@@ -36,12 +36,11 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::repo (
-  $version,
-  $repo_baseurl,
-  $repo_gpgkey,
-  $repo_descr
-
-) {
+  $version        = $fhgfs::version,
+  $repo_baseurl   = $fhgfs::repo_baseurl,
+  $repo_gpgkey    = $fhgfs::repo_gpgkey,
+  $repo_descr     = $fhgfs::repo_descr
+) inherits fhgfs {
 
   include fhgfs::params
 

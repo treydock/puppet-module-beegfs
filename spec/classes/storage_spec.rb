@@ -23,7 +23,7 @@ describe 'fhgfs::storage' do
       'enabled'   => '1',
     })
   end
-  
+
   it do
     should contain_package('fhgfs-storage').with({
       'ensure'    => 'present',
@@ -31,7 +31,7 @@ describe 'fhgfs::storage' do
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
-  
+
   it do
     should contain_service('fhgfs-storage').with({
       'ensure'      => 'running',
@@ -48,7 +48,7 @@ describe 'fhgfs::storage' do
       'ensure'  => 'directory',
     })
   end
-  
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-storage.conf').with({
       'ensure'  => 'present',
@@ -60,15 +60,15 @@ describe 'fhgfs::storage' do
       'notify'  => 'Service[fhgfs-storage]',
     })
   end
-  
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
       .with_content(/^storeStorageDirectory\s+=\s+$/) \
       .with_content(/^sysMgmtdHost\s+=\s+$/)
   end
-  
+
   it { should_not contain_file('') }
-  
+
   context "with conf values defined" do
     let(:params) {
       {
@@ -76,13 +76,13 @@ describe 'fhgfs::storage' do
         :mgmtd_host               => 'mgmt01',
       }
     }
-    
+
     it do
       should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
         .with_content(/^storeStorageDirectory\s+=\s#{params[:store_storage_directory]}$/) \
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
     end
-    
+
     it do
       should contain_file('/tank/fhgfs').with({
         'ensure'  => 'directory',

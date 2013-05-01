@@ -42,15 +42,24 @@ class fhgfs (
 
 ) inherits fhgfs::params {
 
+  include fhgfs::repo
+
+  $kernel_source_package  = $fhgfs::params::kernel_source_package
+
   file { '/etc/fhgfs':
     ensure  => 'directory',
   }
 
-  class { 'fhgfs::repo':
-    version       => $version,
-    repo_baseurl  => $repo_baseurl,
-    repo_gpgkey   => $repo_gpgkey,
-    repo_descr    => $repo_descr,
+  if ! defined(Package[$kernel_source_package]) {
+    package { $kernel_source_package:
+      ensure  => 'installed',
+      before  => File['/etc/fhgfs'],
+    }
+  } else {
+    Package <| name == $kernel_source_package |> {
+      ensure  => 'installed',
+      before  => File['/etc/fhgfs'],
+    }
   }
 
 }

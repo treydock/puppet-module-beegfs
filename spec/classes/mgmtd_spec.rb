@@ -23,7 +23,7 @@ describe 'fhgfs::mgmtd' do
       'enabled'   => '1',
     })
   end
-  
+
   it do
     should contain_package('fhgfs-mgmtd').with({
       'ensure'    => 'present',
@@ -31,7 +31,7 @@ describe 'fhgfs::mgmtd' do
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
-  
+
   it do
     should contain_service('fhgfs-mgmtd').with({
       'ensure'      => 'running',
@@ -48,7 +48,7 @@ describe 'fhgfs::mgmtd' do
       'ensure'  => 'directory',
     })
   end
-  
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
       'ensure'  => 'present',
@@ -60,28 +60,28 @@ describe 'fhgfs::mgmtd' do
       'notify'  => 'Service[fhgfs-mgmtd]',
     })
   end
-  
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
       .with_content(/^storeMgmtdDirectory\s+=\s+$/) \
       .with_content(/^tuneNumWorkers\s+=\s+4$/)
   end
-  
+
   it { should_not contain_file('') }
-  
+
   context "with conf values defined" do
     let(:params) {
       {
         :store_mgmtd_directory  => "/tank/fhgfs/mgmtd",
       }
     }
-    
+
     it do
       should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
         .with_content(/^storeMgmtdDirectory\s+=\s#{params[:store_mgmtd_directory]}$/) \
         .with_content(/^tuneNumWorkers\s+=\s+4$/)
     end
-    
+
     it do
       should contain_file(params[:store_mgmtd_directory]).with({
         'ensure'  => 'directory',

@@ -32,14 +32,14 @@
 #
 class fhgfs::mgmtd (
   $store_mgmtd_directory              = $fhgfs::params::store_mgmtd_directory,
-  $tune_num_workers                   = $fhgfs::params::mgmtd_tune_num_workers,
-  $tune_meta_node_auto_remove_mins    = $fhgfs::params::tune_meta_node_auto_remove_mins,
-  $tune_storage_node_auto_remove_mins = $fhgfs::params::tune_storage_node_auto_remove_mins,
-  $tune_client_node_auto_remove_mins  = $fhgfs::params::tune_client_node_auto_remove_mins,
-  $tune_meta_space_low_limit          = $fhgfs::params::tune_meta_space_low_limit,
-  $tune_meta_space_emergency_limit    = $fhgfs::params::tune_meta_space_emergency_limit,
-  $tune_storage_space_low_limit       = $fhgfs::params::tune_storage_space_low_limit,
-  $tune_storage_space_emergency_limit = $fhgfs::params::tune_storage_space_emergency_limit,
+  $tune_num_workers                   = '4'
+  $tune_meta_node_auto_remove_mins    = '0'
+  $tune_storage_node_auto_remove_mins = '0'
+  $tune_client_node_auto_remove_mins  = '0'
+  $tune_meta_space_low_limit          = '20G'
+  $tune_meta_space_emergency_limit    = '5G'
+  $tune_storage_space_low_limit       = '2T'
+  $tune_storage_space_emergency_limit = '1T'
   $version                            = $fhgfs::version,
   $repo_baseurl                       = $fhgfs::repo_baseurl,
   $repo_gpgkey                        = $fhgfs::repo_gpgkey

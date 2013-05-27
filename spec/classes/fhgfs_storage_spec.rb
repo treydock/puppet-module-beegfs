@@ -10,19 +10,15 @@ describe 'fhgfs::storage' do
     }
   end
 
+  let :params do
+    {}
+  end
+
   it { should contain_class('fhgfs') }
   it { should contain_class('fhgfs::repo') }
   it { should contain_class('fhgfs::params') }
 
-  it do
-    should contain_yumrepo('fhgfs').with({
-      'descr'     => "FhGFS #{facts[:fhgfs_version]} (RHEL6)",
-      'baseurl'   => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/dists/rhel6",
-      'gpgkey'    => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/gpg/RPM-GPG-KEY-fhgfs",
-      'gpgcheck'  => '0',
-      'enabled'   => '1',
-    })
-  end
+  include_context 'fhgfs::repo'
 
   it do
     should contain_package('fhgfs-storage').with({
@@ -40,12 +36,6 @@ describe 'fhgfs::storage' do
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
       'require'     => 'File[/etc/fhgfs/fhgfs-storage.conf]',
-    })
-  end
-
-  it do
-    should contain_file('/etc/fhgfs').with({
-      'ensure'  => 'directory',
     })
   end
 
@@ -88,6 +78,18 @@ describe 'fhgfs::storage' do
         'ensure'  => 'directory',
         'before'  => 'Service[fhgfs-storage]',
       })
+    end
+  end
+  
+  context 'with service_ensure => undef' do
+    let :params do
+      {
+        :service_ensure => 'undef',
+      }
+    end
+
+    it do
+      should contain_service('fhgfs-storage').without_ensure
     end
   end
 end

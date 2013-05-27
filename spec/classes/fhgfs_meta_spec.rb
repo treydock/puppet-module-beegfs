@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'fhgfs::storage' do
+describe 'fhgfs::meta' do
 
   let :facts do
     {
@@ -23,23 +23,23 @@ describe 'fhgfs::storage' do
       'enabled'   => '1',
     })
   end
-  
+
   it do
-    should contain_package('fhgfs-storage').with({
+    should contain_package('fhgfs-meta').with({
       'ensure'    => 'present',
-      'name'      => 'fhgfs-storage',
+      'name'      => 'fhgfs-meta',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
-  
+
   it do
-    should contain_service('fhgfs-storage').with({
+    should contain_service('fhgfs-meta').with({
       'ensure'      => 'running',
       'enable'      => 'true',
-      'name'        => 'fhgfs-storage',
+      'name'        => 'fhgfs-meta',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-storage.conf]',
+      'require'     => 'File[/etc/fhgfs/fhgfs-meta.conf]',
     })
   end
 
@@ -48,45 +48,45 @@ describe 'fhgfs::storage' do
       'ensure'  => 'directory',
     })
   end
-  
+
   it do
-    should contain_file('/etc/fhgfs/fhgfs-storage.conf').with({
+    should contain_file('/etc/fhgfs/fhgfs-meta.conf').with({
       'ensure'  => 'present',
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-storage]',
+      'before'  => 'Package[fhgfs-meta]',
       'require' => 'File[/etc/fhgfs]',
-      'notify'  => 'Service[fhgfs-storage]',
+      'notify'  => 'Service[fhgfs-meta]',
     })
   end
-  
+
   it do
-    should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
-      .with_content(/^storeStorageDirectory\s+=\s+$/) \
+    should contain_file('/etc/fhgfs/fhgfs-meta.conf') \
+      .with_content(/^storeMetaDirectory\s+=\s+$/) \
       .with_content(/^sysMgmtdHost\s+=\s+$/)
   end
-  
+
   it { should_not contain_file('') }
-  
+
   context "with conf values defined" do
     let(:params) {
       {
-        :store_storage_directory  => "/tank/fhgfs",
+        :store_meta_directory  => "/tank/fhgfs/meta",
         :mgmtd_host               => 'mgmt01',
       }
     }
-    
+
     it do
-      should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
-        .with_content(/^storeStorageDirectory\s+=\s#{params[:store_storage_directory]}$/) \
+      should contain_file('/etc/fhgfs/fhgfs-meta.conf') \
+        .with_content(/^storeMetaDirectory\s+=\s#{params[:store_meta_directory]}$/) \
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
     end
-    
+
     it do
-      should contain_file('/tank/fhgfs').with({
+      should contain_file(params[:store_meta_directory]).with({
         'ensure'  => 'directory',
-        'before'  => 'Service[fhgfs-storage]',
+        'before'  => 'Service[fhgfs-meta]',
       })
     end
   end

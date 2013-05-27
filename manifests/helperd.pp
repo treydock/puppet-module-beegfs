@@ -1,10 +1,8 @@
-# == Class: fhgfs::storage
+# == Class: fhgfs::helperd
 #
-# Manages a FHGFS Storage server
+# Manages a FHGFS helperd server
 #
 # === Parameters
-#
-# [*store_storage_directory*]
 #
 # [*mgmtd_host*]
 #
@@ -16,8 +14,8 @@
 #
 # === Examples
 #
-#  class { 'fhgfs::storage':
-#    store_storage_directory  => '/tank/fhgfs',
+#  class { 'fhgfs::helperd':
+#    store_helperd_directory  => '/tank/fhgfs',
 #    mgmtd_host               => 'mgmtd01',
 #    version                  => '2011.04',
 #  }
@@ -30,9 +28,7 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::storage (
-  $store_storage_directory  = $fhgfs::params::store_storage_directory,
-  $mgmtd_host               = $fhgfs::params::mgmtd_host,
+class fhgfs::helperd (
   $version                  = $fhgfs::version,
   $repo_baseurl             = $fhgfs::repo_baseurl,
   $repo_gpgkey              = $fhgfs::repo_gpgkey
@@ -41,41 +37,34 @@ class fhgfs::storage (
 
   include fhgfs::params
 
-  $package_name     = $fhgfs::params::storage_package_name
-  $service_name     = $fhgfs::params::storage_service_name
+  $package_name     = $fhgfs::params::helperd_package_name
+  $service_name     = $fhgfs::params::helperd_service_name
   $package_require  = $fhgfs::params::package_require
 
-  package { 'fhgfs-storage':
+  package { 'fhgfs-helperd':
     ensure    => 'present',
     name      => $package_name,
     require   => $package_require,
   }
 
-  service { 'fhgfs-storage':
+  service { 'fhgfs-helperd':
     ensure      => 'running',
     enable      => true,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-storage.conf'],
+    require     => File['/etc/fhgfs/fhgfs-helperd.conf'],
   }
 
-  file { '/etc/fhgfs/fhgfs-storage.conf':
+  file { '/etc/fhgfs/fhgfs-helperd.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-storage.conf.erb"),
+    content => template("fhgfs/${version}/fhgfs-helperd.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-storage'],
+    before  => Package['fhgfs-helperd'],
     require => File['/etc/fhgfs'],
-    notify  => Service['fhgfs-storage'],
-  }
-
-  if $store_storage_directory != '' {
-    file { $store_storage_directory:
-      ensure  => 'directory',
-      before  => Service['fhgfs-storage'],
-    }
+    notify  => Service['fhgfs-helperd'],
   }
 
 }

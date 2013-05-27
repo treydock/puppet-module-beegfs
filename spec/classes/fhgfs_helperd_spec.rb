@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'fhgfs::mgmtd' do
+describe 'fhgfs::helperd' do
 
   let :facts do
     {
@@ -23,23 +23,23 @@ describe 'fhgfs::mgmtd' do
       'enabled'   => '1',
     })
   end
-  
+
   it do
-    should contain_package('fhgfs-mgmtd').with({
+    should contain_package('fhgfs-helperd').with({
       'ensure'    => 'present',
-      'name'      => 'fhgfs-mgmtd',
+      'name'      => 'fhgfs-helperd',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
-  
+
   it do
-    should contain_service('fhgfs-mgmtd').with({
+    should contain_service('fhgfs-helperd').with({
       'ensure'      => 'running',
       'enable'      => 'true',
-      'name'        => 'fhgfs-mgmtd',
+      'name'        => 'fhgfs-helperd',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
+      'require'     => 'File[/etc/fhgfs/fhgfs-helperd.conf]',
     })
   end
 
@@ -48,45 +48,16 @@ describe 'fhgfs::mgmtd' do
       'ensure'  => 'directory',
     })
   end
-  
+
   it do
-    should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
+    should contain_file('/etc/fhgfs/fhgfs-helperd.conf').with({
       'ensure'  => 'present',
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-mgmtd]',
+      'before'  => 'Package[fhgfs-helperd]',
       'require' => 'File[/etc/fhgfs]',
-      'notify'  => 'Service[fhgfs-mgmtd]',
+      'notify'  => 'Service[fhgfs-helperd]',
     })
-  end
-  
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
-      .with_content(/^storeMgmtdDirectory\s+=\s+$/) \
-      .with_content(/^tuneNumWorkers\s+=\s+4$/)
-  end
-  
-  it { should_not contain_file('') }
-  
-  context "with conf values defined" do
-    let(:params) {
-      {
-        :store_mgmtd_directory  => "/tank/fhgfs/mgmtd",
-      }
-    }
-    
-    it do
-      should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
-        .with_content(/^storeMgmtdDirectory\s+=\s#{params[:store_mgmtd_directory]}$/) \
-        .with_content(/^tuneNumWorkers\s+=\s+4$/)
-    end
-    
-    it do
-      should contain_file(params[:store_mgmtd_directory]).with({
-        'ensure'  => 'directory',
-        'before'  => 'Service[fhgfs-mgmtd]',
-      })
-    end
   end
 end

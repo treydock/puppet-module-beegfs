@@ -33,6 +33,10 @@ class fhgfs::params {
     undef   => '',
     default => $::fhgfs_store_meta_directory,
   }
+  $client_with_infiniband   = $::has_infiniband ? {
+    undef   => false,
+    default => $::has_infiniband,
+  }
 
   $mgmtd_host               = $::fhgfs_mgmtd_host ? {
     undef   => '',
@@ -50,6 +54,10 @@ class fhgfs::params {
       $package_require                = Yumrepo['fhgfs']
       $storage_package_name           = 'fhgfs-storage'
       $storage_service_name           = 'fhgfs-storage'
+      $client_package_name            = 'fhgfs-client'
+      $client_service_name            = 'fhgfs-client'
+
+      $kernel_source_package          = 'kernel-devel'
     }
 
     default: {

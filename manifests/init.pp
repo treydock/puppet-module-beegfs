@@ -41,7 +41,7 @@ class fhgfs (
   $repo_descr     = $fhgfs::params::repo_descr
 ) inherits fhgfs::params {
 
-  $kernel_source_package  = $fhgfs::params::kernel_source_package
+  $package_dependencies  = [$fhgfs::params::package_dependencies]
 
   $baseurl  = inline_template("<%= \"${repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>")
   $gpgkey   = inline_template("<%= \"${repo_gpgkey}\".gsub(/VERSION/, \"${version}\") %>")
@@ -51,17 +51,7 @@ class fhgfs (
     ensure  => 'directory',
   }
 
-  if ! defined(Package[$kernel_source_package]) {
-    package { $kernel_source_package:
-      ensure  => 'installed',
-      before  => File['/etc/fhgfs'],
-    }
-  } else {
-    Package <| name == $kernel_source_package |> {
-      ensure  => 'installed',
-      before  => File['/etc/fhgfs'],
-    }
-  }
+  ensure_packages($package_dependencies)
 
   case $::osfamily {
     'RedHat': {

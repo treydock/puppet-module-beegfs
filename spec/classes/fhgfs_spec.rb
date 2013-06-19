@@ -16,12 +16,7 @@ describe 'fhgfs' do
     })
   end
 
-  it do
-    should contain_package('kernel-devel').with({
-      'ensure'  => 'installed',
-      'before'  => 'File[/etc/fhgfs]',
-    })
-  end
+  it { should contain_package('kernel-devel').with_ensure('present') }
 
   context 'with specific version from parameters' do
     include_context 'fhgfs'

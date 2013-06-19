@@ -57,7 +57,7 @@ class fhgfs::params {
       $client_package_name            = 'fhgfs-client'
       $client_service_name            = 'fhgfs-client'
 
-      $kernel_source_package          = 'kernel-devel'
+      $package_dependencies           = ['kernel-devel']
     }
 
     default: {

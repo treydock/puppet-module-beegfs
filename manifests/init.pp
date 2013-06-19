@@ -36,15 +36,16 @@
 #
 class fhgfs (
   $version        = $fhgfs::params::version,
-  $repo_baseurl   = 'UNSET',
-  $repo_gpgkey    = 'UNSET',
-  $repo_descr     = 'UNSET'
-
+  $repo_baseurl   = $fhgfs::params::repo_baseurl,
+  $repo_gpgkey    = $fhgfs::params::repo_gpgkey,
+  $repo_descr     = $fhgfs::params::repo_descr
 ) inherits fhgfs::params {
 
-  include fhgfs::repo
-
   $kernel_source_package  = $fhgfs::params::kernel_source_package
+
+  $baseurl  = inline_template("<%= \"${repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>")
+  $gpgkey   = inline_template("<%= \"${repo_gpgkey}\".gsub(/VERSION/, \"${version}\") %>")
+  $descr    = inline_template("<%= \"${repo_descr}\".gsub(/VERSION/, \"${version}\") %>")
 
   file { '/etc/fhgfs':
     ensure  => 'directory',
@@ -59,6 +60,22 @@ class fhgfs (
     Package <| name == $kernel_source_package |> {
       ensure  => 'installed',
       before  => File['/etc/fhgfs'],
+    }
+  }
+
+  case $::osfamily {
+    'RedHat': {
+      yumrepo { 'fhgfs':
+        descr     => $descr,
+        baseurl   => $baseurl,
+        gpgkey    => $gpgkey,
+        gpgcheck  => '0',
+        enabled   => '1',
+      }
+    }
+
+    default: {
+      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only supports osfamily RedHat")
     }
   }
 

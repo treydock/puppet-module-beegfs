@@ -29,13 +29,10 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::helperd (
-  $version                  = $fhgfs::version,
-  $repo_baseurl             = $fhgfs::repo_baseurl,
-  $repo_gpgkey              = $fhgfs::repo_gpgkey
+  $version                  = $fhgfs::params::version
+) inherits fhgfs::params {
 
-) inherits fhgfs {
-
-  include fhgfs::params
+  include fhgfs
 
   $package_name     = $fhgfs::params::helperd_package_name
   $service_name     = $fhgfs::params::helperd_service_name

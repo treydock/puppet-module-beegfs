@@ -6,11 +6,10 @@ describe 'fhgfs::meta' do
   let(:facts) { default_facts.merge({}) }
   let(:params) {{}}
 
-  it { should contain_class('fhgfs') }
-  it { should include_class('fhgfs::params') }
-  it { should include_class('fhgfs::repo') }
+  it { should contain_class('fhgfs::params') }
+  it { should include_class('fhgfs') }
 
-  include_context 'fhgfs::repo'
+  include_context 'fhgfs'
 
   it do
     should contain_package('fhgfs-meta').with({
@@ -51,6 +50,7 @@ describe 'fhgfs::meta' do
 
   it do
     should contain_file('/etc/fhgfs/fhgfs-meta.conf') \
+      .with_content(/^connInterfacesFile\s+=\s+$/) \
       .with_content(/^storeMetaDirectory\s+=\s+$/) \
       .with_content(/^sysMgmtdHost\s+=\s+$/)
   end
@@ -61,12 +61,13 @@ describe 'fhgfs::meta' do
     let(:params) {
       {
         :store_meta_directory  => "/tank/fhgfs/meta",
-        :mgmtd_host               => 'mgmt01',
+        :mgmtd_host            => 'mgmt01',
       }
     }
 
     it do
       should contain_file('/etc/fhgfs/fhgfs-meta.conf') \
+        .with_content(/^connInterfacesFile\s+=\s+$/) \
         .with_content(/^storeMetaDirectory\s+=\s#{params[:store_meta_directory]}$/) \
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
     end
@@ -77,5 +78,22 @@ describe 'fhgfs::meta' do
         'before'  => 'Service[fhgfs-meta]',
       })
     end
+  end
+
+  shared_context "with conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
+    it { should contain_file('/etc/fhgfs/interfaces').with_content(/^ib0\neth0$/) }
+  end
+
+  context "with conn_interfaces => ['ib0','eth0']" do
+    let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
+
+    include_context "with conn_interfaces"
+  end
+  
+  context "with conn_interfaces => 'ib0,eth0'" do
+    let(:params){{ :conn_interfaces => 'ib0,eth0' }}
+
+    include_context "with conn_interfaces"
   end
 end

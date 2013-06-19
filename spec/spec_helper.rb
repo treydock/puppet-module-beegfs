@@ -10,7 +10,7 @@ shared_context :defaults do
   end
 end
 
-shared_context 'fhgfs::repo' do
+shared_context 'fhgfs' do
   it { should contain_class('fhgfs::params') }
 
   let :default_version do

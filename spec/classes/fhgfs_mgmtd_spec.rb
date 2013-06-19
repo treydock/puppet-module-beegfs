@@ -6,26 +6,16 @@ describe 'fhgfs::mgmtd' do
   let(:facts) { default_facts.merge({}) }
   let(:params) {{}}
 
-  it { should contain_class('fhgfs') }
-  it { should include_class('fhgfs::params') }
-  it { should include_class('fhgfs::repo') }
+  it { should contain_class('fhgfs::params') }
+  it { should include_class('fhgfs') }
 
-  include_context 'fhgfs::repo'
-
-  it do
-    should contain_yumrepo('fhgfs').with({
-      'descr'     => "FhGFS #{facts[:fhgfs_version]} (RHEL6)",
-      'baseurl'   => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/dists/rhel6",
-      'gpgkey'    => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/gpg/RPM-GPG-KEY-fhgfs",
-      'gpgcheck'  => '0',
-      'enabled'   => '1',
-    })
-  end
+  include_context 'fhgfs'
 
   it do
     should contain_package('fhgfs-mgmtd').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-mgmtd',
+      'before'    => 'Service[fhgfs-mgmtd]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -38,12 +28,6 @@ describe 'fhgfs::mgmtd' do
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
       'require'     => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
-    })
-  end
-
-  it do
-    should contain_file('/etc/fhgfs').with({
-      'ensure'  => 'directory',
     })
   end
 

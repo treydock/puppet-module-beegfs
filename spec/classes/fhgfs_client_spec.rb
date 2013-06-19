@@ -6,12 +6,11 @@ describe 'fhgfs::client' do
   let(:facts) { default_facts.merge({}) }
   let(:params) {{}}
 
-  it { should contain_class('fhgfs') }
-  it { should include_class('fhgfs::params') }
-  it { should include_class('fhgfs::repo') }
+  it { should contain_class('fhgfs::params') }
+  it { should include_class('fhgfs') }
   it { should include_class('fhgfs::helperd') }
 
-  include_context 'fhgfs::repo'
+  include_context 'fhgfs'
 
   it do
     should contain_yumrepo('fhgfs').with({

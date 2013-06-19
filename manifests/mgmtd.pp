@@ -32,29 +32,28 @@
 #
 class fhgfs::mgmtd (
   $store_mgmtd_directory              = $fhgfs::params::store_mgmtd_directory,
-  $tune_num_workers                   = '4'
-  $tune_meta_node_auto_remove_mins    = '0'
-  $tune_storage_node_auto_remove_mins = '0'
-  $tune_client_node_auto_remove_mins  = '0'
-  $tune_meta_space_low_limit          = '20G'
-  $tune_meta_space_emergency_limit    = '5G'
-  $tune_storage_space_low_limit       = '2T'
-  $tune_storage_space_emergency_limit = '1T'
-  $version                            = $fhgfs::version,
-  $repo_baseurl                       = $fhgfs::repo_baseurl,
-  $repo_gpgkey                        = $fhgfs::repo_gpgkey
+  $tune_num_workers                   = '4',
+  $tune_meta_node_auto_remove_mins    = '0',
+  $tune_storage_node_auto_remove_mins = '0',
+  $tune_client_node_auto_remove_mins  = '0',
+  $tune_meta_space_low_limit          = '20G',
+  $tune_meta_space_emergency_limit    = '5G',
+  $tune_storage_space_low_limit       = '2T',
+  $tune_storage_space_emergency_limit = '1T',
+  $version                            = $fhgfs::params::version,
+  $package_name                       = $fhgfs::params::mgmtd_package_name,
+  $service_name                       = $fhgfs::params::mgmtd_service_name,
+  $package_require                    = $fhgfs::params::package_require
+) inherits fhgfs::params {
 
-) inherits fhgfs {
+  include fhgfs
 
-  include fhgfs::params
-
-  $package_name     = $fhgfs::params::mgmtd_package_name
-  $service_name     = $fhgfs::params::mgmtd_service_name
-  $package_require  = $fhgfs::params::package_require
+  Class['fhgfs'] -> Class['fhgfs::mgmtd']
 
   package { 'fhgfs-mgmtd':
     ensure    => 'present',
     name      => $package_name,
+    before    => Service['fhgfs-mgmtd'],
     require   => $package_require,
   }
 

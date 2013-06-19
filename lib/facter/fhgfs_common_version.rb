@@ -1,6 +1,6 @@
 # fhgfs_version.rb
 
-Facter.add(:fhgfs_version) do
+Facter.add(:fhgfs_common_version) do
   confine :osfamily => "RedHat"
   setcode do
     if Facter::Util::Resolution.which('rpm')

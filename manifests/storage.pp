@@ -33,15 +33,13 @@
 class fhgfs::storage (
   $store_storage_directory  = $fhgfs::params::store_storage_directory,
   $mgmtd_host               = $fhgfs::params::mgmtd_host,
-  $version                  = $fhgfs::version,
-  $repo_baseurl             = $fhgfs::repo_baseurl,
-  $repo_gpgkey              = $fhgfs::repo_gpgkey,
+  $version                  = $fhgfs::params::version,
   $service_ensure           = 'running',
   $service_enable           = true
 
-) inherits fhgfs {
+) inherits fhgfs::params {
 
-  include fhgfs::params
+  include fhgfs
 
   $package_name     = $fhgfs::params::storage_package_name
   $service_name     = $fhgfs::params::storage_service_name

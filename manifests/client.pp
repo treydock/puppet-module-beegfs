@@ -34,13 +34,10 @@ class fhgfs::client (
   $with_infiniband          = $fhgfs::params::client_with_infiniband,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
   $conn_max_internode_num   = '12',
-  $version                  = $fhgfs::version,
-  $repo_baseurl             = $fhgfs::repo_baseurl,
-  $repo_gpgkey              = $fhgfs::repo_gpgkey
+  $version                  = $fhgfs::params::version
+) inherits fhgfs::params {
 
-) inherits fhgfs {
-
-  include fhgfs::params
+  include fhgfs
   include fhgfs::helperd
 
   $package_name     = $fhgfs::params::client_package_name

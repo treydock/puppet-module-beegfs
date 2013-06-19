@@ -28,7 +28,7 @@ connUseSDP                = false
 connUseRDMA               = true
 connBacklogTCP            = 128
 connMaxInternodeNum       = 32
-connInterfacesFile        = /etc/fhgfs/interfaces
+connInterfacesFile        = <%= @conn_interfaces_file || '' %>
 connNetFilterFile         =
 connNonPrimaryExpiration  = 10000
 

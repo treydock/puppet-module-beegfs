@@ -36,7 +36,6 @@ class fhgfs::meta (
   $conn_interfaces          = false,
   $store_meta_directory     = $fhgfs::params::store_meta_directory,
   $mgmtd_host               = $fhgfs::params::mgmtd_host,
-  $version                  = $fhgfs::params::version,
   $package_name             = $fhgfs::params::meta_package_name,
   $package_require          = $fhgfs::params::package_require,
   $service_name             = $fhgfs::params::meta_service_name,
@@ -60,7 +59,7 @@ class fhgfs::meta (
     $conn_interfaces_real = []
   }
 
-
+  $version = $fhgfs::version
 
   package { 'fhgfs-meta':
     ensure    => 'present',

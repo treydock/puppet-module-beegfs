@@ -1,15 +1,13 @@
 require 'spec_helper'
 
 describe 'fhgfs' do
+  include_context :defaults
 
-  let :facts do
-    {
-      :osfamily                 => 'RedHat',
-      :operatingsystemrelease   => '6.4',
-    }
-  end
+  let(:facts) { default_facts.merge({}) }
 
-  
+  it { should contain_class('fhgfs::params') }
+  it { should include_class('fhgfs::repo') }
+
   context 'with no paramters' do
     let :params do
       {}
@@ -48,11 +46,9 @@ describe 'fhgfs' do
     include_context 'fhgfs::repo'
 
     let :facts do
-      {
+      default_facts.merge({
         :fhgfs_version            => '2011.04',
-        :osfamily                 => 'RedHat',
-        :operatingsystemrelease   => '6.4',
-      }
+      })
     end
 
     let :params do

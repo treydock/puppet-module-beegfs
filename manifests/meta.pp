@@ -35,15 +35,25 @@ class fhgfs::meta (
   $mgmtd_host               = $fhgfs::params::mgmtd_host,
   $version                  = $fhgfs::version,
   $repo_baseurl             = $fhgfs::repo_baseurl,
-  $repo_gpgkey              = $fhgfs::repo_gpgkey
-
+  $repo_gpgkey              = $fhgfs::repo_gpgkey,
+  $service_ensure           = 'running',
+  $service_enable           = true
 ) inherits fhgfs {
 
   include fhgfs::params
+  include fhgfs::repo
 
   $package_name     = $fhgfs::params::meta_package_name
   $service_name     = $fhgfs::params::meta_service_name
   $package_require  = $fhgfs::params::package_require
+  # This gives the option to not define the service 'ensure' value.
+  # Useful if manual intervention is required to allow fhgfs-storage
+  # to be started, such as configuring the underlying storage elements.
+  validate_re($service_ensure, '(running|stopped|undef)')
+  $service_ensure_real  = $service_ensure ? {
+    'undef'   => undef,
+    default   => $service_ensure,
+  }
 
   package { 'fhgfs-meta':
     ensure    => 'present',
@@ -52,8 +62,8 @@ class fhgfs::meta (
   }
 
   service { 'fhgfs-meta':
-    ensure      => 'running',
-    enable      => true,
+    ensure      => $service_ensure_real,
+    enable      => $service_enable,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,

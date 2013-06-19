@@ -1,18 +1,16 @@
 require 'spec_helper'
 
 describe 'fhgfs::helperd' do
+  include_context :defaults
 
-  let :facts do
-    {
-      :fhgfs_version            => '2011.04',
-      :osfamily                 => 'RedHat',
-      :operatingsystemrelease   => '6.4',
-    }
-  end
+  let(:facts) { default_facts.merge({}) }
+  let(:params) {{}}
 
   it { should contain_class('fhgfs') }
-  it { should contain_class('fhgfs::repo') }
-  it { should contain_class('fhgfs::params') }
+  it { should include_class('fhgfs::params') }
+  it { should include_class('fhgfs::repo') }
+
+  include_context 'fhgfs::repo'
 
   it do
     should contain_yumrepo('fhgfs').with({

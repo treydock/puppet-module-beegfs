@@ -48,15 +48,17 @@ class fhgfs::meta (
   Class['fhgfs'] -> Class['fhgfs::meta']
 
   if $conn_interfaces {
-    $conn_interfaces_file = '/etc/fhgfs/interfaces'
     $conn_interfaces_real = is_array($conn_interfaces) ? {
       true  => $conn_interfaces,
       false => split($conn_interfaces, ','),
     }
     validate_array($conn_interfaces_real)
+  }
+
+  if $conn_interfaces and ! empty($conn_interfaces_real) {
+    $conn_interfaces_file = '/etc/fhgfs/interfaces'
   } else {
     $conn_interfaces_file = ''
-    $conn_interfaces_real = []
   }
 
   $version = $fhgfs::version

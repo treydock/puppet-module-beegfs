@@ -1,0 +1,11 @@
+# This file is sourced by /usr/sbin/fhgfs-opentk-lib-update-ib.
+# It is intended to forcefully enable IB RDMA support for the opentk library.
+#
+# This is useful for systems where a client image is created in a chroot:
+# If the server of that chroot does not have IB support or the chroot does not
+# have all required file systems mounted, then native IB support would be
+# disabled during the fhgfs-opentk-lib package installation.
+#
+# Setting FORCE_IB=1 here will skip auto-detection and enable IB support.
+
+FORCE_IB=0

@@ -1,0 +1,96 @@
+# This is a config file for Fraunhofer parallel file system client helper 
+# daemons.
+# http://www.fhgfs.com
+
+
+# --- [Table of Contents] ---
+#
+# 1) Settings
+# 2) Command Line Arguments
+# 3) Settings Documentation
+
+
+#
+# --- Section 1: [Settings] --- 
+#
+
+logNoDate          = false
+logStdFile         = /var/log/fhgfs-client.log
+logNumLines        = 50000
+logNumRotatedFiles = 5
+
+connPortShift      = 0
+connHelperdPortTCP = 8006
+
+tuneNumWorkers     = 2
+
+runDaemonized      = true
+
+
+#
+# --- Section 2: [Command Line Arguments] ---
+#
+
+# Use the command line argument "cfgFile=/etc/anotherconfig.conf" to
+# specify a different config file for fhgfs-helperd.
+#
+# All other options in this file can also be used as command line
+# arguments, overriding the corresponding config file values.
+
+
+#
+# --- Section 3.1: [Logging] ---
+#
+
+# [logNoDate]
+# Defines whether "date & time" (=false) or the current "time only" (=true)
+# should be logged.
+# Default: false 
+
+# [logStdFile]
+# The path and filename of the log file for standard log messages. If no name
+# is specified, the messages will be written to the console.
+# Default: /var/log/fhgfs-client.log
+
+# [logNumLines]
+# The maximum number of lines per log file.
+# Default: 50000
+
+# [logNumRotatedFiles]
+# The number of old files to keep when "logNumLines" is reached and the log file
+# is rewritten (log rotation).
+# Default: 5
+
+
+#
+# --- Section 3.2: [Connections & Communication] ---
+#
+
+# [connPortShift]
+# Shifts all following UDP and TCP ports according to the specified value.
+# Intended to make port changes easier in case you do not want to configure
+# each port individually.  
+# Default: 0
+
+# [connHelperdPortTCP]
+# The TCP port of the helper daemon.
+# Default: 8006
+
+
+#
+# --- Section 3.3: [Tuning] ---
+#
+
+# [tuneNumWorkers]
+# The number of worker threads. A value of up to twice the number of CPU cores
+# of your machine is the recommended choice.
+# Default: 2
+
+
+#
+# --- Section 3.4: [Startup] ---
+#
+
+# [runDaemonized]
+# Detach the process from its parent (and from stdin/-out/-err).
+# Default: true

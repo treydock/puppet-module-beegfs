@@ -85,6 +85,11 @@ describe 'fhgfs::meta' do
     it { should contain_file('/etc/fhgfs/interfaces').with_content(/^ib0\neth0$/) }
   end
 
+  shared_context "without conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
+    it { should_not contain_file('/etc/fhgfs/interfaces') }
+  end
+
   context "with conn_interfaces => ['ib0','eth0']" do
     let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
 
@@ -95,5 +100,17 @@ describe 'fhgfs::meta' do
     let(:params){{ :conn_interfaces => 'ib0,eth0' }}
 
     include_context "with conn_interfaces"
+  end
+
+  context "with conn_interfaces => []" do
+    let(:params){{ :conn_interfaces => [] }}
+
+    include_context "without conn_interfaces"
+  end
+
+  context "with conn_interfaces => ''" do
+    let(:params){{ :conn_interfaces => '' }}
+
+    include_context "without conn_interfaces"
   end
 end

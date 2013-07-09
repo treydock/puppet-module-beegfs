@@ -71,6 +71,7 @@ class fhgfs::storage (
   package { 'fhgfs-storage':
     ensure    => 'present',
     name      => $package_name,
+    before    => File['/etc/fhgfs/fhgfs-storage.conf'],
     require   => $package_require,
   }
 
@@ -80,7 +81,7 @@ class fhgfs::storage (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-storage.conf'],
+    subscribe   => File['/etc/fhgfs/fhgfs-storage.conf'],
   }
 
   file { '/etc/fhgfs/fhgfs-storage.conf':
@@ -89,9 +90,6 @@ class fhgfs::storage (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-storage'],
-    require => File['/etc/fhgfs'],
-    notify  => Service['fhgfs-storage'],
   }
 
   if $store_storage_directory != '' {

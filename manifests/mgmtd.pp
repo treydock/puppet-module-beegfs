@@ -76,6 +76,7 @@ class fhgfs::mgmtd (
   package { 'fhgfs-mgmtd':
     ensure    => 'present',
     name      => $package_name,
+    before    => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
     require   => $package_require,
   }
 
@@ -85,7 +86,7 @@ class fhgfs::mgmtd (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
+    subscribe   => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
   }
 
   file { '/etc/fhgfs/fhgfs-mgmtd.conf':
@@ -94,8 +95,6 @@ class fhgfs::mgmtd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-mgmtd'],
-    notify  => Service['fhgfs-mgmtd'],
   }
 
   if $store_mgmtd_directory != '' {

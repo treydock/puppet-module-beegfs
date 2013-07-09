@@ -15,6 +15,7 @@ describe 'fhgfs::helperd' do
     should contain_package('fhgfs-helperd').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-helperd',
+      'before'    => 'File[/etc/fhgfs/fhgfs-helperd.conf]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -26,7 +27,7 @@ describe 'fhgfs::helperd' do
       'name'        => 'fhgfs-helperd',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-helperd.conf]',
+      'subscribe'   => 'File[/etc/fhgfs/fhgfs-helperd.conf]',
     })
   end
 
@@ -36,8 +37,6 @@ describe 'fhgfs::helperd' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-helperd]',
-      'notify'  => 'Service[fhgfs-helperd]',
     })
   end
 end

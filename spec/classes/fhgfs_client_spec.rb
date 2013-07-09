@@ -16,6 +16,11 @@ describe 'fhgfs::client' do
     should contain_package('fhgfs-client').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-client',
+      'before'    => [
+                      'File[/etc/fhgfs/fhgfs-client.conf]',
+                      'File[/etc/fhgfs/fhgfs-mounts.conf]',
+                      'File[/etc/fhgfs/fhgfs-client-autobuild.conf]',
+                     ],
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -27,7 +32,12 @@ describe 'fhgfs::client' do
       'name'        => 'fhgfs-client',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => [ 'File[/etc/fhgfs/fhgfs-client.conf]', 'Service[fhgfs-helperd]' ],
+      'subscribe'   => [
+                        'File[/etc/fhgfs/fhgfs-client.conf]',
+                        'File[/etc/fhgfs/fhgfs-mounts.conf]',
+                        'File[/etc/fhgfs/fhgfs-client-autobuild.conf]',
+                       ],
+      'require'     => 'Service[fhgfs-helperd]',
     })
   end
 
@@ -37,8 +47,6 @@ describe 'fhgfs::client' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-client]',
-      'notify'  => 'Service[fhgfs-client]',
     })
   end
 
@@ -55,8 +63,6 @@ describe 'fhgfs::client' do
        'owner'   => 'root',
        'group'   => 'root',
        'mode'    => '0644',
-       'require' => 'Package[fhgfs-client]',
-       'notify'  => 'Service[fhgfs-client]',
      })
   end
 
@@ -71,8 +77,6 @@ describe 'fhgfs::client' do
        'owner'   => 'root',
        'group'   => 'root',
        'mode'    => '0644',
-       'require' => 'Package[fhgfs-client]',
-       'notify'  => 'Service[fhgfs-client]',
      })
   end
 

@@ -15,6 +15,7 @@ describe 'fhgfs::mgmtd' do
     should contain_package('fhgfs-mgmtd').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-mgmtd',
+      'before'    => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -26,7 +27,7 @@ describe 'fhgfs::mgmtd' do
       'name'        => 'fhgfs-mgmtd',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
+      'subscribe'   => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
     })
   end
 
@@ -36,8 +37,6 @@ describe 'fhgfs::mgmtd' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-mgmtd]',
-      'notify'  => 'Service[fhgfs-mgmtd]',
     })
   end
 

@@ -15,6 +15,7 @@ describe 'fhgfs::meta' do
     should contain_package('fhgfs-meta').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-meta',
+      'before'    => 'File[/etc/fhgfs/fhgfs-meta.conf]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -26,7 +27,7 @@ describe 'fhgfs::meta' do
       'name'        => 'fhgfs-meta',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-meta.conf]',
+      'subscribe'   => 'File[/etc/fhgfs/fhgfs-meta.conf]',
     })
   end
 
@@ -42,8 +43,6 @@ describe 'fhgfs::meta' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[fhgfs-meta]',
-      'notify'  => 'Service[fhgfs-meta]',
     })
   end
 

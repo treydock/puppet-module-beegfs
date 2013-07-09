@@ -58,6 +58,11 @@ class fhgfs::client (
   package { 'fhgfs-client':
     ensure    => 'present',
     name      => $package_name,
+    before    => [
+                  File['/etc/fhgfs/fhgfs-client.conf'],
+                  File['/etc/fhgfs/fhgfs-mounts.conf'],
+                  File['/etc/fhgfs/fhgfs-client-autobuild.conf']
+                ],
     require   => $package_require,
   }
 
@@ -67,7 +72,12 @@ class fhgfs::client (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => [ File['/etc/fhgfs/fhgfs-client.conf'], Service['fhgfs-helperd'] ],
+    subscribe   => [
+                    File['/etc/fhgfs/fhgfs-client.conf'],
+                    File['/etc/fhgfs/fhgfs-mounts.conf'],
+                    File['/etc/fhgfs/fhgfs-client-autobuild.conf']
+                  ],
+    require     => Service['fhgfs-helperd'],
   }
 
   file { '/etc/fhgfs/fhgfs-client.conf':
@@ -76,8 +86,6 @@ class fhgfs::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-client'],
-    notify  => Service['fhgfs-client'],
   }
 
   file { '/etc/fhgfs/fhgfs-mounts.conf':
@@ -86,8 +94,6 @@ class fhgfs::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-client'],
-    notify  => Service['fhgfs-client'],
   }
 
   file { '/etc/fhgfs/fhgfs-client-autobuild.conf':
@@ -96,8 +102,6 @@ class fhgfs::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-client'],
-    notify  => Service['fhgfs-client'],
   }
 
 }

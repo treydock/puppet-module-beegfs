@@ -73,6 +73,7 @@ class fhgfs::meta (
   package { 'fhgfs-meta':
     ensure    => 'present',
     name      => $package_name,
+    before    => File['/etc/fhgfs/fhgfs-meta.conf'],
     require   => $package_require,
   }
 
@@ -82,7 +83,7 @@ class fhgfs::meta (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-meta.conf'],
+    subscribe   => File['/etc/fhgfs/fhgfs-meta.conf'],
   }
 
   file { '/etc/fhgfs/fhgfs-meta.conf':
@@ -91,8 +92,6 @@ class fhgfs::meta (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-meta'],
-    notify  => Service['fhgfs-meta'],
   }
 
   if $store_meta_directory != '' {

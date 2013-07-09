@@ -15,6 +15,7 @@ describe 'fhgfs::storage' do
     should contain_package('fhgfs-storage').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-storage',
+      'before'    => 'File[/etc/fhgfs/fhgfs-storage.conf]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -26,7 +27,7 @@ describe 'fhgfs::storage' do
       'name'        => 'fhgfs-storage',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
-      'require'     => 'File[/etc/fhgfs/fhgfs-storage.conf]',
+      'subscribe'   => 'File[/etc/fhgfs/fhgfs-storage.conf]',
     })
   end
 
@@ -36,9 +37,6 @@ describe 'fhgfs::storage' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-storage]',
-      'require' => 'File[/etc/fhgfs]',
-      'notify'  => 'Service[fhgfs-storage]',
     })
   end
 

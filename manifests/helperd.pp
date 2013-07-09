@@ -45,6 +45,7 @@ class fhgfs::helperd (
   package { 'fhgfs-helperd':
     ensure    => 'present',
     name      => $package_name,
+    before    => File['/etc/fhgfs/fhgfs-helperd.conf'],
     require   => $package_require,
   }
 
@@ -54,7 +55,7 @@ class fhgfs::helperd (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    require     => File['/etc/fhgfs/fhgfs-helperd.conf'],
+    subscribe   => File['/etc/fhgfs/fhgfs-helperd.conf'],
   }
 
   file { '/etc/fhgfs/fhgfs-helperd.conf':
@@ -63,8 +64,6 @@ class fhgfs::helperd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['fhgfs-helperd'],
-    notify  => Service['fhgfs-helperd'],
   }
 
 }

@@ -64,9 +64,7 @@ class fhgfs (
       }
     }
 
-    default: {
-      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only supports osfamily RedHat")
-    }
+    default: {}
   }
 
 }

@@ -16,7 +16,7 @@
 logLevel                      = 3
 logType                       = helperd
 logClientID                   = false
-logHelperdIP                  =
+logHelperdIP                  = <%= @log_helperd_ip %>
 
 connPortShift                 = 0
 connMgmtdPortUDP              = 8008
@@ -28,7 +28,7 @@ connUseRDMA                   = true
 connRDMABufSize               = 8192
 connRDMABufNum                = 128
 connRDMATypeOfService         = 0
-connMaxInternodeNum           = 12
+connMaxInternodeNum           = <%= @conn_max_internode_num %>
 connInterfacesFile            =
 connNetFilterFile             =
 connNonPrimaryExpiration      = 10000
@@ -41,7 +41,7 @@ tuneFileCacheType             = buffered
 tuneRemoteFSync               = true
 tuneUseGlobalFileLocks        = false
 
-sysMgmtdHost                  =
+sysMgmtdHost                  = <%= @mgmtd_host %>
 sysCreateHardlinksAsSymlinks  = true
 sysMountSanityCheckMS         = 11000
 

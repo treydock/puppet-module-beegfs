@@ -48,17 +48,10 @@ class fhgfs::meta (
   Class['fhgfs'] -> Class['fhgfs::meta']
 
   if $conn_interfaces {
-    $conn_interfaces_real = is_array($conn_interfaces) ? {
-      true  => $conn_interfaces,
-      false => split($conn_interfaces, ','),
+    class { 'fhgfs::interfaces':
+      interfaces  => $conn_interfaces,
+      service     => $service_name,
     }
-    validate_array($conn_interfaces_real)
-  }
-
-  if $conn_interfaces and ! empty($conn_interfaces_real) {
-    $conn_interfaces_file = '/etc/fhgfs/interfaces'
-  } else {
-    $conn_interfaces_file = ''
   }
 
   $version = $fhgfs::version
@@ -87,20 +80,6 @@ class fhgfs::meta (
     before  => Package['fhgfs-meta'],
     require => File['/etc/fhgfs'],
     notify  => Service['fhgfs-meta'],
-  }
-
-  if $conn_interfaces_file != '' {
-    file { '/etc/fhgfs/interfaces':
-      ensure  => 'present',
-      path    => $conn_interfaces_file,
-      content => template('fhgfs/interfaces.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      before  => Package['fhgfs-meta'],
-      require => File['/etc/fhgfs'],
-      notify  => Service['fhgfs-meta'],
-    }
   }
 
   if $store_meta_directory != '' {

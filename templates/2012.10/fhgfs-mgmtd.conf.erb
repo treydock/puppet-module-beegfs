@@ -26,15 +26,15 @@ connBacklogTCP                 = 128
 connInterfacesFile             =
 connNetFilterFile              =
 
-storeMgmtdDirectory            =
+storeMgmtdDirectory            = <%= @store_mgmtd_directory %>
 storeAllowFirstRunInit         = true
 
-tuneNumWorkers                 = 4
-tuneClientAutoRemoveMins       = 30
-tuneMetaSpaceLowLimit          = 10G
-tuneMetaSpaceEmergencyLimit    = 3G
-tuneStorageSpaceLowLimit       = 512G
-tuneStorageSpaceEmergencyLimit = 10G
+tuneNumWorkers                 = <%= @tune_num_workers %>
+tuneClientAutoRemoveMins       = <%= @tune_client_node_auto_remove_mins %>
+tuneMetaSpaceLowLimit          = <%= @tune_meta_space_low_limit %>
+tuneMetaSpaceEmergencyLimit    = <%= @tune_meta_space_emergency_limit %>
+tuneStorageSpaceLowLimit       = <%= @tune_storage_space_low_limit %>
+tuneStorageSpaceEmergencyLimit = <%= @tune_storage_space_emergency_limit %>
 
 sysAllowNewServers             = true
 sysForcedRoot                  = 0

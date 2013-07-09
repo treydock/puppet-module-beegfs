@@ -28,7 +28,11 @@ connUseSDP                = false
 connUseRDMA               = true
 connBacklogTCP            = 128
 connMaxInternodeNum       = 32
-connInterfacesFile        = <%= @conn_interfaces_file || '' %>
+<% if @conn_interfaces and not @conn_interfaces.empty? -%>
+connInterfacesFile        = <%= scope.lookupvar('fhgfs::interfaces::interfaces_file') %>
+<% else -%>
+connInterfacesFile        = 
+<% end -%>
 connNetFilterFile         =
 connNonPrimaryExpiration  = 10000
 

@@ -29,11 +29,11 @@ connUseRDMA               = true
 connRDMATypeOfService     = 0
 connBacklogTCP            = 128
 connMaxInternodeNum       = 32
-connInterfacesFile        =
+connInterfacesFile        = <%= @conn_interfaces_file || '' %>
 connNetFilterFile         =
 connNonPrimaryExpiration  = 10000
 
-storeMetaDirectory        =
+storeMetaDirectory        = <%= @store_meta_directory %>
 storeAllowFirstRunInit    = true
 storeUseExtendedAttribs   = true
 
@@ -43,7 +43,7 @@ tuneListenerNumaAffinity  = false
 tuneTargetChooser         = randomized
 tuneRotateMirrorTargets   = false
 
-sysMgmtdHost              =
+sysMgmtdHost              = <%= @mgmtd_host %>
 
 runDaemonized             = true
 

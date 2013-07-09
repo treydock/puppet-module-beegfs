@@ -6,10 +6,11 @@ task :default do
   sh %{rake -T}
 end
 
-namespace :spec do
-  desc "Run rspec-puppet and puppet-lint tasks"
-  task :all => [ :spec, :lint ]
-end
+desc "Run rspec-puppet and puppet-lint tasks"
+task :ci => [
+  :spec,
+  :lint,
+]
 
 # Disable puppet-lint checks
 PuppetLint.configuration.send("disable_80chars")

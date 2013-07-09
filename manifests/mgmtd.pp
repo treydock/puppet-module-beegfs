@@ -31,35 +31,57 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::mgmtd (
+  $conn_interfaces                    = false,
   $store_mgmtd_directory              = $fhgfs::params::store_mgmtd_directory,
   $tune_num_workers                   = '4',
-  $tune_meta_node_auto_remove_mins    = '0',
-  $tune_storage_node_auto_remove_mins = '0',
   $tune_client_node_auto_remove_mins  = '0',
   $tune_meta_space_low_limit          = '10G',
   $tune_meta_space_emergency_limit    = '3G',
   $tune_storage_space_low_limit       = '512G',
   $tune_storage_space_emergency_limit = '10G',
-  $version                            = $fhgfs::params::version,
   $package_name                       = $fhgfs::params::mgmtd_package_name,
+  $package_require                    = $fhgfs::params::package_require,
   $service_name                       = $fhgfs::params::mgmtd_service_name,
-  $package_require                    = $fhgfs::params::package_require
+  $service_ensure                     = 'running',
+  $service_enable                     = true
 ) inherits fhgfs::params {
 
   include fhgfs
 
   Class['fhgfs'] -> Class['fhgfs::mgmtd']
 
+  $version = $fhgfs::version
+
+  # This gives the option to not define the service 'ensure' value.
+  # Useful if manual intervention is required to allow fhgfs-storage
+  # to be started, such as configuring the underlying storage elements.
+  validate_re($service_ensure, '(running|stopped|undef)')
+  $service_ensure_real  = $service_ensure ? {
+    'undef'   => undef,
+    default   => $service_ensure,
+  }
+
+  if $conn_interfaces and !empty($conn_interfaces) {
+    if !defined(Class['fhgfs::interfaces']) {
+      class { 'fhgfs::interfaces':
+        interfaces  => $conn_interfaces,
+        service     => $service_name,
+      }
+    }
+    $conn_interfaces_file = $fhgfs::params::interfaces_file
+  } else {
+    $conn_interfaces_file = ''
+  }
+
   package { 'fhgfs-mgmtd':
     ensure    => 'present',
     name      => $package_name,
-    before    => Service['fhgfs-mgmtd'],
     require   => $package_require,
   }
 
   service { 'fhgfs-mgmtd':
-    ensure      => 'running',
-    enable      => true,
+    ensure      => $service_ensure_real,
+    enable      => $service_enable,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
@@ -72,8 +94,7 @@ class fhgfs::mgmtd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-mgmtd'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-mgmtd'],
     notify  => Service['fhgfs-mgmtd'],
   }
 

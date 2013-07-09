@@ -58,7 +58,7 @@ class fhgfs::params {
       $client_service_name            = 'fhgfs-client'
 
       $package_dependencies           = ['kernel-devel']
-      $interfaces_file                = '/etc/fghfs/interfaces'
+      $interfaces_file                = '/etc/fhgfs/interfaces'
     }
 
     default: {

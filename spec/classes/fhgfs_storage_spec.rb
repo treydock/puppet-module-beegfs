@@ -83,4 +83,38 @@ describe 'fhgfs::storage' do
       should contain_service('fhgfs-storage').without_ensure
     end
   end
+
+  shared_context "storage with conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
+    it { should create_class('fhgfs::interfaces') }
+  end
+
+  shared_context "storage without conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
+    it { should_not create_class('fhgfs::interfaces') }
+  end
+
+  context "storage with conn_interfaces => ['ib0','eth0']" do
+    let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
+
+    include_context "storage with conn_interfaces"
+  end
+  
+  context "storage with conn_interfaces => 'ib0,eth0'" do
+    let(:params){{ :conn_interfaces => 'ib0,eth0' }}
+
+    include_context "storage with conn_interfaces"
+  end
+
+  context "storage with conn_interfaces => []" do
+    let(:params){{ :conn_interfaces => [] }}
+
+    include_context "storage without conn_interfaces"
+  end
+
+  context "storage with conn_interfaces => ''" do
+    let(:params){{ :conn_interfaces => '' }}
+
+    include_context "storage without conn_interfaces"
+  end
 end

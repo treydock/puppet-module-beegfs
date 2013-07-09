@@ -12,16 +12,6 @@ describe 'fhgfs::helperd' do
   include_context 'fhgfs'
 
   it do
-    should contain_yumrepo('fhgfs').with({
-      'descr'     => "FhGFS #{facts[:fhgfs_version]} (RHEL6)",
-      'baseurl'   => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/dists/rhel6",
-      'gpgkey'    => "http://www.fhgfs.com/release/fhgfs_#{facts[:fhgfs_version]}/gpg/RPM-GPG-KEY-fhgfs",
-      'gpgcheck'  => '0',
-      'enabled'   => '1',
-    })
-  end
-
-  it do
     should contain_package('fhgfs-helperd').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-helperd',
@@ -41,19 +31,12 @@ describe 'fhgfs::helperd' do
   end
 
   it do
-    should contain_file('/etc/fhgfs').with({
-      'ensure'  => 'directory',
-    })
-  end
-
-  it do
     should contain_file('/etc/fhgfs/fhgfs-helperd.conf').with({
       'ensure'  => 'present',
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-helperd]',
-      'require' => 'File[/etc/fhgfs]',
+      'require' => 'Package[fhgfs-helperd]',
       'notify'  => 'Service[fhgfs-helperd]',
     })
   end

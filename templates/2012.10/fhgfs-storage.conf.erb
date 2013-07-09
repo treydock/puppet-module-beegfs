@@ -28,10 +28,10 @@ connUseSDP                   = false
 connUseRDMA                  = true
 connRDMATypeOfService        = 0
 connBacklogTCP               = 128
-connInterfacesFile           =
+connInterfacesFile           = <%= @conn_interfaces_file %>
 connNetFilterFile            =
 
-storeStorageDirectory        =
+storeStorageDirectory        = <%= @store_storage_directory %>
 storeAllowFirstRunInit       = true
 
 tuneNumWorkers               = 12
@@ -44,7 +44,7 @@ tuneFileReadAheadSize        = 0m
 tuneFileWriteSize            = 64k
 tuneFileWriteSyncSize        = 0m
 
-sysMgmtdHost                 =
+sysMgmtdHost                 = <%= @mgmtd_host %>
 
 runDaemonized                = true
 

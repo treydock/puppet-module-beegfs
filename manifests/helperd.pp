@@ -29,10 +29,14 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::helperd (
-  $version                  = $fhgfs::params::version
+
 ) inherits fhgfs::params {
 
   include fhgfs
+
+  Class['fhgfs'] -> Class['fhgfs::helperd']
+
+  $version = $fhgfs::version
 
   $package_name     = $fhgfs::params::helperd_package_name
   $service_name     = $fhgfs::params::helperd_service_name
@@ -59,8 +63,7 @@ class fhgfs::helperd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-helperd'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-helperd'],
     notify  => Service['fhgfs-helperd'],
   }
 

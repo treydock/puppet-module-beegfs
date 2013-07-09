@@ -15,7 +15,6 @@ describe 'fhgfs::mgmtd' do
     should contain_package('fhgfs-mgmtd').with({
       'ensure'    => 'present',
       'name'      => 'fhgfs-mgmtd',
-      'before'    => 'Service[fhgfs-mgmtd]',
       'require'   => 'Yumrepo[fhgfs]',
     })
   end
@@ -37,8 +36,7 @@ describe 'fhgfs::mgmtd' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-mgmtd]',
-      'require' => 'File[/etc/fhgfs]',
+      'require' => 'Package[fhgfs-mgmtd]',
       'notify'  => 'Service[fhgfs-mgmtd]',
     })
   end
@@ -52,11 +50,7 @@ describe 'fhgfs::mgmtd' do
   it { should_not contain_file('') }
 
   context "with conf values defined" do
-    let(:params) {
-      {
-        :store_mgmtd_directory  => "/tank/fhgfs/mgmtd",
-      }
-    }
+    let(:params) {{ :store_mgmtd_directory  => "/tank/fhgfs/mgmtd" }}
 
     it do
       should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
@@ -70,5 +64,39 @@ describe 'fhgfs::mgmtd' do
         'before'  => 'Service[fhgfs-mgmtd]',
       })
     end
+  end
+
+  shared_context "mgmtd with conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
+    it { should create_class('fhgfs::interfaces') }
+  end
+
+  shared_context "mgmtd without conn_interfaces" do
+    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
+    it { should_not create_class('fhgfs::interfaces') }
+  end
+
+  context "mgmtd with conn_interfaces => ['ib0','eth0']" do
+    let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
+
+    include_context "mgmtd with conn_interfaces"
+  end
+  
+  context "mgmtd with conn_interfaces => 'ib0,eth0'" do
+    let(:params){{ :conn_interfaces => 'ib0,eth0' }}
+
+    include_context "mgmtd with conn_interfaces"
+  end
+
+  context "mgmtd with conn_interfaces => []" do
+    let(:params){{ :conn_interfaces => [] }}
+
+    include_context "mgmtd without conn_interfaces"
+  end
+
+  context "mgmtd with conn_interfaces => ''" do
+    let(:params){{ :conn_interfaces => '' }}
+
+    include_context "mgmtd without conn_interfaces"
   end
 end

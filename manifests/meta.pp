@@ -47,14 +47,28 @@ class fhgfs::meta (
 
   Class['fhgfs'] -> Class['fhgfs::meta']
 
-  if $conn_interfaces {
-    class { 'fhgfs::interfaces':
-      interfaces  => $conn_interfaces,
-      service     => $service_name,
-    }
+  $version = $fhgfs::version
+
+  # This gives the option to not define the service 'ensure' value.
+  # Useful if manual intervention is required to allow fhgfs-storage
+  # to be started, such as configuring the underlying storage elements.
+  validate_re($service_ensure, '(running|stopped|undef)')
+  $service_ensure_real  = $service_ensure ? {
+    'undef'   => undef,
+    default   => $service_ensure,
   }
 
-  $version = $fhgfs::version
+  if $conn_interfaces and !empty($conn_interfaces) {
+    if !defined(Class['fhgfs::interfaces']) {
+      class { 'fhgfs::interfaces':
+        interfaces  => $conn_interfaces,
+        service     => $service_name,
+      }
+    }
+    $conn_interfaces_file = $fhgfs::params::interfaces_file
+  } else {
+    $conn_interfaces_file = false
+  }
 
   package { 'fhgfs-meta':
     ensure    => 'present',
@@ -63,7 +77,7 @@ class fhgfs::meta (
   }
 
   service { 'fhgfs-meta':
-    ensure      => $service_ensure,
+    ensure      => $service_ensure_real,
     enable      => $service_enable,
     name        => $service_name,
     hasstatus   => true,
@@ -77,8 +91,7 @@ class fhgfs::meta (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-meta'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-meta'],
     notify  => Service['fhgfs-meta'],
   }
 

@@ -3,7 +3,6 @@ require 'puppetlabs_spec_helper/module_spec_helper'
 shared_context :defaults do
   let :default_facts do
     {
-      :fhgfs_version            => '2011.04',
       :osfamily                 => 'RedHat',
       :operatingsystemrelease   => '6.4',
     }

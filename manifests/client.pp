@@ -33,12 +33,15 @@ class fhgfs::client (
   $mount_path               = '/mnt/fhgfs',
   $with_infiniband          = $fhgfs::params::client_with_infiniband,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
-  $conn_max_internode_num   = '12',
-  $version                  = $fhgfs::params::version
+  $conn_max_internode_num   = '12'
 ) inherits fhgfs::params {
 
   include fhgfs
   include fhgfs::helperd
+
+  Class['fhgfs'] -> Class['fhgfs::helperd'] -> Class['fhgfs::client']
+
+  $version = $fhgfs::version
 
   $package_name     = $fhgfs::params::client_package_name
   $service_name     = $fhgfs::params::client_service_name
@@ -73,19 +76,17 @@ class fhgfs::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-client'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-client'],
     notify  => Service['fhgfs-client'],
   }
 
   file { '/etc/fhgfs/fhgfs-mounts.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-mounts.conf.erb"),
+    content => template('fhgfs/fhgfs-mounts.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-client'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-client'],
     notify  => Service['fhgfs-client'],
   }
 
@@ -95,8 +96,7 @@ class fhgfs::client (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    before  => Package['fhgfs-client'],
-    require => File['/etc/fhgfs'],
+    require => Package['fhgfs-client'],
     notify  => Service['fhgfs-client'],
   }
 

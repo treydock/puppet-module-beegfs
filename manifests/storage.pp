@@ -31,19 +31,22 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::storage (
+  $conn_interfaces          = false,
   $store_storage_directory  = $fhgfs::params::store_storage_directory,
   $mgmtd_host               = $fhgfs::params::mgmtd_host,
-  $version                  = $fhgfs::params::version,
+  $package_name             = $fhgfs::params::storage_package_name,
+  $package_require          = $fhgfs::params::package_require,
+  $service_name             = $fhgfs::params::storage_service_name,
   $service_ensure           = 'running',
   $service_enable           = true
-
 ) inherits fhgfs::params {
 
   include fhgfs
 
-  $package_name     = $fhgfs::params::storage_package_name
-  $service_name     = $fhgfs::params::storage_service_name
-  $package_require  = $fhgfs::params::package_require
+  Class['fhgfs'] -> Class['fhgfs::storage']
+
+  $version = $fhgfs::version
+
   # This gives the option to not define the service 'ensure' value.
   # Useful if manual intervention is required to allow fhgfs-storage
   # to be started, such as configuring the underlying storage elements.
@@ -51,6 +54,18 @@ class fhgfs::storage (
   $service_ensure_real  = $service_ensure ? {
     'undef'   => undef,
     default   => $service_ensure,
+  }
+
+  if $conn_interfaces and !empty($conn_interfaces) {
+    if !defined(Class['fhgfs::interfaces']) {
+      class { 'fhgfs::interfaces':
+        interfaces  => $conn_interfaces,
+        service     => $service_name,
+      }
+    }
+    $conn_interfaces_file = $fhgfs::params::interfaces_file
+  } else {
+    $conn_interfaces_file = ''
   }
 
   package { 'fhgfs-storage':

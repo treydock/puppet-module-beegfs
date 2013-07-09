@@ -18,12 +18,14 @@ class fhgfs::interfaces (
   $service            = 'UNSET'
 ) inherits fhgfs::params {
 
-  if $interfaces {
+  if $interfaces and !empty($interfaces) {
     $interfaces_real = is_array($interfaces) ? {
       true  => $interfaces,
       false => split($interfaces, ','),
     }
     validate_array($interfaces_real)
+  } else {
+    $interfaces_real = false
   }
 
   $service_real = $service ? {
@@ -31,7 +33,7 @@ class fhgfs::interfaces (
     default => Service[$service],
   }
 
-  if $interfaces {
+  if $interfaces_real {
     file { '/etc/fhgfs/interfaces':
       ensure  => 'present',
       path    => $interfaces_file,

@@ -42,8 +42,7 @@ describe 'fhgfs::meta' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'before'  => 'Package[fhgfs-meta]',
-      'require' => 'File[/etc/fhgfs]',
+      'require' => 'Package[fhgfs-meta]',
       'notify'  => 'Service[fhgfs-meta]',
     })
   end
@@ -82,12 +81,12 @@ describe 'fhgfs::meta' do
 
   shared_context "with conn_interfaces" do
     it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
-    it { should contain_file('/etc/fhgfs/interfaces').with_content(/^ib0\neth0$/) }
+    it { should create_class('fhgfs::interfaces') }
   end
 
   shared_context "without conn_interfaces" do
     it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not contain_file('/etc/fhgfs/interfaces') }
+    it { should_not create_class('fhgfs::interfaces') }
   end
 
   context "with conn_interfaces => ['ib0','eth0']" do

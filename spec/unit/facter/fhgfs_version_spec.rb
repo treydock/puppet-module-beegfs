@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'facter/fhgfs_common_version'
+require 'facter/fhgfs_version'
 
-describe 'fhgfs_common_version fact' do
+describe 'fhgfs_version fact' do
   
   before :each do
     Facter.fact(:osfamily).stubs(:value).returns(facts[:osfamily])
@@ -17,7 +17,7 @@ describe 'fhgfs_common_version fact' do
 
     it "should return 2011.04.r22-el5" do
       Facter::Util::Resolution.stubs(:exec).with("rpm -q --queryformat '%{VERSION}' fhgfs-common").returns(version_found)
-      Facter.fact(:fhgfs_common_version).value.should == expected_version
+      Facter.fact(:fhgfs_version).value.should == expected_version
     end
   end
 end

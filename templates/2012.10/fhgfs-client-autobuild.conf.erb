@@ -46,12 +46,7 @@
 # Default:
 #  buildArgs=-j8
 
-<% if @with_infiniband.to_s == 'true' -%>
-buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1
-<% else -%>
-buildArgs=-j8
-<% end -%>
-
+buildArgs=-j8 FHGFS_OPENTK_IBVERBS=<%= @autobuild_opentk_ibverbs %> FHGFS_INTENT=<%= @autobuild_intent %>
 
 # Turn Autobuild on/off
 # =====================

@@ -33,6 +33,7 @@
 class fhgfs::mgmtd (
   $conn_interfaces                    = false,
   $store_mgmtd_directory              = $fhgfs::params::store_mgmtd_directory,
+  $conn_backlog_tcp                   = '64',
   $tune_num_workers                   = '4',
   $tune_client_node_auto_remove_mins  = '0',
   $tune_meta_space_low_limit          = '10G',

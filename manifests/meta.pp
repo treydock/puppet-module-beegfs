@@ -33,14 +33,19 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::meta (
-  $conn_interfaces          = false,
-  $store_meta_directory     = $fhgfs::params::store_meta_directory,
-  $mgmtd_host               = $fhgfs::params::mgmtd_host,
-  $package_name             = $fhgfs::params::meta_package_name,
-  $package_require          = $fhgfs::params::package_require,
-  $service_name             = $fhgfs::params::meta_service_name,
-  $service_ensure           = 'running',
-  $service_enable           = true
+  $conn_interfaces            = false,
+  $store_meta_directory       = $fhgfs::params::store_meta_directory,
+  $store_use_extended_attribs = true,
+  $mgmtd_host                 = $fhgfs::params::mgmtd_host,
+  $conn_use_rdma              = $fhgfs::params::meta_with_infiniband,
+  $conn_backlog_tcp           = '64',
+  $conn_max_internode_num     = '10',
+  $tune_num_workers           = '0',
+  $package_name               = $fhgfs::params::meta_package_name,
+  $package_require            = $fhgfs::params::package_require,
+  $service_name               = $fhgfs::params::meta_service_name,
+  $service_ensure             = 'running',
+  $service_enable             = true
 ) inherits fhgfs::params {
 
   include fhgfs
@@ -48,6 +53,20 @@ class fhgfs::meta (
   Class['fhgfs'] -> Class['fhgfs::meta']
 
   $version = $fhgfs::version
+
+  $store_use_extended_attribs_real = $store_use_extended_attribs ? {
+    true    => 'true',
+    false   => 'false',
+    default => $store_use_extended_attribs,
+  }
+  validate_re($store_use_extended_attribs_real, ['^true$', '^false$'])
+
+  $conn_use_rdma_real = $conn_use_rdma ? {
+    true    => 'true',
+    false   => 'false',
+    default => $conn_use_rdma,
+  }
+  validate_re($conn_use_rdma_real, ['^true$', '^false$'])
 
   # This gives the option to not define the service 'ensure' value.
   # Useful if manual intervention is required to allow fhgfs-storage

@@ -4,7 +4,7 @@
 #
 # === Variables
 #
-# [*fhgfs_version*]
+# [*fhgfs_repo_version*]
 #
 # [*fhgfs_store_storage_directory*]
 #
@@ -20,9 +20,9 @@
 #
 class fhgfs::params {
 
-  $version = $::fhgfs_version ? {
+  $version = $::fhgfs_repo_version ? {
     undef   => '2012.10',
-    default => $::fhgfs_version,
+    default => $::fhgfs_repo_version,
   }
 
   $store_storage_directory  = $::fhgfs_store_storage_directory ? {
@@ -41,6 +41,11 @@ class fhgfs::params {
   $mgmtd_host               = $::fhgfs_mgmtd_host ? {
     undef   => '',
     default => $::fhgfs_mgmtd_host,
+  }
+
+  $meta_with_infiniband   = $::has_infiniband ? {
+    undef   => false,
+    default => $::has_infiniband,
   }
 
   $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")

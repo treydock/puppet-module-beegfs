@@ -13,7 +13,7 @@ shared_context 'fhgfs' do
   it { should contain_class('fhgfs::params') }
 
   let :default_version do
-    facts[:fhgfs_version].nil? ? '2012.10' : facts[:fhgfs_version]
+    facts[:fhgfs_repo_version].nil? ? '2012.10' : facts[:fhgfs_repo_version]
   end
 
   let :version do

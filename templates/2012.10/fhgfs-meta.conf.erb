@@ -25,19 +25,19 @@ connMgmtdPortTCP          = 8008
 connMetaPortUDP           = 8005
 connMetaPortTCP           = 8005
 connUseSDP                = false
-connUseRDMA               = true
+connUseRDMA               = <%= @conn_use_rdma_real %>
 connRDMATypeOfService     = 0
-connBacklogTCP            = 128
-connMaxInternodeNum       = 32
+connBacklogTCP            = <%= @conn_backlog_tcp %>
+connMaxInternodeNum       = <%= @conn_max_internode_num %>
 connInterfacesFile        = <%= @conn_interfaces_file || '' %>
 connNetFilterFile         =
 connNonPrimaryExpiration  = 10000
 
 storeMetaDirectory        = <%= @store_meta_directory %>
 storeAllowFirstRunInit    = true
-storeUseExtendedAttribs   = true
+storeUseExtendedAttribs   = <%= @store_use_extended_attribs_real %>
 
-tuneNumWorkers            = 0
+tuneNumWorkers            = <%= @tune_num_workers %>
 tuneWorkerNumaAffinity    = false
 tuneListenerNumaAffinity  = false
 tuneTargetChooser         = randomized

@@ -33,7 +33,7 @@ describe 'fhgfs' do
 
     let :facts do
       default_facts.merge({
-        :fhgfs_version            => '2011.04',
+        :fhgfs_repo_version            => '2011.04',
       })
     end
 

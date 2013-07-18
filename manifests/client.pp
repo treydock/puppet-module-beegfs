@@ -32,6 +32,7 @@ class fhgfs::client (
   $mgmtd_host               = $fhgfs::params::mgmtd_host,
   $mount_path               = '/mnt/fhgfs',
   $with_infiniband          = $fhgfs::params::client_with_infiniband,
+  $enable_intents           = true,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
   $conn_max_internode_num   = '12'
 ) inherits fhgfs::params {
@@ -46,6 +47,30 @@ class fhgfs::client (
   $package_name     = $fhgfs::params::client_package_name
   $service_name     = $fhgfs::params::client_service_name
   $package_require  = $fhgfs::params::package_require
+
+  $with_infiniband_real = is_string($with_infiniband) ? {
+    true  => str2bool($with_infiniband),
+    false => $with_infiniband,
+  }
+  validate_bool($with_infiniband_real)
+
+  $enable_intents_real = is_string($enable_intents) ? {
+    true  => str2bool($enable_intents),
+    false => $enable_intents,
+  }
+  validate_bool($enable_intents_real)
+
+  if $with_infiniband_real {
+    $autobuild_opentk_ibverbs = '1'
+  } else {
+    $autobuild_opentk_ibverbs = '0'
+  }
+
+  if $enable_intents_real {
+    $autobuild_intent = '1'
+  } else {
+    $autobuild_intent = '0'
+  }
 
 #  if is_string($mounts) {
 #    $mounts_real = split($mounts, ',')

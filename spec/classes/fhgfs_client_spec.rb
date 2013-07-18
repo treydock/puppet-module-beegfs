@@ -82,59 +82,34 @@ describe 'fhgfs::client' do
 
   it do
     should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
-      .with_content(/^buildArgs=-j8$/)
+      .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=0 FHGFS_INTENT=1$/)
   end
 
   context "with infiniband support via has_infiniband fact" do
-    let :facts do
-      {
-        :fhgfs_version            => '2011.04',
-        :osfamily                 => 'RedHat',
-        :operatingsystemrelease   => '6.4',
-        :has_infiniband           => 'true',
-      }
-    end
+    let(:facts) { default_facts.merge({:has_infiniband => 'true'}) }
 
     it do
       should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
-      .with_content(/^buildArgs=-j8\sFHGFS_OPENTK_IBVERBS=1$/)
+      .with_content(/^buildArgs=-j8\sFHGFS_OPENTK_IBVERBS=1 FHGFS_INTENT=1$/)
     end
   end
 
   context "with infiniband support via has_infiniband fact, boolean value" do
-    let :facts do
-      {
-        :fhgfs_version            => '2011.04',
-        :osfamily                 => 'RedHat',
-        :operatingsystemrelease   => '6.4',
-        :has_infiniband           => true,
-      }
-    end
+    let(:facts) { default_facts.merge({:has_infiniband => true}) }
 
     it do
       should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
-      .with_content(/^buildArgs=-j8\sFHGFS_OPENTK_IBVERBS=1$/)
+      .with_content(/^buildArgs=-j8\sFHGFS_OPENTK_IBVERBS=1 FHGFS_INTENT=1$/)
     end
   end
 
   context "with infiniband support via parameter" do
-    let :facts do
-      {
-        :fhgfs_version            => '2011.04',
-        :osfamily                 => 'RedHat',
-        :operatingsystemrelease   => '6.4',
-      }
-    end
-
-    let :params do
-      {
-        :with_infiniband  => 'true',
-      }
-    end
+    let(:facts) { default_facts }
+    let(:params) {{ :with_infiniband  => 'true' }}
 
     it do
       should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
-        .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1$/)
+        .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1 FHGFS_INTENT=1$/)
     end
   end
 
@@ -158,6 +133,24 @@ describe 'fhgfs::client' do
     it do
       should contain_file('/etc/fhgfs/fhgfs-mounts.conf') \
         .with_content(/^\/fdata\s\/etc\/fhgfs\/fhgfs-client.conf$/)
+    end
+  end
+  
+  context 'with enable_intents => false' do
+    let(:params) {{ :enable_intents => false }}
+    
+    it do
+      should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
+        .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=0 FHGFS_INTENT=0$/)
+    end
+  end
+  
+  context 'with enable_intents => "false"' do
+    let(:params) {{ :enable_intents => 'false' }}
+    
+    it do
+      should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
+        .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=0 FHGFS_INTENT=0$/)
     end
   end
 end

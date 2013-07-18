@@ -14,7 +14,7 @@
 #
 # === Variables
 #
-# [*fhgfs_version*]
+# [*fhgfs_repo_version*]
 #
 # [*fhgfs_store_storage_directory*]
 #

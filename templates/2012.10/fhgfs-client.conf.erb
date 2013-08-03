@@ -44,7 +44,8 @@ tuneUseGlobalFileLocks        = false
 sysMgmtdHost                  = <%= @mgmtd_host %>
 sysCreateHardlinksAsSymlinks  = true
 sysMountSanityCheckMS         = 11000
-
+sysSyncOnClose                = false
+sysSessionCheckOnClose        = false
 
 #
 # --- Section 2: [Mount Options] ---
@@ -229,15 +230,16 @@ sysMountSanityCheckMS         = 11000
 # Default: <none>
 
 # [tuneFileCacheType]
-# Sets the file cache type.
+# Sets the file read/write cache type.
 # Values: "none" (disable client caching), "buffered" (use a pool of small
-#    static buffers for write-back and read-ahead), "paged" (use the kernel
-#    pagecache).
-# Note: The cache protocols are currently non-coherent.
-# Note: When client and servers are running on the same machine, "paged"
-#    contains the typical potential for memory allocation deadlocks (also
-#    known from local NFS server mounts) => so do not use "paged" with
-#    clients that run on a metadata or storage server machine.
+#    static buffers for write-back and read-ahead), "paged" (experimental, use
+#    the kernel pagecache).
+# Note: The cache protocols are currently non-coherent (but caches are
+#       automatically flushed when a file is closed).
+# Note: When client and servers are running on the same machine, "paged" mode
+#    contains the typical potential for memory allocation deadlocks (also known
+#    from local NFS server mounts). So do not use "paged" mode for clients that
+#    run on a metadata or storage server machine.
 # Default: buffered
 
 # [tuneRemoteFSync]
@@ -274,3 +276,22 @@ sysMountSanityCheckMS         = 11000
 # (especially the management daemon) to respond. Use 0 to disable all checks 
 # and allow mounting even if no servers are reachable.
 # Default: 3000
+
+# [sysSyncOnClose]
+# Sync file contents on close. If this option is set to true, the storage
+# servers will flush the write cache of a file to disk immediately when it is
+# closed by the application. If this option is set to false, the write cache
+# will be flushed to disk asynchronously after a few seconds.
+# Note: If this option is true, performance will be decreased.
+# Default: false
+
+# [sysSessionCheckOnClose]
+# Checks for a valid session on the storage servers when a file is closed. If
+# this option is set to true, a potential cache loss from a crash of a storage
+# server can be detected. This will be reported to the user application as a
+# close() error code.
+# Note: There is also a session check included in all read/write/fsync messages,
+#    which is independent of this setting.
+# Note: If this option is set to true, more network messages are required on
+#    close(), so performance will decreased.
+# Default: false

@@ -38,10 +38,10 @@ storeAllowFirstRunInit    = true
 storeUseExtendedAttribs   = <%= @store_use_extended_attribs_real %>
 
 tuneNumWorkers            = <%= @tune_num_workers %>
-tuneWorkerNumaAffinity    = false
-tuneListenerNumaAffinity  = false
+tuneBindToNumaZone        =
 tuneTargetChooser         = randomized
 tuneRotateMirrorTargets   = false
+tuneUsePerUserMsgQueues   = false
 
 sysMgmtdHost              = <%= @mgmtd_host %>
 
@@ -209,12 +209,13 @@ runDaemonized             = true
 # Note: 0 means use twice the number of CPU cores (but at least 4).
 # Default: 0
 
-# [tuneWorkerNumaAffinity], [tuneListenerNumaAffinity]
-# If set to true, bind threads to different NUMA areas in a round-robin
-# fashion. Each thread will be configured to run only on those cores that
-# belong to its designated NUMA area. If set to false, threads can run on all
-# cores.
-# Default: false
+# [tuneBindToNumaZone]
+# Defines the zero-based NUMA zone number to which all threads of this process
+# should be bound. If unset, all available CPU cores may be used.
+# Zone binding is especially useful if the corresponding devices (e.g. storage
+# controller and network card) are also attached to the same zone.
+# Note: The Linux kernel shows NUMA zones at /sys/devices/system/node/nodeXY
+# Default: <unset>
 
 # [tuneTargetChooser]
 # The algorithm to choose storage targets for file creation.
@@ -234,6 +235,14 @@ runDaemonized             = true
 # Example: targets list for a file is "1,2,3,4"
 #    tuneRotateMirrorTargets=true:  original stripe targets = 1,2,3,4; mirror targets = 3,4,1,2; 
 #    tuneRotateMirrorTargets=false: original stripe targets = 1,2;     mirror targets = 3,4;
+
+# [tuneUsePerUserMsgQueues]
+# If set to true (experimental), per-user queues will be used to decide which
+# of the pending messages is handled by the next available worker thread. If
+# set to false, a single queue will be used and messages will be processed in
+# first-come, first-served order.
+# Per-user queues are intended to improve fairness in multi-user environments.
+# Default: false
 
 
 #

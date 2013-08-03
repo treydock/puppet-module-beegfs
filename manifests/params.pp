@@ -57,10 +57,17 @@ class fhgfs::params {
       $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_VERSION/dists/${repo_dir}"
       $repo_gpgkey                    = 'http://www.fhgfs.com/release/fhgfs_VERSION/gpg/RPM-GPG-KEY-fhgfs'
       $package_require                = Yumrepo['fhgfs']
+      $mgmtd_package_name             = 'fhgfs-mgmtd'
+      $mgmtd_service_name             = 'fhgfs-mgmtd'
+      $meta_package_name              = 'fhgfs-meta'
+      $meta_service_name              = 'fhgfs-meta'
       $storage_package_name           = 'fhgfs-storage'
       $storage_service_name           = 'fhgfs-storage'
       $client_package_name            = 'fhgfs-client'
       $client_service_name            = 'fhgfs-client'
+      $helperd_package_name           = 'fhgfs-helperd'
+      $helperd_service_name           = 'fhgfs-helperd'
+      $utils_package_name             = 'fhgfs-utils'
 
       $package_dependencies           = ['kernel-devel']
       $interfaces_file                = '/etc/fhgfs/interfaces'

@@ -35,14 +35,14 @@ storeStorageDirectory        = <%= @store_storage_directory %>
 storeAllowFirstRunInit       = true
 
 tuneNumWorkers               = 12
-tuneWorkerNumaAffinity       = false
-tuneListenerNumaAffinity     = false
+tuneBindToNumaZone           =
 tuneWorkerBufSize            = 4m
 tuneFileReadSize             = 32k
 tuneFileReadAheadTriggerSize = 4m
 tuneFileReadAheadSize        = 0m
 tuneFileWriteSize            = 64k
 tuneFileWriteSyncSize        = 0m
+tuneUsePerUserMsgQueues      = false
 
 sysMgmtdHost                 = <%= @mgmtd_host %>
 
@@ -188,12 +188,13 @@ runDaemonized                = true
 # concurrent access to the underlying storage device.
 # Default: 12
 
-# [tuneWorkerNumaAffinity], [tuneListenerNumaAffinity]
-# If set to true, bind threads to different NUMA areas in a round-robin
-# fashion. Each thread will be configured to run only on those cores that
-# belong to its designated NUMA area. If set to false, threads can run on all
-# cores.
-# Default: false
+# [tuneBindToNumaZone]
+# Defines the zero-based NUMA zone number to which all threads of this process
+# should be bound. If unset, all available CPU cores may be used.
+# Zone binding is especially useful if the corresponding devices (e.g. storage
+# controller and network card) are also attached to the same zone.
+# Note: The Linux kernel shows NUMA zones at /sys/devices/system/node/nodeXY
+# Default: <unset>
 
 # [tuneWorkerBufSize]
 # The buffer size, which is allocated twice by each worker thread for IO and
@@ -230,6 +231,13 @@ runDaemonized                = true
 #    your RAID stripe set size) to test the effects of this.
 # Default: 0
 
+# [tuneUsePerUserMsgQueues]
+# If set to true (experimental), per-user queues will be used to decide which
+# of the pending messages is handled by the next available worker thread. If
+# set to false, a single queue will be used and messages will be processed in
+# first-come, first-served order.
+# Per-user queues are intended to improve fairness in multi-user environments.
+# Default: false
 
 #
 # --- Section 3.5: [System Settings] ---

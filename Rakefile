@@ -16,3 +16,4 @@ task :ci => [
 PuppetLint.configuration.send("disable_80chars")
 PuppetLint.configuration.send("disable_class_inherits_from_params_class")
 PuppetLint.configuration.send('disable_quoted_booleans')
+PuppetLint.configuration.send('disable_only_variable_string')

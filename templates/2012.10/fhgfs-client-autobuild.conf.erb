@@ -23,7 +23,7 @@
 #
 # If you installed IB kernel modules from OFED, then also define the
 # correspsonding include path by adding "OFED_INCLUDE_PATH=<path>" to the
-# "buildArgs" (where <path> is usually "/usr/src/ofa_kernel/include").
+# "buildArgs" (where <path> is usually "/usr/src/openib/include").
 
 
 #
@@ -34,24 +34,25 @@
 # ==============
 # These are the arguments for the client module "make" command.
 #
-# Note: Quotation marks and equal signs can be used without escape characters
+# Note: Quotation marks and equal signs can be used without escape characters 
 # here.
 #
 # Example1:
 #  buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1
 #
 # Example2 (see Infiniband notes above):
-#  buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1 OFED_INCLUDE_PATH=/usr/src/ofa_kernel/include
+#  buildArgs=-j8 FHGFS_OPENTK_IBVERBS=1 OFED_INCLUDE_PATH=/usr/src/openib/include
 #
 # Default:
 #  buildArgs=-j8
 
 buildArgs=-j8 FHGFS_OPENTK_IBVERBS=<%= @autobuild_opentk_ibverbs %> FHGFS_INTENT=<%= @autobuild_intent %>
 
+
 # Turn Autobuild on/off
 # =====================
 # Controls whether modules will be built on "/etc/init.d/fhgfs-client start".
-#
+# 
 # Note that even if autobuild is enabled here, the modules will only be built
 # if no fhgfs kernel module for the current kernel version exists in
 # "/lib/modules/<kernel_version>/updates/".
@@ -59,4 +60,4 @@ buildArgs=-j8 FHGFS_OPENTK_IBVERBS=<%= @autobuild_opentk_ibverbs %> FHGFS_INTENT
 # Default:
 #  buildEnabled=true
 
-buildEnabled=true
+buildEnabled=<%= @autobuild_enabled %>

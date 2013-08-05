@@ -22,7 +22,8 @@ class fhgfs::client (
   $with_infiniband          = $fhgfs::params::client_with_infiniband,
   $enable_intents           = true,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
-  $conn_max_internode_num   = '12'
+  $conn_max_internode_num   = '12',
+  $autobuild_enabled        = true
 ) inherits fhgfs::params {
 
   include fhgfs

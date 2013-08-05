@@ -1,5 +1,6 @@
 fixtures:
   repositories:
     stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
+    gpg_key: git://github.com/treydock/puppet-gpg_key.git
   symlinks:
     fhgfs: "#{source_dir}"

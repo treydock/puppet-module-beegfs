@@ -1,6 +1,6 @@
 # == Class: fhgfs::utils
 #
-# Installs the FHGFS utilities
+# Installs the FhGFS utilities
 #
 # === Parameters
 #

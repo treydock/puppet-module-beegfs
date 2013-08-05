@@ -1,16 +1,22 @@
 # == Class: fhgfs
 #
 # Base class for the FHGFS module.
+# This class includes the necessary repo and
+# is where the repo parameters are defined.
 #
 # === Parameters
 #
 # [*version*]
 #
+# [*repo_descr*]
+#
 # [*repo_baseurl*]
 #
 # [*repo_gpgkey*]
 #
-# [*repo_descr*]
+# [*repo_gpgcheck*]
+#
+# [*repo_enabled*]
 #
 # === Variables
 #
@@ -22,9 +28,7 @@
 #
 # === Examples
 #
-#  class { 'fhgfs':
-#    version => '2012.10',
-#  }
+#  class { 'fhgfs': }
 #
 # === Authors
 #
@@ -36,31 +40,24 @@
 #
 class fhgfs (
   $version        = $fhgfs::params::version,
+  $repo_descr     = $fhgfs::params::repo_descr,
   $repo_baseurl   = $fhgfs::params::repo_baseurl,
   $repo_gpgkey    = $fhgfs::params::repo_gpgkey,
-  $repo_descr     = $fhgfs::params::repo_descr
+  $repo_gpgcheck  = '0',
+  $repo_enabled   = '1'
 ) inherits fhgfs::params {
 
   $package_dependencies  = [$fhgfs::params::package_dependencies]
 
-  $baseurl  = inline_template("<%= \"${repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>")
-  $gpgkey   = inline_template("<%= \"${repo_gpgkey}\".gsub(/VERSION/, \"${version}\") %>")
-  $descr    = inline_template("<%= \"${repo_descr}\".gsub(/VERSION/, \"${version}\") %>")
+  $repo_descr_real    = inline_template("<%= \"${repo_descr}\".gsub(/VERSION/, \"${version}\") %>")
+  $repo_baseurl_real  = inline_template("<%= \"${repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>")
+
+  validate_re($repo_gpgcheck, '^(1|0)$')
+  validate_re($repo_enabled, '^(1|0)$')
 
   ensure_packages($package_dependencies)
 
-  case $::osfamily {
-    'RedHat': {
-      yumrepo { 'fhgfs':
-        descr     => $descr,
-        baseurl   => $baseurl,
-        gpgkey    => $gpgkey,
-        gpgcheck  => '0',
-        enabled   => '1',
-      }
-    }
+  include fhgfs::repo
 
-    default: {}
-  }
-
+  Class['fhgfs'] -> Class['fhgfs::repo']
 }

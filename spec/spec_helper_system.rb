@@ -19,6 +19,7 @@ RSpec.configure do |c|
     puppet_master_install
 
     shell('puppet module install puppetlabs-stdlib --modulepath /etc/puppet/modules')
+    shell('puppet module install treydock/gpg_key --modulepath /etc/puppet/modules')
     puppet_module_install(:source => proj_root, :module_name => 'fhgfs')
   end
 end

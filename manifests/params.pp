@@ -8,6 +8,10 @@
 #
 # [*fhgfs_store_storage_directory*]
 #
+# [*fhgfs_meta_storage_directory*]
+#
+# [*fhgfs_mgmtd_storage_directory*]
+#
 # [*fhgfs_mgmtd_host*]
 #
 # === Authors
@@ -25,25 +29,32 @@ class fhgfs::params {
     default => $::fhgfs_repo_version,
   }
 
-  $store_storage_directory  = $::fhgfs_store_storage_directory ? {
+  $store_storage_directory = $::fhgfs_store_storage_directory ? {
     undef   => '',
     default => $::fhgfs_store_storage_directory,
   }
-  $store_meta_directory     = $::fhgfs_store_meta_directory ? {
+
+  $store_meta_directory = $::fhgfs_store_meta_directory ? {
     undef   => '',
     default => $::fhgfs_store_meta_directory,
   }
-  $client_with_infiniband   = $::has_infiniband ? {
+
+  $store_mgmtd_directory = $::fhgfs_store_mgmtd_directory ? {
+    undef   => '',
+    default => $::fhgfs_store_mgmtd_directory,
+  }
+
+  $client_with_infiniband = $::has_infiniband ? {
     undef   => false,
     default => $::has_infiniband,
   }
 
-  $mgmtd_host               = $::fhgfs_mgmtd_host ? {
+  $mgmtd_host = $::fhgfs_mgmtd_host ? {
     undef   => '',
     default => $::fhgfs_mgmtd_host,
   }
 
-  $meta_with_infiniband   = $::has_infiniband ? {
+  $meta_with_infiniband = $::has_infiniband ? {
     undef   => false,
     default => $::has_infiniband,
   }
@@ -55,7 +66,7 @@ class fhgfs::params {
       $repo_dir                       = "rhel${os_major}"
       $repo_descr                     = "FhGFS VERSION (RHEL${os_major})"
       $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_VERSION/dists/${repo_dir}"
-      $repo_gpgkey                    = 'http://www.fhgfs.com/release/fhgfs_VERSION/gpg/RPM-GPG-KEY-fhgfs'
+      $repo_gpgkey                    = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs'
       $package_require                = Yumrepo['fhgfs']
       $mgmtd_package_name             = 'fhgfs-mgmtd'
       $mgmtd_service_name             = 'fhgfs-mgmtd'

@@ -4,21 +4,9 @@
 #
 # === Parameters
 #
-# [*mgmtd_host*]
-#
-# [*version*]
-#
-# [*repo_baseurl*]
-#
-# [*repo_gpgkey*]
-#
 # === Examples
 #
-#  class { 'fhgfs::client':
-#    store_client_directory  => '/tank/fhgfs',
-#    mgmtd_host               => 'mgmtd01',
-#    version                  => '2011.04',
-#  }
+#  class { 'fhgfs::client': }
 #
 # === Authors
 #
@@ -72,13 +60,7 @@ class fhgfs::client (
     $autobuild_intent = '0'
   }
 
-#  if is_string($mounts) {
-#    $mounts_real = split($mounts, ',')
-#  } elsif is_array($mounts) {
-#    $mounts_real = $mounts
-#  } else {
-#    fail("Expected an instance of Array or String for mounts, received ${inline_template('<%= ${mounts}.class %>')}")
-#  }
+  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
 
   package { 'fhgfs-client':
     ensure    => 'present',

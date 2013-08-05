@@ -74,6 +74,8 @@ class fhgfs::storage (
     $conn_interfaces_file = ''
   }
 
+  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
+
   package { 'fhgfs-storage':
     ensure    => 'present',
     name      => $package_name,

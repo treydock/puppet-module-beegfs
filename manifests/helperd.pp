@@ -1,24 +1,12 @@
 # == Class: fhgfs::helperd
 #
-# Manages a FHGFS helperd server
+# Manages a FHGFS helperd service
 #
 # === Parameters
 #
-# [*mgmtd_host*]
-#
-# [*version*]
-#
-# [*repo_baseurl*]
-#
-# [*repo_gpgkey*]
-#
 # === Examples
 #
-#  class { 'fhgfs::helperd':
-#    store_helperd_directory  => '/tank/fhgfs',
-#    mgmtd_host               => 'mgmtd01',
-#    version                  => '2011.04',
-#  }
+#  class { 'fhgfs::helperd': }
 #
 # === Authors
 #
@@ -28,9 +16,7 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::helperd (
-
-) inherits fhgfs::params {
+class fhgfs::helperd inherits fhgfs::params {
 
   include fhgfs
 
@@ -41,6 +27,8 @@ class fhgfs::helperd (
   $package_name     = $fhgfs::params::helperd_package_name
   $service_name     = $fhgfs::params::helperd_service_name
   $package_require  = $fhgfs::params::package_require
+
+  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
 
   package { 'fhgfs-helperd':
     ensure    => 'present',

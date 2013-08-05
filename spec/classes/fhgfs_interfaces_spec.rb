@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'fhgfs::interfaces' do
   include_context :defaults
 
-  let(:facts) { default_facts.merge({}) }
+  let(:facts) { default_facts }
 
+  it { should create_class('fhgfs::interfaces') }
   it { should contain_class('fhgfs::params') }
 
   shared_context "with interfaces" do

@@ -9,41 +9,16 @@ describe 'fhgfs::meta' do
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
 
-  include_context 'fhgfs'
-
-  it do
-    should contain_package('fhgfs-meta').with({
-      'ensure'    => 'present',
-      'name'      => 'fhgfs-meta',
-      'before'    => 'File[/etc/fhgfs/fhgfs-meta.conf]',
-      'require'   => 'Yumrepo[fhgfs]',
-    })
+  it_behaves_like 'server service' do
+    let(:service_name) { "fhgfs-meta" }
   end
 
-  it do
-    should contain_service('fhgfs-meta').with({
-      'ensure'      => 'running',
-      'enable'      => 'true',
-      'name'        => 'fhgfs-meta',
-      'hasstatus'   => 'true',
-      'hasrestart'  => 'true',
-      'subscribe'   => 'File[/etc/fhgfs/fhgfs-meta.conf]',
-    })
+  it_behaves_like 'server package' do
+    let(:package_name) { "fhgfs-meta" }
   end
 
-  it do
-    should contain_file('/etc/fhgfs').with({
-      'ensure'  => 'directory',
-    })
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-meta.conf').with({
-      'ensure'  => 'present',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
-    })
+  it_behaves_like 'server files' do
+    let(:name) { "fhgfs-meta" }
   end
 
   it do

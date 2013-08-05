@@ -3,45 +3,29 @@ require 'spec_helper'
 describe 'fhgfs::storage' do
   include_context :defaults
 
-  let(:facts) { default_facts.merge({}) }
-  let(:params) {{}}
+  let(:facts) { default_facts }
 
+  it { should create_class('fhgfs::storage') }
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
 
-  include_context 'fhgfs'
+  it { should_not contain_class('fhgfs::interfaces') }
 
-  it do
-    should contain_package('fhgfs-storage').with({
-      'ensure'    => 'present',
-      'name'      => 'fhgfs-storage',
-      'before'    => 'File[/etc/fhgfs/fhgfs-storage.conf]',
-      'require'   => 'Yumrepo[fhgfs]',
-    })
+  it_behaves_like 'server service' do
+    let(:service_name) { "fhgfs-storage" }
   end
 
-  it do
-    should contain_service('fhgfs-storage').with({
-      'ensure'      => 'running',
-      'enable'      => 'true',
-      'name'        => 'fhgfs-storage',
-      'hasstatus'   => 'true',
-      'hasrestart'  => 'true',
-      'subscribe'   => 'File[/etc/fhgfs/fhgfs-storage.conf]',
-    })
+  it_behaves_like 'server package' do
+    let(:package_name) { "fhgfs-storage" }
   end
 
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-storage.conf').with({
-      'ensure'  => 'present',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
-    })
+  it_behaves_like 'server files' do
+    let(:name) { "fhgfs-storage" }
   end
 
   it do
     should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
+      .with_content(/^connInterfacesFile\s+=\s+$/) \
       .with_content(/^storeStorageDirectory\s+=\s+$/) \
       .with_content(/^sysMgmtdHost\s+=\s+$/)
   end
@@ -67,18 +51,6 @@ describe 'fhgfs::storage' do
         'ensure'  => 'directory',
         'before'  => 'Service[fhgfs-storage]',
       })
-    end
-  end
-  
-  context 'with service_ensure => undef' do
-    let :params do
-      {
-        :service_ensure => 'undef',
-      }
-    end
-
-    it do
-      should contain_service('fhgfs-storage').without_ensure
     end
   end
 

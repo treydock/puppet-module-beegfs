@@ -62,6 +62,12 @@ class fhgfs::mgmtd (
     default   => $service_ensure,
   }
 
+  validate_re("${service_enable}", '(true|false|undef)')
+  $service_enable_real  = $service_enable ? {
+    'undef'   => undef,
+    default   => $service_enable,
+  }
+
   if $conn_interfaces and !empty($conn_interfaces) {
     if !defined(Class['fhgfs::interfaces']) {
       class { 'fhgfs::interfaces':
@@ -74,6 +80,8 @@ class fhgfs::mgmtd (
     $conn_interfaces_file = ''
   }
 
+  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
+
   package { 'fhgfs-mgmtd':
     ensure    => 'present',
     name      => $package_name,
@@ -83,7 +91,7 @@ class fhgfs::mgmtd (
 
   service { 'fhgfs-mgmtd':
     ensure      => $service_ensure_real,
-    enable      => $service_enable,
+    enable      => $service_enable_real,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,

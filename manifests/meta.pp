@@ -77,6 +77,12 @@ class fhgfs::meta (
     default   => $service_ensure,
   }
 
+  validate_re("${service_enable}", '(true|false|undef)')
+  $service_enable_real  = $service_enable ? {
+    'undef'   => undef,
+    default   => $service_enable,
+  }
+
   if $conn_interfaces and !empty($conn_interfaces) {
     if !defined(Class['fhgfs::interfaces']) {
       class { 'fhgfs::interfaces':
@@ -89,6 +95,8 @@ class fhgfs::meta (
     $conn_interfaces_file = false
   }
 
+  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
+
   package { 'fhgfs-meta':
     ensure    => 'present',
     name      => $package_name,
@@ -98,7 +106,7 @@ class fhgfs::meta (
 
   service { 'fhgfs-meta':
     ensure      => $service_ensure_real,
-    enable      => $service_enable,
+    enable      => $service_enable_real,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,

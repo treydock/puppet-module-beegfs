@@ -47,10 +47,6 @@ class fhgfs (
   $gpgkey   = inline_template("<%= \"${repo_gpgkey}\".gsub(/VERSION/, \"${version}\") %>")
   $descr    = inline_template("<%= \"${repo_descr}\".gsub(/VERSION/, \"${version}\") %>")
 
-  file { '/etc/fhgfs':
-    ensure  => 'directory',
-  }
-
   ensure_packages($package_dependencies)
 
   case $::osfamily {

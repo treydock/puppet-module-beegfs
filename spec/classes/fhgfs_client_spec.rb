@@ -3,14 +3,16 @@ require 'spec_helper'
 describe 'fhgfs::client' do
   include_context :defaults
 
-  let(:facts) { default_facts.merge({}) }
-  let(:params) {{}}
+  let(:facts) { default_facts }
 
+  it { should create_class('fhgfs::client') }
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
   it { should include_class('fhgfs::helperd') }
 
-  include_context 'fhgfs'
+  it_behaves_like 'server files' do
+    let(:name) { "fhgfs-client" }
+  end
 
   it do
     should contain_package('fhgfs-client').with({
@@ -38,15 +40,6 @@ describe 'fhgfs::client' do
                         'File[/etc/fhgfs/fhgfs-client-autobuild.conf]',
                        ],
       'require'     => 'Service[fhgfs-helperd]',
-    })
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-client.conf').with({
-      'ensure'  => 'present',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
     })
   end
 

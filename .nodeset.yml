@@ -14,8 +14,8 @@ sets:
       'main.vm':
         prefab: 'scientific-64-x64'
   'scientific-64-x64-multi':
-    default_node: 'client'
     nodes:
+      default_node: 'client'
       'storage':
         prefab: 'scientific-64-x64'
       'client':

@@ -9,35 +9,16 @@ describe 'fhgfs::mgmtd' do
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
 
-  include_context 'fhgfs'
-
-  it do
-    should contain_package('fhgfs-mgmtd').with({
-      'ensure'    => 'present',
-      'name'      => 'fhgfs-mgmtd',
-      'before'    => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
-      'require'   => 'Yumrepo[fhgfs]',
-    })
+  it_behaves_like 'server service' do
+    let(:service_name) { "fhgfs-mgmtd" }
   end
 
-  it do
-    should contain_service('fhgfs-mgmtd').with({
-      'ensure'      => 'running',
-      'enable'      => 'true',
-      'name'        => 'fhgfs-mgmtd',
-      'hasstatus'   => 'true',
-      'hasrestart'  => 'true',
-      'subscribe'   => 'File[/etc/fhgfs/fhgfs-mgmtd.conf]',
-    })
+  it_behaves_like 'server package' do
+    let(:package_name) { "fhgfs-mgmtd" }
   end
 
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
-      'ensure'  => 'present',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0644',
-    })
+  it_behaves_like 'server files' do
+    let(:name) { "fhgfs-mgmtd" }
   end
 
   it do

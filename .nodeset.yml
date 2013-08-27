@@ -14,11 +14,17 @@ sets:
       'main.vm':
         prefab: 'scientific-64-x64'
   'scientific-64-x64-multi':
+    default_node: 'client.vm'
     nodes:
-      default_node: 'client'
-      'storage':
+      'client.vm':
         prefab: 'scientific-64-x64'
-      'client':
+        ip: '192.168.1.5'
+      'storage.vm':
         prefab: 'scientific-64-x64'
-      'meta-mgmtd':
+        ip: '192.168.1.4'
+      'meta.vm':
         prefab: 'scientific-64-x64'
+        ip: '192.168.1.3'
+      'mgmtd.vm':
+        prefab: 'scientific-64-x64'
+        ip: '192.168.1.2'

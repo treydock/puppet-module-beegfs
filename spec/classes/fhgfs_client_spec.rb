@@ -8,9 +8,10 @@ describe 'fhgfs::client' do
   it { should create_class('fhgfs::client') }
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
-  it { should include_class('fhgfs::helperd') }
+  it { should include_class('fhgfs::utils') }
+  it { should include_class('fhgfs::client::helperd') }
 
-  it_behaves_like 'server files' do
+  it_behaves_like 'role files' do
     let(:name) { "fhgfs-client" }
   end
 
@@ -29,7 +30,7 @@ describe 'fhgfs::client' do
 
   it do
     should contain_service('fhgfs-client').with({
-      'ensure'      => 'running',
+      'ensure'      => 'true',
       'enable'      => 'true',
       'name'        => 'fhgfs-client',
       'hasstatus'   => 'true',
@@ -145,5 +146,50 @@ describe 'fhgfs::client' do
       should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') \
         .with_content(/^buildArgs=-j8 FHGFS_OPENTK_IBVERBS=0 FHGFS_INTENT=0$/)
     end
+  end
+
+  context 'with utils_only => true' do
+    let(:params) {{ :utils_only => true }}
+
+    it { should_not include_class('fhgfs::client::helperd') }
+    
+    it do
+      should contain_package('fhgfs-client').with({
+        'ensure'    => 'present',
+        'name'      => 'fhgfs-client',
+        'before'    => ['File[/etc/fhgfs/fhgfs-client.conf]', 'Service[fhgfs-client]'],
+        'require'   => 'Yumrepo[fhgfs]',
+      })
+    end
+
+    it do
+      should contain_service('fhgfs-client').with({
+        'ensure'      => 'false',
+        'enable'      => 'false',
+        'name'        => 'fhgfs-client',
+        'hasstatus'   => 'true',
+        'hasrestart'  => 'true',
+        'subscribe'   => nil,
+        'require'     => nil,
+      })
+    end
+  end
+  
+  context "utils_only => 'false'" do
+    let(:params) {{ :utils_only => 'false' }}
+
+    it { expect { should include_class('fhgfs::client::helperd') }.to raise_error(Puppet::Error, /is not a boolean/) }
+  end
+
+  context "include_utils => false" do
+    let(:params) {{ :include_utils => false }}
+
+    it { should_not include_class('fhgfs::utils') }
+  end
+
+  context "include_utils => 'true'" do
+    let(:params) {{ :include_utils => 'true' }}
+
+    it { expect { should include_class('fhgfs::utils') }.to raise_error(Puppet::Error, /is not a boolean/) }
   end
 end

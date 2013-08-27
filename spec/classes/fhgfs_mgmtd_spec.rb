@@ -9,15 +9,15 @@ describe 'fhgfs::mgmtd' do
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
 
-  it_behaves_like 'server service' do
+  it_behaves_like 'role service' do
     let(:service_name) { "fhgfs-mgmtd" }
   end
 
-  it_behaves_like 'server package' do
+  it_behaves_like 'role package' do
     let(:package_name) { "fhgfs-mgmtd" }
   end
 
-  it_behaves_like 'server files' do
+  it_behaves_like 'role files' do
     let(:name) { "fhgfs-mgmtd" }
   end
 

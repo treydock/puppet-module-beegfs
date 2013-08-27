@@ -1,4 +1,4 @@
-shared_examples_for 'server service' do
+shared_examples_for 'role service' do
   it do
     should contain_service(service_name).with({
       'ensure'      => 'running',

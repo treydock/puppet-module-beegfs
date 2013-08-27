@@ -61,6 +61,11 @@ class fhgfs::params {
 
   $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
 
+  $monitor_sudo_commands = [
+    '/usr/bin/fhgfs-ctl --iostat *',
+    '/usr/bin/fhgfs-ctl --listpools *',
+  ]
+
   case $::osfamily {
     'RedHat': {
       $repo_dir                       = "rhel${os_major}"
@@ -82,6 +87,15 @@ class fhgfs::params {
 
       $package_dependencies           = ['kernel-devel']
       $interfaces_file                = '/etc/fhgfs/interfaces'
+
+      $monitor_tool_defaults  = {
+        'zabbix' => {
+          'username'  => 'zabbix',
+          'conf_dir'  => '/etc/zabbix_agentd.conf.d',
+        },
+      }
+
+      $monitor_sudoers_path           = '/etc/sudoers.d/fhgfs'
     }
 
     default: {

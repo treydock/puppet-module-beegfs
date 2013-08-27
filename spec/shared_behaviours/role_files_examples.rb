@@ -1,4 +1,4 @@
-shared_examples_for 'server files' do
+shared_examples_for 'role files' do
   it do
     should contain_file('/etc/fhgfs').with({
       'ensure'  => 'directory',

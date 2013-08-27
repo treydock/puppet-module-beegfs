@@ -5,21 +5,22 @@ describe 'fhgfs class:' do
     pp = <<-EOS
       file { '/fhgfs':
         ensure  => directory,
-      }->
+      }
+
       class { 'fhgfs': }->
       class { 'fhgfs::mgmtd':
         store_mgmtd_directory => '/fhgfs/mgmtd',
+        require               => File['/fhgfs'],
       }->
       class { 'fhgfs::meta':
         store_meta_directory  => '/fhgfs/meta',
         mgmtd_host            => 'localhost',
+        require               => File['/fhgfs'],
       }->
       class { 'fhgfs::storage':
         store_storage_directory => '/fhgfs/storage',
         mgmtd_host              => 'localhost',
-      }->
-      file { '/mnt/fhgfs':
-        ensure  => directory,
+        require                 => File['/fhgfs'],
       }->
       class { 'fhgfs::client':
         mgmtd_host => 'localhost',
@@ -33,11 +34,18 @@ describe 'fhgfs class:' do
       its(:stderr) { should be_empty }
       its(:exit_code) { should be_zero }
     end
-    
-    context shell('facter --puppet fhgfs_version') do
-      its(:stdout) { should =~ /^2012.10.r[0-9]+$/ }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+
+    [
+      'fhgfs-mgmtd',
+      'fhgfs-meta',
+      'fhgfs-storage',
+      'fhgfs-helperd',
+      'fhgfs-client'
+    ].each do |service|      
+      describe service(service) do
+        it { should be_enabled }
+        it { should be_running }
+      end
     end
   end
 end

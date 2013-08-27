@@ -1,16 +1,21 @@
 require 'spec_helper'
 
-describe 'fhgfs::helperd' do
+describe 'fhgfs::client::helperd' do
   include_context :defaults
 
   let(:facts) { default_facts }
 
-  it { should create_class('fhgfs::helperd') }
+  it { should create_class('fhgfs::client::helperd') }
   it { should contain_class('fhgfs::params') }
   it { should include_class('fhgfs') }
 
-  it_behaves_like 'server files' do
-    let(:name) { "fhgfs-helperd" }
+  it do
+    should contain_file("/etc/fhgfs/fhgfs-helperd.conf").with({
+      'ensure'  => 'present',
+      'owner'   => 'root',
+      'group'   => 'root',
+      'mode'    => '0644',
+    })
   end
 
   it do
@@ -30,6 +35,7 @@ describe 'fhgfs::helperd' do
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
       'subscribe'   => 'File[/etc/fhgfs/fhgfs-helperd.conf]',
+      'before'      => 'Service[fhgfs-client]',
     })
   end
 end

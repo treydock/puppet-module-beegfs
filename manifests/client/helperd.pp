@@ -1,12 +1,6 @@
-# == Class: fhgfs::helperd
+# == Class: fhgfs::client::helperd
 #
-# Manages a FHGFS helperd service
-#
-# === Parameters
-#
-# === Examples
-#
-#  class { 'fhgfs::helperd': }
+# Manages a FhGFS client's helperd service
 #
 # === Authors
 #
@@ -16,11 +10,9 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::helperd inherits fhgfs::params {
+class fhgfs::client::helperd inherits fhgfs::params {
 
   include fhgfs
-
-  Class['fhgfs'] -> Class['fhgfs::helperd']
 
   $version = $fhgfs::version
 
@@ -44,6 +36,7 @@ class fhgfs::helperd inherits fhgfs::params {
     hasstatus   => true,
     hasrestart  => true,
     subscribe   => File['/etc/fhgfs/fhgfs-helperd.conf'],
+    before      => Service['fhgfs-client'],
   }
 
   file { '/etc/fhgfs/fhgfs-helperd.conf':

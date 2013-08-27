@@ -16,13 +16,14 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::utils inherits fhgfs::params {
+class fhgfs::utils {
 
   include fhgfs
+  include fhgfs::params
 
-  Class['fhgfs'] -> Class['fhgfs::utils']
+  Class['fhgfs::client'] -> Class['fhgfs::utils']
 
-  $version = $fhgfs::version
+  $version = $fhgfs::client::version
 
   $package_name     = $fhgfs::params::utils_package_name
   $package_require  = $fhgfs::params::package_require

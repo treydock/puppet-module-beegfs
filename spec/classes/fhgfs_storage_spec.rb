@@ -11,15 +11,15 @@ describe 'fhgfs::storage' do
 
   it { should_not contain_class('fhgfs::interfaces') }
 
-  it_behaves_like 'server service' do
+  it_behaves_like 'role service' do
     let(:service_name) { "fhgfs-storage" }
   end
 
-  it_behaves_like 'server package' do
+  it_behaves_like 'role package' do
     let(:package_name) { "fhgfs-storage" }
   end
 
-  it_behaves_like 'server files' do
+  it_behaves_like 'role files' do
     let(:name) { "fhgfs-storage" }
   end
 

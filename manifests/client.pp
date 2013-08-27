@@ -23,13 +23,39 @@ class fhgfs::client (
   $enable_intents           = true,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
   $conn_max_internode_num   = '12',
-  $autobuild_enabled        = true
+  $autobuild_enabled        = true,
+  $include_utils            = true,
+  $utils_only               = false
 ) inherits fhgfs::params {
 
   include fhgfs
-  include fhgfs::helperd
 
-  Class['fhgfs'] -> Class['fhgfs::helperd'] -> Class['fhgfs::client']
+  validate_bool($include_utils)
+  if $include_utils { include fhgfs::utils }
+
+  validate_bool($utils_only)
+  if $utils_only {
+    Class['fhgfs'] -> Class['fhgfs::client']
+
+    $package_before     = [File['/etc/fhgfs/fhgfs-client.conf'],Service['fhgfs-client']]
+    $service_ensure     = false
+    $service_enable     = false
+    $service_subscribe  = undef
+    $service_require    = undef
+  } else {
+    include fhgfs::client::helperd
+
+    Class['fhgfs'] -> Class['fhgfs::client::helperd'] -> Class['fhgfs::client']
+
+    $package_before     = [ File['/etc/fhgfs/fhgfs-client.conf'],
+                            File['/etc/fhgfs/fhgfs-mounts.conf'],
+                            File['/etc/fhgfs/fhgfs-client-autobuild.conf'],
+                            ]
+    $service_ensure     = true
+    $service_enable     = true
+    $service_subscribe  = $package_before
+    $service_require    = Service['fhgfs-helperd']
+  }
 
   $version = $fhgfs::version
 
@@ -66,26 +92,18 @@ class fhgfs::client (
   package { 'fhgfs-client':
     ensure    => 'present',
     name      => $package_name,
-    before    => [
-                  File['/etc/fhgfs/fhgfs-client.conf'],
-                  File['/etc/fhgfs/fhgfs-mounts.conf'],
-                  File['/etc/fhgfs/fhgfs-client-autobuild.conf']
-                ],
+    before    => $package_before,
     require   => $package_require,
   }
 
   service { 'fhgfs-client':
-    ensure      => 'running',
-    enable      => true,
+    ensure      => $service_ensure,
+    enable      => $service_enable,
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    subscribe   => [
-                    File['/etc/fhgfs/fhgfs-client.conf'],
-                    File['/etc/fhgfs/fhgfs-mounts.conf'],
-                    File['/etc/fhgfs/fhgfs-client-autobuild.conf']
-                  ],
-    require     => Service['fhgfs-helperd'],
+    subscribe   => $service_subscribe,
+    require     => $service_require,
   }
 
   file { '/etc/fhgfs/fhgfs-client.conf':

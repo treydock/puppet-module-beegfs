@@ -87,7 +87,6 @@ If you have Vagrant >= 1.1.0 installed you can run system tests
 
 ## TODO
 
-* Move the helperd class into the client class or a client subclass
 * Refacter the roles to use a shared defined resource to reduce on the amount of duplicate module code
 * Allow all config values to be defined in Puppet for all roles using parameter (ie. config_hash)
 * Add support for FhGFS Multi-mode

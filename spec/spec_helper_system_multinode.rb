@@ -1,4 +1,5 @@
 require 'rspec-system/spec_helper'
+#require 'rspec-system-puppet/spec_helper'
 require 'rspec-system-puppet/helpers'
 require 'rspec-system-serverspec/helpers'
 
@@ -90,6 +91,7 @@ RSpec.configure do |c|
     nodes.each { |n| shell(:command => "git clone git://github.com/treydock/puppet-zabbix20.git /etc/puppet/modules/zabbix20", :node => n) }
     nodes.each { |n| shell(:command => "puppet module install puppetlabs/firewall --modulepath /etc/puppet/modules", :node => n) }
     nodes.each { |n| shell(:command => "puppet module install stahnma/epel --modulepath /etc/puppet/modules", :node => n) }
+    nodes.each { |n| shell(:command => "puppet module install saz/sudo --modulepath /etc/puppet/modules", :node => n) }
 
     nodes.each { |n| puppet_apply(:code => hosts, :node => n) }
 

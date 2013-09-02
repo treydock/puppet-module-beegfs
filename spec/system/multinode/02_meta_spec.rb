@@ -3,26 +3,27 @@ require 'spec_helper_system_multinode'
 describe 'fhgfs::meta class:' do
   context 'should run successfully' do
     pp = <<-EOS
-      service { 'iptables': ensure => stopped, before => File['/fhgfs'], }
+service { 'iptables': ensure => stopped, before => File['/fhgfs'], }
+class { 'sudo': purge => false, config_file_replace => false }
 
-      file { '/fhgfs':
-        ensure  => directory,
-      }
+file { '/fhgfs':
+  ensure  => directory,
+}
 
-      class { 'fhgfs::meta':
-        store_meta_directory  => '/fhgfs/meta',
-        mgmtd_host            => 'mgmtd.vm',
-        require               => File['/fhgfs'],
-      }
+class { 'fhgfs::meta':
+  store_meta_directory  => '/fhgfs/meta',
+  mgmtd_host            => 'mgmtd.vm',
+  require               => File['/fhgfs'],
+}
 
-      class { 'zabbix20::agent': manage_firewall => false, }
+class { 'zabbix20::agent': manage_firewall => false, }
 
-      class { 'fhgfs::client':
-        mgmtd_host  => 'mgmtd.vm',
-        utils_only  => true,
-      }
+class { 'fhgfs::client':
+  mgmtd_host  => 'mgmtd.vm',
+  utils_only  => true,
+}
 
-      class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
+class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
     EOS
 
     context puppet_apply(:code => pp, :node => 'meta.vm') do

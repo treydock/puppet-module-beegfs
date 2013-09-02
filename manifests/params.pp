@@ -83,6 +83,8 @@ class fhgfs::params {
       $client_service_name            = 'fhgfs-client'
       $helperd_package_name           = 'fhgfs-helperd'
       $helperd_service_name           = 'fhgfs-helperd'
+      $admon_package_name             = 'fhgfs-admon'
+      $admon_service_name             = 'fhgfs-admon'
       $utils_package_name             = 'fhgfs-utils'
 
       $package_dependencies           = ['kernel-devel']

@@ -3,18 +3,20 @@ require 'spec_helper_system_multinode'
 describe 'fhgfs::client class:' do
   context 'should run successfully' do
     pp = <<-EOS
-      file { '/fhgfs':
-        ensure  => directory,
-      }
+class { 'sudo': purge => false, config_file_replace => false }
 
-      class { 'fhgfs::client':
-        mgmtd_host => 'mgmtd.vm',
-        mount_path  => '/mnt/fhgfs',
-      }
+file { '/fhgfs':
+  ensure  => directory,
+}
 
-      class { 'zabbix20::agent': manage_firewall => false, }
+class { 'fhgfs::client':
+  mgmtd_host => 'mgmtd.vm',
+  mount_path  => '/mnt/fhgfs',
+}
 
-      class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
+class { 'zabbix20::agent': manage_firewall => false, }
+
+class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
     EOS
 
     context puppet_apply(:code => pp, :node => 'client.vm') do

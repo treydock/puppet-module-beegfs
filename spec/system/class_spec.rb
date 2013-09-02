@@ -24,6 +24,9 @@ describe 'fhgfs class:' do
       }->
       class { 'fhgfs::client':
         mgmtd_host => 'localhost',
+      }->
+      class { 'fhgfs::admon':
+        mgmtd_host  => 'localhost',
       }
     EOS
 
@@ -40,7 +43,8 @@ describe 'fhgfs class:' do
       'fhgfs-meta',
       'fhgfs-storage',
       'fhgfs-helperd',
-      'fhgfs-client'
+      'fhgfs-client',
+      'fhgfs-admon',
     ].each do |service|      
       describe service(service) do
         it { should be_enabled }

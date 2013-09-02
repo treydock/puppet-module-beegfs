@@ -33,7 +33,8 @@ class fhgfs::monitor (
   $monitor_sudoers_path   = $fhgfs::params::monitor_sudoers_path,
   $manage_sudo            = true,
   $monitor_sudo_commands  = $fhgfs::params::monitor_sudo_commands,
-  $include_scripts        = true
+  $include_scripts        = true,
+  $scripts_dir            = '/usr/local/bin'
 ) inherits fhgfs::params {
 
   Class['fhgfs::utils'] -> Class['fhgfs::monitor']

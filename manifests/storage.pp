@@ -38,7 +38,8 @@ class fhgfs::storage (
   $package_require          = $fhgfs::params::package_require,
   $service_name             = $fhgfs::params::storage_service_name,
   $service_ensure           = 'running',
-  $service_enable           = true
+  $service_enable           = true,
+  $service_autorestart      = true
 ) inherits fhgfs::params {
 
   include fhgfs
@@ -60,6 +61,12 @@ class fhgfs::storage (
   $service_enable_real  = $service_enable ? {
     'undef'   => undef,
     default   => $service_enable,
+  }
+
+  validate_bool($service_autorestart)
+  $service_subscribe = $service_autorestart ? {
+    true  => File['/etc/fhgfs/fhgfs-storage.conf'],
+    false => undef,
   }
 
   if $conn_interfaces and !empty($conn_interfaces) {
@@ -89,7 +96,7 @@ class fhgfs::storage (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    subscribe   => File['/etc/fhgfs/fhgfs-storage.conf'],
+    subscribe   => $service_subscribe,
   }
 
   file { '/etc/fhgfs/fhgfs-storage.conf':

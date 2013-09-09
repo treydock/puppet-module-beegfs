@@ -45,7 +45,8 @@ class fhgfs::meta (
   $package_require            = $fhgfs::params::package_require,
   $service_name               = $fhgfs::params::meta_service_name,
   $service_ensure             = 'running',
-  $service_enable             = true
+  $service_enable             = true,
+  $service_autorestart        = true
 ) inherits fhgfs::params {
 
   include fhgfs
@@ -83,6 +84,12 @@ class fhgfs::meta (
     default   => $service_enable,
   }
 
+  validate_bool($service_autorestart)
+  $service_subscribe = $service_autorestart ? {
+    true  => File['/etc/fhgfs/fhgfs-meta.conf'],
+    false => undef,
+  }
+
   if $conn_interfaces and !empty($conn_interfaces) {
     if !defined(Class['fhgfs::interfaces']) {
       class { 'fhgfs::interfaces':
@@ -110,7 +117,7 @@ class fhgfs::meta (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    subscribe   => File['/etc/fhgfs/fhgfs-meta.conf'],
+    subscribe   => $service_subscribe,
   }
 
   file { '/etc/fhgfs/fhgfs-meta.conf':

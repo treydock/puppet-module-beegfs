@@ -41,4 +41,14 @@ shared_examples_for 'role service' do
       should contain_service(service_name).without_enable
     end
   end
+
+  context 'with service_autorestart => false' do
+    let(:params) {{ :service_autorestart => false }}
+    it { should contain_service(service_name).without_subscribe }
+  end
+
+  context 'with service_autorestart => "false"' do
+    let(:params) {{ :service_autorestart => 'false' }}
+    it { expect { should contain_service(service_name) }.to raise_error(Puppet::Error, /is not a boolean/) }
+  end
 end

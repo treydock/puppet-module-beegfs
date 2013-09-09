@@ -17,12 +17,13 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::admon (
-  $mgmtd_host       = $fhgfs::params::mgmtd_host,
-  $package_name     = $fhgfs::params::admon_package_name,
-  $package_require  = $fhgfs::params::package_require,
-  $service_name     = $fhgfs::params::admon_service_name,
-  $service_ensure   = 'running',
-  $service_enable   = true
+  $mgmtd_host           = $fhgfs::params::mgmtd_host,
+  $package_name         = $fhgfs::params::admon_package_name,
+  $package_require      = $fhgfs::params::package_require,
+  $service_name         = $fhgfs::params::admon_service_name,
+  $service_ensure       = 'running',
+  $service_enable       = true,
+  $service_autorestart  = true
 ) inherits fhgfs::params {
 
   include fhgfs
@@ -46,6 +47,12 @@ class fhgfs::admon (
     default   => $service_enable,
   }
 
+  validate_bool($service_autorestart)
+  $service_subscribe = $service_autorestart ? {
+    true  => File['/etc/fhgfs/fhgfs-admon.conf'],
+    false => undef,
+  }
+
   ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
 
   package { 'fhgfs-admon':
@@ -61,7 +68,7 @@ class fhgfs::admon (
     name        => $service_name,
     hasstatus   => true,
     hasrestart  => true,
-    subscribe   => File['/etc/fhgfs/fhgfs-admon.conf'],
+    subscribe   => $service_subscribe,
   }
 
   file { '/etc/fhgfs/fhgfs-admon.conf':

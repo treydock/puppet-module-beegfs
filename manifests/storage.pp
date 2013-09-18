@@ -70,13 +70,13 @@ class fhgfs::storage (
   }
 
   if $conn_interfaces and !empty($conn_interfaces) {
-    if !defined(Class['fhgfs::interfaces']) {
-      class { 'fhgfs::interfaces':
-        interfaces  => $conn_interfaces,
-        service     => $service_name,
-      }
+    $conn_interfaces_file = "${fhgfs::params::interfaces_file}.storage"
+    fhgfs::interfaces { 'storage':
+      interfaces  => $conn_interfaces,
+      conf_path   => $conn_interfaces_file,
+      service     => $service_name,
+      restart     => $service_autorestart,
     }
-    $conn_interfaces_file = $fhgfs::params::interfaces_file
   } else {
     $conn_interfaces_file = ''
   }

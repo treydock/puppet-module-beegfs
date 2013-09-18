@@ -55,13 +55,20 @@ describe 'fhgfs::storage' do
   end
 
   shared_context "storage with conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
-    it { should create_class('fhgfs::interfaces') }
+    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces.storage$/) }
+    it do
+      should create_fhgfs__interfaces('storage').with({
+        'interfaces'  => params[:conn_interfaces],
+        'conf_path'   => '/etc/fhgfs/interfaces.storage',
+        'service'     => 'fhgfs-storage',
+        'restart'     => 'true',
+      })
+    end
   end
 
   shared_context "storage without conn_interfaces" do
     it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not create_class('fhgfs::interfaces') }
+    it { should_not create_fhgfs__interfaces('storage') }
   end
 
   context "storage with conn_interfaces => ['ib0','eth0']" do

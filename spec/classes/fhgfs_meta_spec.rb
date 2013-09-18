@@ -54,13 +54,20 @@ describe 'fhgfs::meta' do
   end
 
   shared_context "with conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
-    it { should create_class('fhgfs::interfaces') }
+    it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces.meta$/) }
+    it do
+      should create_fhgfs__interfaces('meta').with({
+        'interfaces'  => params[:conn_interfaces],
+        'conf_path'   => '/etc/fhgfs/interfaces.meta',
+        'service'     => 'fhgfs-meta',
+        'restart'     => 'true',
+      })
+    end
   end
 
   shared_context "without conn_interfaces" do
     it { should contain_file('/etc/fhgfs/fhgfs-meta.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not create_class('fhgfs::interfaces') }
+    it { should_not create_fhgfs__interfaces('meta') }
   end
 
   context "with conn_interfaces => ['ib0','eth0']" do

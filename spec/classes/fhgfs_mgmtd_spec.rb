@@ -47,13 +47,20 @@ describe 'fhgfs::mgmtd' do
   end
 
   shared_context "mgmtd with conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces$/) }
-    it { should create_class('fhgfs::interfaces') }
+    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces.mgmtd$/) }
+    it do
+      should create_fhgfs__interfaces('mgmtd').with({
+        'interfaces'  => params[:conn_interfaces],
+        'conf_path'   => '/etc/fhgfs/interfaces.mgmtd',
+        'service'     => 'fhgfs-mgmtd',
+        'restart'     => 'true',
+      })
+    end
   end
 
   shared_context "mgmtd without conn_interfaces" do
     it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not create_class('fhgfs::interfaces') }
+    it { should_not create_fhgfs__interfaces('mgmtd') }
   end
 
   context "mgmtd with conn_interfaces => ['ib0','eth0']" do

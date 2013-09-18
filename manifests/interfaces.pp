@@ -12,11 +12,14 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class fhgfs::interfaces (
-  $interfaces         = false,
-  $interfaces_file    = $fhgfs::params::interfaces_file,
-  $service            = 'UNSET'
-) inherits fhgfs::params {
+define fhgfs::interfaces (
+  $interfaces = false,
+  $conf_path  = 'UNSET',
+  $service    = 'UNSET',
+  $restart    = true
+) {
+
+  include fhgfs::params
 
   if $interfaces and !empty($interfaces) {
     $interfaces_real = is_array($interfaces) ? {
@@ -28,21 +31,30 @@ class fhgfs::interfaces (
     $interfaces_real = false
   }
 
+  $conf_path_real = $conf_path ? {
+    'UNSET' => "${fhgfs::params::interfaces_file}.${name}",
+    default => $conf_path,
+  }
+
   $service_real = $service ? {
     'UNSET' => undef,
     default => Service[$service],
   }
 
+  $notify = $restart ? {
+    true  => $service_real,
+    false => undef,
+  }
+
   if $interfaces_real {
-    file { '/etc/fhgfs/interfaces':
+    file { $conf_path_real:
       ensure  => 'present',
-      path    => $interfaces_file,
       content => template('fhgfs/interfaces.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
       require => File['/etc/fhgfs'],
-      notify  => $service_real,
+      notify  => $notify,
     }
   }
 

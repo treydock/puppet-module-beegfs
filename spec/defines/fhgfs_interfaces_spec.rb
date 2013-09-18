@@ -5,15 +5,22 @@ describe 'fhgfs::interfaces' do
 
   let(:facts) { default_facts }
 
-  it { should create_class('fhgfs::interfaces') }
-  it { should contain_class('fhgfs::params') }
+  let(:title) { 'meta' }
+
+  it { should include_class('fhgfs::params') }
 
   shared_context "with interfaces" do
-    it { should contain_file('/etc/fhgfs/interfaces').with_content(/^ib0\neth0$/) }
+    it 'should set contents for /etc/fhgfs/interfaces.meta' do
+      verify_contents(subject, '/etc/fhgfs/interfaces.meta',[
+        'ib0',
+        'eth0',
+      ])
+    end
+    #it { should contain_file('/etc/fhgfs/interfaces.meta').with_content(/^ib0\neth0$/) }
   end
 
   shared_context "without interfaces" do
-    it { should_not contain_file('/etc/fhgfs/interfaces') }
+    it { should_not contain_file('/etc/fhgfs/interfaces.meta') }
   end
 
   context "with interfaces => ['ib0','eth0']" do

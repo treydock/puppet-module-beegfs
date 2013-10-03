@@ -20,32 +20,10 @@ describe 'fhgfs::monitor::scripts' do
   it { should include_class('fhgfs::monitor') }
 
   it do
-    should contain_file('fhgfs-iostat.rb').with({
+    should contain_file('fhgfs-pool-status.py').with({
       'ensure'  => 'present',
-      'path'    => '/usr/local/bin/fhgfs-iostat.rb',
-      'source'  => 'puppet:///modules/fhgfs/fhgfs-iostat.rb',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0755',
-    })
-  end
-
-  it do
-    should contain_file('fhgfs-poolstat.rb').with({
-      'ensure'  => 'present',
-      'path'    => '/usr/local/bin/fhgfs-poolstat.rb',
-      'source'  => 'puppet:///modules/fhgfs/fhgfs-poolstat.rb',
-      'owner'   => 'root',
-      'group'   => 'root',
-      'mode'    => '0755',
-    })
-  end
-
-  it do
-    should contain_file('fhgfs-admon-get.rb').with({
-      'ensure'  => 'present',
-      'path'    => '/usr/local/bin/fhgfs-admon-get.rb',
-      'source'  => 'puppet:///modules/fhgfs/fhgfs-admon-get.rb',
+      'path'    => '/usr/local/bin/fhgfs-pool-status.py',
+      'source'  => 'puppet:///modules/fhgfs/fhgfs-pool-status.py',
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0755',
@@ -65,8 +43,6 @@ describe 'fhgfs::monitor::scripts' do
       ]
     end
     
-    it { should contain_file('fhgfs-iostat.rb').with_path('/opt/fhgfs-scripts/fhgfs-iostat.rb') }
-    it { should contain_file('fhgfs-poolstat.rb').with_path('/opt/fhgfs-scripts/fhgfs-poolstat.rb') }
-    it { should contain_file('fhgfs-admon-get.rb').with_path('/opt/fhgfs-scripts/fhgfs-admon-get.rb') }
+    it { should contain_file('fhgfs-pool-status.py').with_path('/opt/fhgfs-scripts/fhgfs-pool-status.py') }
   end
 end

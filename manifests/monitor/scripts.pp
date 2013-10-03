@@ -22,28 +22,10 @@ class fhgfs::monitor::scripts {
 
   $scripts_dir  = $fhgfs::monitor::scripts_dir
 
-  file { 'fhgfs-iostat.rb':
+  file { 'fhgfs-pool-status.py':
     ensure  => present,
-    path    => "${scripts_dir}/fhgfs-iostat.rb",
-    source  => 'puppet:///modules/fhgfs/fhgfs-iostat.rb',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-  }
-
-  file { 'fhgfs-poolstat.rb':
-    ensure  => present,
-    path    => "${scripts_dir}/fhgfs-poolstat.rb",
-    source  => 'puppet:///modules/fhgfs/fhgfs-poolstat.rb',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-  }
-
-  file { 'fhgfs-admon-get.rb':
-    ensure  => present,
-    path    => "${scripts_dir}/fhgfs-admon-get.rb",
-    source  => 'puppet:///modules/fhgfs/fhgfs-admon-get.rb',
+    path    => "${scripts_dir}/fhgfs-pool-status.py",
+    source  => 'puppet:///modules/fhgfs/fhgfs-pool-status.py',
     owner   => 'root',
     group   => 'root',
     mode    => '0755',

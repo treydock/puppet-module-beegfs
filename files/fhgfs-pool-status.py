@@ -29,7 +29,6 @@ for line in process.stdout:
     status = match.group(1)
     break
 
-print(status)
+sys.stdout.write(status)
 
 sys.exit(errcode)
-

@@ -3,35 +3,6 @@ require 'rspec-system/spec_helper'
 require 'rspec-system-puppet/helpers'
 require 'rspec-system-serverspec/helpers'
 
-module RSpecSystem
-  class NodeSet::Vagrant < RSpecSystem::NodeSet::Base
-    def create_vagrantfile
-      log.info "[Vagrant#create_vagrantfile] Creating vagrant file here: #{@vagrant_path}"
-      FileUtils.mkdir_p(@vagrant_path)
-      File.open(File.expand_path(File.join(@vagrant_path, "Vagrantfile")), 'w') do |f|
-        f.write("Vagrant.configure('2') do |config|\n")
-        nodes.each_with_index do |(k,v),index|
-          log.debug "Filling in content for #{k}"
-
-          ps = v.provider_specifics['vagrant']
-
-          node_config = "  config.vm.define '#{k}' do |v|\n"
-          node_config << "    v.vm.hostname = '#{k}'\n"
-          node_config << "    v.vm.box = '#{ps['box']}'\n"
-          node_config << "    v.vm.box_url = '#{ps['box_url']}'\n" unless ps['box_url'].nil?
-          node_config << "    v.vm.network :private_network, :ip => '#{config['nodes'][k]['ip']}'\n" if config['nodes'][k]['ip']
-          node_config << "  end\n"
-
-          f.write(node_config)
-        end
-        f.write("end\n")
-      end
-      log.debug "[Vagrant#create_vagrantfile] Finished creating vagrant file"
-      nil
-    end
-  end
-end
-
 module LocalHelpers
   include RSpecSystem::InternalHelpers
 

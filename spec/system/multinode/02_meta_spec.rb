@@ -34,4 +34,17 @@ class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
       its(:exit_code) { should be_zero }
     end
   end
+
+  context "fhgfs-meta service should be enabled and running" do
+    describe service('fhgfs-meta'), :node => 'meta.vm' do
+      it { should be_enabled }
+      it { should be_running }
+    end
+  end
+
+  context "should be listening on port 8005" do
+    describe port(8005), :node => 'meta.vm' do
+      it { should be_listening }
+    end
+  end
 end

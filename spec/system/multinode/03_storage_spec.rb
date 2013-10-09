@@ -34,4 +34,17 @@ class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
       its(:exit_code) { should be_zero }
     end
   end
+
+  context "fhgfs-storage service should be enabled and running" do
+    describe service('fhgfs-storage'), :node => 'storage.vm' do
+      it { should be_enabled }
+      it { should be_running }
+    end
+  end
+
+  context "should be listening on port 8003" do
+    describe port(8003), :node => 'storage.vm' do
+      it { should be_listening }
+    end
+  end
 end

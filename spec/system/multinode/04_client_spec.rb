@@ -27,4 +27,24 @@ class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
       its(:exit_code) { should be_zero }
     end
   end
+
+  context "fhgfs-helperd service should be enabled and running" do
+    describe service('fhgfs-helperd'), :node => 'client.vm' do
+      it { should be_enabled }
+      it { should be_running }
+    end
+  end
+
+  context "fhgfs-client service should be enabled and running" do
+    describe service('fhgfs-client'), :node => 'client.vm' do
+      it { should be_enabled }
+      it { should be_running }
+    end
+  end
+
+  context "/mnt/fhgfs should be mounted with type fhgfs" do
+    describe file('/mnt/fhgfs'), :node => 'client.vm' do
+      it { should be_mounted.with( :type => 'fhgfs' ) }
+    end
+  end
 end

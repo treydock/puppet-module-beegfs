@@ -35,17 +35,29 @@ class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
       its(:stderr) { should be_empty }
       its(:exit_code) { should be_zero }
     end
+  end
 
+  context "fhgfs-mgmtd service should be enabled and running" do
     describe service('fhgfs-mgmtd'), :node => 'mgmtd.vm' do
       it { should be_enabled }
       it { should be_running }
     end
+  end
 
+  context "fhgfs-admon service should be enabled and running" do
     describe service('fhgfs-admon'), :node => 'mgmtd.vm' do
       it { should be_enabled }
       it { should be_running }
     end
-    
+  end
+
+  context "should be listening on port 8008" do
+    describe port(8008), :node => 'mgmtd.vm' do
+      it { should be_listening }
+    end
+  end
+
+  context "should be listening on port 8000" do
     describe port(8000), :node => 'mgmtd.vm' do
       it { should be_listening }
     end

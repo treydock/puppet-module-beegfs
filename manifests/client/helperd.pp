@@ -39,7 +39,7 @@ class fhgfs::client::helperd inherits fhgfs::params {
 
   file { '/etc/fhgfs/fhgfs-helperd.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-helperd.conf.erb"),
+    content => template('fhgfs/fhgfs-helperd.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

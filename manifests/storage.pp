@@ -8,10 +8,6 @@
 #
 # [*mgmtd_host*]
 #
-# [*repo_baseurl*]
-#
-# [*repo_gpgkey*]
-#
 # === Examples
 #
 #  class { 'fhgfs::storage':
@@ -96,7 +92,7 @@ class fhgfs::storage (
 
   file { '/etc/fhgfs/fhgfs-storage.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-storage.conf.erb"),
+    content => template('fhgfs/fhgfs-storage.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

@@ -106,7 +106,7 @@ class fhgfs::client (
 
   file { '/etc/fhgfs/fhgfs-client.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-client.conf.erb"),
+    content => template('fhgfs/fhgfs-client.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -122,7 +122,7 @@ class fhgfs::client (
 
   file { '/etc/fhgfs/fhgfs-client-autobuild.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-client-autobuild.conf.erb"),
+    content => template('fhgfs/fhgfs-client-autobuild.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

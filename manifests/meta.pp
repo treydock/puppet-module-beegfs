@@ -117,7 +117,7 @@ class fhgfs::meta (
 
   file { '/etc/fhgfs/fhgfs-meta.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-meta.conf.erb"),
+    content => template('fhgfs/fhgfs-meta.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

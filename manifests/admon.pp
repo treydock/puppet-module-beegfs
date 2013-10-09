@@ -71,7 +71,7 @@ class fhgfs::admon (
 
   file { '/etc/fhgfs/fhgfs-admon.conf':
     ensure  => 'present',
-    content => template("fhgfs/fhgfs-admon.conf.erb"),
+    content => template('fhgfs/fhgfs-admon.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

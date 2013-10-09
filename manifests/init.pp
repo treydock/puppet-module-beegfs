@@ -47,14 +47,38 @@ class fhgfs (
   $repo_enabled   = '1'
 ) inherits fhgfs::params {
 
-  $package_dependencies  = [$fhgfs::params::package_dependencies]
+  $package_dependencies  = $fhgfs::params::package_dependencies
 
   validate_re($repo_gpgcheck, '^(1|0)$')
   validate_re($repo_enabled, '^(1|0)$')
 
   ensure_packages($package_dependencies)
 
-  include fhgfs::repo
+  case $::osfamily {
+    'RedHat': {
+      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs':
+        ensure  => present,
+        source  => 'puppet:///modules/fhgfs/RPM-GPG-KEY-fhgfs',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+      }
 
-  Class['fhgfs'] -> Class['fhgfs::repo']
+      gpg_key { 'fhgfs':
+        path    => '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+        before  => Yumrepo['fhgfs'],
+      }
+
+      yumrepo { 'fhgfs':
+        descr     => $repo_descr,
+        baseurl   => $repo_baseurl,
+        gpgkey    => $repo_gpgkey,
+        gpgcheck  => $repo_gpgcheck,
+        enabled   => $repo_enabled,
+        require   => Package[$package_dependencies],
+      }
+    }
+
+    default: {}
+  }
 }

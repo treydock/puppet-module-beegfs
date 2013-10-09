@@ -15,8 +15,8 @@ class fhgfs::repo::el {
 
   include fhgfs
 
-  $descr    = $fhgfs::repo_descr_real
-  $baseurl  = $fhgfs::repo_baseurl_real
+  $descr    = $fhgfs::repo_descr
+  $baseurl  = $fhgfs::repo_baseurl
   $gpgkey   = $fhgfs::repo_gpgkey
   $gpgcheck = $fhgfs::repo_gpgcheck
   $enabled  = $fhgfs::repo_enabled

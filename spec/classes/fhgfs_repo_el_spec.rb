@@ -35,36 +35,6 @@ describe 'fhgfs::repo::el' do
     })
   end
 
-  context 'with specific version from parameters' do
-    let :pre_condition do
-      "class { 'fhgfs':
-        version => 2011.04,
-      }"
-    end
-
-    it do
-      should contain_yumrepo('fhgfs').with({
-        'descr'     => "FhGFS 2011.04 (RHEL6)",
-        'baseurl'   => "http://www.fhgfs.com/release/fhgfs_2011.04/dists/rhel6",
-      })
-    end
-  end
-
-  context 'with specific version from ENC' do
-    let :facts do
-      default_facts.merge({
-        :fhgfs_repo_version            => '2011.04',
-      })
-    end
-
-    it do
-      should contain_yumrepo('fhgfs').with({
-        'descr'     => "FhGFS 2011.04 (RHEL6)",
-        'baseurl'   => "http://www.fhgfs.com/release/fhgfs_2011.04/dists/rhel6",
-      })
-    end
-  end
-
   context "with custom baseurl" do
     let(:pre_condition) { "class { 'fhgfs': repo_baseurl => 'http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6' }" }
 

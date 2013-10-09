@@ -57,8 +57,6 @@ class fhgfs::client (
     $service_require    = Service['fhgfs-helperd']
   }
 
-  $version = $fhgfs::version
-
   $package_name     = $fhgfs::params::client_package_name
   $service_name     = $fhgfs::params::client_service_name
   $package_require  = $fhgfs::params::package_require
@@ -108,7 +106,7 @@ class fhgfs::client (
 
   file { '/etc/fhgfs/fhgfs-client.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-client.conf.erb"),
+    content => template("fhgfs/fhgfs-client.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -124,7 +122,7 @@ class fhgfs::client (
 
   file { '/etc/fhgfs/fhgfs-client-autobuild.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-client-autobuild.conf.erb"),
+    content => template("fhgfs/fhgfs-client-autobuild.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

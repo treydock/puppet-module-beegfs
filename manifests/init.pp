@@ -6,7 +6,7 @@
 #
 # === Parameters
 #
-# [*version*]
+# [*repo_version*]
 #
 # [*repo_descr*]
 #
@@ -39,7 +39,7 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs (
-  $version        = $fhgfs::params::version,
+  $repo_version   = $fhgfs::params::repo_version,
   $repo_descr     = $fhgfs::params::repo_descr,
   $repo_baseurl   = $fhgfs::params::repo_baseurl,
   $repo_gpgkey    = $fhgfs::params::repo_gpgkey,
@@ -48,9 +48,6 @@ class fhgfs (
 ) inherits fhgfs::params {
 
   $package_dependencies  = [$fhgfs::params::package_dependencies]
-
-  $repo_descr_real    = inline_template("<%= \"${repo_descr}\".gsub(/VERSION/, \"${version}\") %>")
-  $repo_baseurl_real  = inline_template("<%= \"${repo_baseurl}\".gsub(/VERSION/, \"${version}\") %>")
 
   validate_re($repo_gpgcheck, '^(1|0)$')
   validate_re($repo_enabled, '^(1|0)$')

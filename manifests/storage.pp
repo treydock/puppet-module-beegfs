@@ -8,8 +8,6 @@
 #
 # [*mgmtd_host*]
 #
-# [*version*]
-#
 # [*repo_baseurl*]
 #
 # [*repo_gpgkey*]
@@ -19,7 +17,6 @@
 #  class { 'fhgfs::storage':
 #    store_storage_directory  => '/tank/fhgfs',
 #    mgmtd_host               => 'mgmtd01',
-#    version                  => '2011.04',
 #  }
 #
 # === Authors
@@ -45,8 +42,6 @@ class fhgfs::storage (
   include fhgfs
 
   Class['fhgfs'] -> Class['fhgfs::storage']
-
-  $version = $fhgfs::version
 
   # This gives the option to not define the service 'ensure' value.
   # Useful if manual intervention is required to allow fhgfs-storage
@@ -101,7 +96,7 @@ class fhgfs::storage (
 
   file { '/etc/fhgfs/fhgfs-storage.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-storage.conf.erb"),
+    content => template("fhgfs/fhgfs-storage.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

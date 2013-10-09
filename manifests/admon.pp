@@ -30,8 +30,6 @@ class fhgfs::admon (
 
   Class['fhgfs'] -> Class['fhgfs::admon']
 
-  $version = $fhgfs::version
-
   # This gives the option to not define the service 'ensure' value.
   # Useful if manual intervention is required to allow fhgfs-storage
   # to be started, such as configuring the underlying storage elements.
@@ -73,7 +71,7 @@ class fhgfs::admon (
 
   file { '/etc/fhgfs/fhgfs-admon.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-admon.conf.erb"),
+    content => template("fhgfs/fhgfs-admon.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

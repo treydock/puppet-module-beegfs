@@ -8,8 +8,6 @@
 #
 # [*mgmtd_host*]
 #
-# [*version*]
-#
 # [*service_ensure*]
 #   This gives the option to not define the service 'ensure' value.
 #   Useful if manual intervention is required to allow fhgfs-storage
@@ -21,7 +19,6 @@
 #  class { 'fhgfs::meta':
 #    store_meta_directory  => '/tank/fhgfs/meta',
 #    mgmtd_host            => 'mgmtd01',
-#    version               => '2011.04',
 #  }
 #
 # === Authors
@@ -52,8 +49,6 @@ class fhgfs::meta (
   include fhgfs
 
   Class['fhgfs'] -> Class['fhgfs::meta']
-
-  $version = $fhgfs::version
 
   $store_use_extended_attribs_real = $store_use_extended_attribs ? {
     true    => 'true',
@@ -122,7 +117,7 @@ class fhgfs::meta (
 
   file { '/etc/fhgfs/fhgfs-meta.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-meta.conf.erb"),
+    content => template("fhgfs/fhgfs-meta.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

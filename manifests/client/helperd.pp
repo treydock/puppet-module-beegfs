@@ -14,8 +14,6 @@ class fhgfs::client::helperd inherits fhgfs::params {
 
   include fhgfs
 
-  $version = $fhgfs::version
-
   $package_name     = $fhgfs::params::helperd_package_name
   $service_name     = $fhgfs::params::helperd_service_name
   $package_require  = $fhgfs::params::package_require
@@ -41,7 +39,7 @@ class fhgfs::client::helperd inherits fhgfs::params {
 
   file { '/etc/fhgfs/fhgfs-helperd.conf':
     ensure  => 'present',
-    content => template("fhgfs/${version}/fhgfs-helperd.conf.erb"),
+    content => template("fhgfs/fhgfs-helperd.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

@@ -24,10 +24,7 @@
 #
 class fhgfs::params {
 
-  $version = $::fhgfs_repo_version ? {
-    undef   => '2012.10',
-    default => $::fhgfs_repo_version,
-  }
+  $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
 
   $store_storage_directory = $::fhgfs_store_storage_directory ? {
     undef   => '',
@@ -59,8 +56,6 @@ class fhgfs::params {
     default => $::has_infiniband,
   }
 
-  $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
-
   $monitor_sudo_commands = [
     '/usr/bin/fhgfs-ctl --iostat *',
     '/usr/bin/fhgfs-ctl --listpools *',
@@ -69,10 +64,11 @@ class fhgfs::params {
   case $::osfamily {
     'RedHat': {
       $repo_dir                       = "rhel${os_major}"
-      $repo_descr                     = "FhGFS VERSION (RHEL${os_major})"
-      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_VERSION/dists/${repo_dir}"
+      $repo_descr                     = "FhGFS 2012.10 (RHEL${os_major})"
+      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_2012.10/dists/${repo_dir}"
       $repo_gpgkey                    = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs'
       $package_require                = Yumrepo['fhgfs']
+      $package_default_version        =  "2012.10.r8-el${os_major}"
       $mgmtd_package_name             = 'fhgfs-mgmtd'
       $mgmtd_service_name             = 'fhgfs-mgmtd'
       $meta_package_name              = 'fhgfs-meta'
@@ -103,6 +99,11 @@ class fhgfs::params {
     default: {
       fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only supports osfamily RedHat")
     }
+  }
+
+  $package_version = $::fhgfs_package_version ? {
+    undef   => $package_default_version,
+    default => $::fhgfs_package_version,
   }
 
 }

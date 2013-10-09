@@ -23,8 +23,6 @@ class fhgfs::utils {
 
   Class['fhgfs::client'] -> Class['fhgfs::utils']
 
-  $version = $fhgfs::client::version
-
   $package_name     = $fhgfs::params::utils_package_name
   $package_require  = $fhgfs::params::package_require
 

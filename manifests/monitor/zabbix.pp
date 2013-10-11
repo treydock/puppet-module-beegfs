@@ -20,7 +20,7 @@ class fhgfs::monitor::zabbix {
 
   file { "${monitor_tool_conf_dir}/fhgfs.conf":
     ensure  => present,
-    source  => 'puppet:///modules/fhgfs/monitor/zabbix/fhgfs.conf',
+    content => template('fhgfs/monitor/zabbix/fhgfs.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

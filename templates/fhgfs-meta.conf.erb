@@ -25,7 +25,7 @@ connMgmtdPortTCP          = 8008
 connMetaPortUDP           = 8005
 connMetaPortTCP           = 8005
 connUseSDP                = false
-connUseRDMA               = <%= @conn_use_rdma_real %>
+connUseRDMA               = <%= @conn_use_rdma %>
 connRDMATypeOfService     = 0
 connBacklogTCP            = <%= @conn_backlog_tcp %>
 connMaxInternodeNum       = <%= @conn_max_internode_num %>
@@ -35,7 +35,7 @@ connNonPrimaryExpiration  = 10000
 
 storeMetaDirectory        = <%= @store_meta_directory %>
 storeAllowFirstRunInit    = true
-storeUseExtendedAttribs   = <%= @store_use_extended_attribs_real %>
+storeUseExtendedAttribs   = <%= @store_use_extended_attribs %>
 
 tuneNumWorkers            = <%= @tune_num_workers %>
 tuneBindToNumaZone        =

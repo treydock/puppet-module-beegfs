@@ -22,10 +22,36 @@ describe 'fhgfs::meta' do
   end
 
   it do
-    should contain_file('/etc/fhgfs/fhgfs-meta.conf') \
-      .with_content(/^connInterfacesFile\s+=\s+$/) \
-      .with_content(/^storeMetaDirectory\s+=\s+$/) \
-      .with_content(/^sysMgmtdHost\s+=\s+$/)
+    verify_contents(subject, '/etc/fhgfs/fhgfs-meta.conf', [
+      'logLevel                  = 3',
+      'logNoDate                 = false',
+      'logStdFile                = /var/log/fhgfs-meta.log',
+      'logNumLines               = 50000',
+      'logNumRotatedFiles        = 5',
+      'connPortShift             = 0',
+      'connMgmtdPortUDP          = 8008',
+      'connMgmtdPortTCP          = 8008',
+      'connMetaPortUDP           = 8005',
+      'connMetaPortTCP           = 8005',
+      'connUseSDP                = false',
+      'connUseRDMA               = true',
+      'connRDMATypeOfService     = 0',
+      'connBacklogTCP            = 128',
+      'connMaxInternodeNum       = 32',
+      'connInterfacesFile        = ',
+      'connNetFilterFile         =',
+      'connNonPrimaryExpiration  = 10000',
+      'storeMetaDirectory        = ',
+      'storeAllowFirstRunInit    = true',
+      'storeUseExtendedAttribs   = true',
+      'tuneNumWorkers            = 0',
+      'tuneBindToNumaZone        =',
+      'tuneTargetChooser         = randomized',
+      'tuneRotateMirrorTargets   = false',
+      'tuneUsePerUserMsgQueues   = false',
+      'sysMgmtdHost              = ',
+      'runDaemonized             = true',
+    ])
   end
 
   it { should_not contain_file('') }

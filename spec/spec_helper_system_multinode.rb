@@ -4,14 +4,10 @@ require 'rspec-system-puppet/helpers'
 require 'rspec-system-serverspec/helpers'
 
 module LocalHelpers
-  include RSpecSystem::InternalHelpers
-
-  def ns
-    rspec_system_node_set
-  end
+  include RSpecSystem::Helpers
 
   def nodes
-    ns.nodes.collect {|k,v| k }
+    RSpec.configuration.rs_config['sets']['multinode']['nodes'].keys
   end
 
   def hosts
@@ -54,15 +50,8 @@ RSpec.configure do |c|
     nodes.each { |n| puppet_install(:node => n) }
     nodes.each { |n| puppet_master_install(:node => n) }
 
-    nodes.each { |n| shell(:command => 'puppet module install puppetlabs-stdlib --modulepath /etc/puppet/modules --force', :node => n) }
-    nodes.each { |n| shell(:command => 'puppet module install treydock/gpg_key --modulepath /etc/puppet/modules --force', :node => n) }
-
-    # Temporary until the zabbix20 module is added to the Forge
-    nodes.each { |n| shell(:command => "yum -y install git", :node => n) }
-    nodes.each { |n| shell(:command => "git clone git://github.com/treydock/puppet-zabbix20.git /etc/puppet/modules/zabbix20", :node => n) }
-    nodes.each { |n| shell(:command => "puppet module install puppetlabs/firewall --modulepath /etc/puppet/modules", :node => n) }
-    nodes.each { |n| shell(:command => "puppet module install stahnma/epel --modulepath /etc/puppet/modules", :node => n) }
-    nodes.each { |n| shell(:command => "puppet module install saz/sudo --modulepath /etc/puppet/modules", :node => n) }
+    nodes.each { |n| shell(:command => '[ -d /etc/puppet/modules/stdlib ] || puppet module install puppetlabs-stdlib --modulepath /etc/puppet/modules --force', :node => n) }
+    nodes.each { |n| shell(:command => '[ -d /etc/puppet/modules/gpg_key ] || puppet module install treydock/gpg_key --modulepath /etc/puppet/modules --force', :node => n) }
 
     nodes.each { |n| puppet_apply(:code => hosts, :node => n) }
 

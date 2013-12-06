@@ -39,12 +39,14 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs (
-  $repo_version   = $fhgfs::params::repo_version,
-  $repo_descr     = $fhgfs::params::repo_descr,
-  $repo_baseurl   = $fhgfs::params::repo_baseurl,
-  $repo_gpgkey    = $fhgfs::params::repo_gpgkey,
-  $repo_gpgcheck  = '0',
-  $repo_enabled   = '1'
+  $mgmtd_host       = $fhgfs::params::mgmtd_host,
+  $package_ensure   = 'present',
+  $repo_version     = $fhgfs::params::repo_version,
+  $repo_descr       = $fhgfs::params::repo_descr,
+  $repo_baseurl     = $fhgfs::params::repo_baseurl,
+  $repo_gpgkey      = $fhgfs::params::repo_gpgkey,
+  $repo_gpgcheck    = '0',
+  $repo_enabled     = '1'
 ) inherits fhgfs::params {
 
   $package_dependencies  = $fhgfs::params::package_dependencies

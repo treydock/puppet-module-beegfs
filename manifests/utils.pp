@@ -24,12 +24,12 @@ class fhgfs::utils {
   Class['fhgfs::client'] -> Class['fhgfs::utils']
 
   $package_name     = $fhgfs::params::utils_package_name
-  $package_require  = $fhgfs::params::package_require
+  $package_ensure   = $fhgfs::package_ensure
 
   package { 'fhgfs-utils':
-    ensure    => 'present',
-    name      => $package_name,
-    require   => $package_require,
+    ensure  => $package_ensure,
+    name    => $package_name,
+    require => Yumrepo['fhgfs'],
   }
 
 }

@@ -45,12 +45,12 @@ describe 'fhgfs::meta' do
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
     end
 
-    it do
-      should contain_file(params[:store_meta_directory]).with({
-        'ensure'  => 'directory',
-        'before'  => 'Service[fhgfs-meta]',
-      })
-    end
+#    it do
+#      should contain_file(params[:store_meta_directory]).with({
+#        'ensure'  => 'directory',
+#        'before'  => 'Service[fhgfs-meta]',
+#      })
+#    end
   end
 
   shared_context "with conn_interfaces" do
@@ -60,7 +60,7 @@ describe 'fhgfs::meta' do
         'interfaces'  => params[:conn_interfaces],
         'conf_path'   => '/etc/fhgfs/interfaces.meta',
         'service'     => 'fhgfs-meta',
-        'restart'     => 'true',
+        'restart'     => 'false',
       })
     end
   end

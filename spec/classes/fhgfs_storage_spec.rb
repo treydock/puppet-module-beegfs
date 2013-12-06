@@ -46,12 +46,12 @@ describe 'fhgfs::storage' do
         .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
     end
 
-    it do
-      should contain_file('/tank/fhgfs').with({
-        'ensure'  => 'directory',
-        'before'  => 'Service[fhgfs-storage]',
-      })
-    end
+#    it do
+#      should contain_file('/tank/fhgfs').with({
+#        'ensure'  => 'directory',
+#        'before'  => 'Service[fhgfs-storage]',
+#      })
+#    end
   end
 
   shared_context "storage with conn_interfaces" do
@@ -61,7 +61,7 @@ describe 'fhgfs::storage' do
         'interfaces'  => params[:conn_interfaces],
         'conf_path'   => '/etc/fhgfs/interfaces.storage',
         'service'     => 'fhgfs-storage',
-        'restart'     => 'true',
+        'restart'     => 'false',
       })
     end
   end

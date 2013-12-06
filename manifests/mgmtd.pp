@@ -34,35 +34,45 @@ class fhgfs::mgmtd (
   $tune_storage_space_low_limit       = '512G',
   $tune_storage_space_emergency_limit = '10G',
   $package_name                       = $fhgfs::params::mgmtd_package_name,
-  $package_require                    = $fhgfs::params::package_require,
+  $package_ensure                     = 'UNSET',
+  $manage_service                     = true,
   $service_name                       = $fhgfs::params::mgmtd_service_name,
-  $service_ensure                     = 'running',
-  $service_enable                     = true,
-  $service_autorestart                = true
+  $service_ensure                     = 'UNSET',
+  $service_enable                     = 'UNSET',
+  $service_autorestart                = false
 ) inherits fhgfs::params {
 
   include fhgfs
 
   Class['fhgfs'] -> Class['fhgfs::mgmtd']
 
-  # This gives the option to not define the service 'ensure' value.
-  # Useful if manual intervention is required to allow fhgfs-storage
-  # to be started, such as configuring the underlying storage elements.
-  validate_re($service_ensure, '(running|stopped|undef)')
-  $service_ensure_real  = $service_ensure ? {
-    'undef'   => undef,
-    default   => $service_ensure,
-  }
-
-  validate_re("${service_enable}", '(true|false|undef)')
-  $service_enable_real  = $service_enable ? {
-    'undef'   => undef,
-    default   => $service_enable,
-  }
-
+  validate_bool($manage_service)
   validate_bool($service_autorestart)
+
+  $package_ensure_real = $package_ensure ? {
+    'UNSET' => $fhgfs::package_ensure,
+    default => $package_ensure,
+  }
+
+  # This gives the option to not manage the service 'ensure' state.
+  $service_ensure_real  = $service_ensure ? {
+    /UNSET|undef/ => undef,
+    default       => $service_ensure,
+  }
+
+  # This gives the option to not manage the service 'enable' state.
+  $service_enable_real  = $service_enable ? {
+    /UNSET|undef/ => undef,
+    default       => $service_enable,
+  }
+
   $service_subscribe = $service_autorestart ? {
     true  => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
+    false => undef,
+  }
+
+  $config_file_before = $manage_service ? {
+    true  => Service['fhgfs-mgmtd'],
     false => undef,
   }
 
@@ -81,19 +91,21 @@ class fhgfs::mgmtd (
   ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
 
   package { 'fhgfs-mgmtd':
-    ensure    => 'present',
-    name      => $package_name,
-    before    => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
-    require   => $package_require,
+    ensure  => $package_ensure_real,
+    name    => $package_name,
+    before  => File['/etc/fhgfs/fhgfs-mgmtd.conf'],
+    require => Yumrepo['fhgfs'],
   }
 
-  service { 'fhgfs-mgmtd':
-    ensure      => $service_ensure_real,
-    enable      => $service_enable_real,
-    name        => $service_name,
-    hasstatus   => true,
-    hasrestart  => true,
-    subscribe   => $service_subscribe,
+  if $manage_service {
+    service { 'fhgfs-mgmtd':
+      ensure      => $service_ensure_real,
+      enable      => $service_enable_real,
+      name        => $service_name,
+      hasstatus   => true,
+      hasrestart  => true,
+      subscribe   => $service_subscribe,
+    }
   }
 
   file { '/etc/fhgfs/fhgfs-mgmtd.conf':
@@ -102,13 +114,14 @@ class fhgfs::mgmtd (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    before  => $config_file_before,
   }
 
-  if $store_mgmtd_directory != '' {
-    file { $store_mgmtd_directory:
-      ensure  => 'directory',
-      before  => Service['fhgfs-mgmtd'],
-    }
-  }
+#  if $store_mgmtd_directory != '' {
+#    file { $store_mgmtd_directory:
+#      ensure  => 'directory',
+#      before  => Service['fhgfs-mgmtd'],
+#    }
+#  }
 
 }

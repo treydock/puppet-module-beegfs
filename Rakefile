@@ -1,16 +1,14 @@
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppetlabs_spec_helper/rake_tasks'
+require 'puppet-syntax/tasks/puppet-syntax'
 require 'rspec-system/rake_task'
 
 task :default do
   sh %{rake -T}
 end
 
-desc "Run rspec-puppet and puppet-lint tasks"
-task :ci => [
-  :spec,
-  :lint,
-]
+desc "Run puppet-syntax, puppet-lint and rspec-puppet tasks"
+task :ci => [:syntax, :lint, :spec]
 
 Rake::Task[:spec_system].clear
 
@@ -37,4 +35,7 @@ PuppetLint.configuration.send("disable_class_inherits_from_params_class")
 PuppetLint.configuration.send('disable_quoted_booleans')
 PuppetLint.configuration.send('disable_only_variable_string')
 PuppetLint.configuration.send('disable_class_parameter_defaults')
-PuppetLint.configuration.ignore_paths = ["vendor/**/*.pp", "spec/**/*.pp"]
+
+# Ignore files outside this module
+PuppetLint.configuration.ignore_paths = ["pkg/**/*.pp", "vendor/**/*.pp", "spec/**/*.pp"]
+PuppetSyntax.exclude_paths = ["pkg/**/*.pp", "vendor/**/*.pp", "spec/**/*.pp"]

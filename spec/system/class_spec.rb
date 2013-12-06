@@ -1,41 +1,49 @@
 require 'spec_helper_system'
 
 describe 'fhgfs class:' do
-  context 'should run successfully' do
-    pp = <<-EOS
-      file { '/fhgfs':
-        ensure  => directory,
-      }
+  context 'all-in-one configuration' do
+    it 'should run successfully' do
+      pp = <<-EOS
+        file { '/fhgfs':
+          ensure  => directory,
+        }
 
-      class { 'fhgfs': }->
-      class { 'fhgfs::mgmtd':
-        store_mgmtd_directory => '/fhgfs/mgmtd',
-        require               => File['/fhgfs'],
-      }->
-      class { 'fhgfs::meta':
-        store_meta_directory  => '/fhgfs/meta',
-        mgmtd_host            => 'localhost',
-        require               => File['/fhgfs'],
-      }->
-      class { 'fhgfs::storage':
-        store_storage_directory => '/fhgfs/storage',
-        mgmtd_host              => 'localhost',
-        require                 => File['/fhgfs'],
-      }->
-      class { 'fhgfs::client':
-        mgmtd_host => 'localhost',
-      }->
-      class { 'fhgfs::admon':
-        mgmtd_host  => 'localhost',
-      }
-    EOS
+        class { 'fhgfs': }->
+        class { 'fhgfs::mgmtd':
+          service_ensure        => 'running',
+          service_enable        => true,
+          store_mgmtd_directory => '/fhgfs/mgmtd',
+          require               => File['/fhgfs'],
+        }->
+        class { 'fhgfs::meta':
+          service_ensure        => 'running',
+          service_enable        => true,
+          store_meta_directory  => '/fhgfs/meta',
+          mgmtd_host            => 'localhost',
+          require               => File['/fhgfs'],
+        }->
+        class { 'fhgfs::storage':
+          service_ensure          => 'running',
+          service_enable        => true,
+          store_storage_directory => '/fhgfs/storage',
+          mgmtd_host              => 'localhost',
+          require                 => File['/fhgfs'],
+        }->
+        class { 'fhgfs::client':
+          mgmtd_host => 'localhost',
+        }->
+        class { 'fhgfs::admon':
+          service_ensure      => 'running',
+          service_enable      => true,
+          mgmtd_host          => 'localhost',
+        }
+      EOS
 
-    context puppet_apply(pp) do
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+      puppet_apply(pp) do |r|
+       r.exit_code.should_not == 1
+       r.refresh
+       r.exit_code.should be_zero
+      end
     end
 
     [
@@ -45,7 +53,7 @@ describe 'fhgfs class:' do
       'fhgfs-helperd',
       'fhgfs-client',
       'fhgfs-admon',
-    ].each do |service|      
+    ].each do |service|
       describe service(service) do
         it { should be_enabled }
         it { should be_running }

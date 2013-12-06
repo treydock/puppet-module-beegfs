@@ -24,7 +24,10 @@
 #
 class fhgfs::params {
 
-  $os_major = inline_template("<%= \"${::operatingsystemrelease}\".split('.')[0] %>")
+  $os_major = $::operatingsystemmajrelease ? {
+    undef   => inline_template("<%= \"${::operatingsystemrelease}\".split('.').first %>"),
+    default => $::operatingsystemmajrelease,
+  }
 
   $store_storage_directory = $::fhgfs_store_storage_directory ? {
     undef   => '',
@@ -56,19 +59,12 @@ class fhgfs::params {
     default => $::has_infiniband,
   }
 
-  $monitor_sudo_commands = [
-    '/usr/bin/fhgfs-ctl --iostat *',
-    '/usr/bin/fhgfs-ctl --listpools *',
-  ]
-
   case $::osfamily {
     'RedHat': {
       $repo_dir                       = "rhel${os_major}"
       $repo_descr                     = "FhGFS 2012.10 (RHEL${os_major})"
       $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_2012.10/dists/${repo_dir}"
       $repo_gpgkey                    = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs'
-      $package_require                = Yumrepo['fhgfs']
-      $package_default_version        =  "2012.10.r8-el${os_major}"
       $mgmtd_package_name             = 'fhgfs-mgmtd'
       $mgmtd_service_name             = 'fhgfs-mgmtd'
       $meta_package_name              = 'fhgfs-meta'
@@ -85,25 +81,10 @@ class fhgfs::params {
 
       $package_dependencies           = ['kernel-devel']
       $interfaces_file                = '/etc/fhgfs/interfaces'
-
-      $monitor_tool_defaults  = {
-        'zabbix' => {
-          'username'  => 'zabbix',
-          'conf_dir'  => '/etc/zabbix_agentd.conf.d',
-        },
-      }
-
-      $monitor_sudoers_path           = '/etc/sudoers.d/fhgfs'
     }
 
     default: {
       fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only supports osfamily RedHat")
     }
   }
-
-  $package_version = $::fhgfs_package_version ? {
-    undef   => $package_default_version,
-    default => $::fhgfs_package_version,
-  }
-
 }

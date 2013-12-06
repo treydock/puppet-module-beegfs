@@ -38,12 +38,12 @@ describe 'fhgfs::mgmtd' do
         .with_content(/^tuneNumWorkers\s+=\s+4$/)
     end
 
-    it do
-      should contain_file(params[:store_mgmtd_directory]).with({
-        'ensure'  => 'directory',
-        'before'  => 'Service[fhgfs-mgmtd]',
-      })
-    end
+#    it do
+#      should contain_file(params[:store_mgmtd_directory]).with({
+#        'ensure'  => 'directory',
+#        'before'  => 'Service[fhgfs-mgmtd]',
+#      })
+#    end
   end
 
   shared_context "mgmtd with conn_interfaces" do
@@ -53,7 +53,7 @@ describe 'fhgfs::mgmtd' do
         'interfaces'  => params[:conn_interfaces],
         'conf_path'   => '/etc/fhgfs/interfaces.mgmtd',
         'service'     => 'fhgfs-mgmtd',
-        'restart'     => 'true',
+        'restart'     => 'false',
       })
     end
   end

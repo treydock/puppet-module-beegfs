@@ -15,16 +15,16 @@ class fhgfs::client::helperd inherits fhgfs::params {
   include fhgfs
 
   $package_name     = $fhgfs::params::helperd_package_name
+  $package_ensure   = $fhgfs::package_ensure
   $service_name     = $fhgfs::params::helperd_service_name
-  $package_require  = $fhgfs::params::package_require
 
   ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
 
   package { 'fhgfs-helperd':
-    ensure    => 'present',
+    ensure    => $package_ensure,
     name      => $package_name,
     before    => File['/etc/fhgfs/fhgfs-helperd.conf'],
-    require   => $package_require,
+    require   => Yumrepo['fhgfs'],
   }
 
   service { 'fhgfs-helperd':

@@ -13,7 +13,7 @@ sets:
     nodes:
       'main.vm':
         prefab: 'scientific-64-x64'
-  'scientific-64-x64-multi':
+  'multinode':
     default_node: 'client.vm'
     nodes:
       'client.vm':

@@ -4,29 +4,28 @@ describe 'fhgfs::mgmtd class:' do
   context 'should run successfully' do
     pp = <<-EOS
 service { 'iptables': ensure => stopped, before => File['/fhgfs'], }
-class { 'sudo': purge => false, config_file_replace => false }
 
 file { '/fhgfs':
   ensure  => directory,
 }
 
 class { 'fhgfs::mgmtd':
+  service_ensure        => 'running',
+  service_enable        => true,
   store_mgmtd_directory => '/fhgfs/mgmtd',
   require               => File['/fhgfs'],
 }->
 class { 'fhgfs::admon':
-  mgmtd_host  => 'mgmtd.vm',
+  service_ensure  => 'running',
+  service_enable  => true,
+  mgmtd_host      => 'mgmtd.vm',
 }
-
-class { 'zabbix20::agent': manage_firewall => false, }
 
 class { 'fhgfs::client':
   mgmtd_host  => 'mgmtd.vm',
   utils_only  => true,
 }
-
-class { 'fhgfs::monitor': monitor_tool => 'zabbix' }
-    EOS
+EOS
 
     context puppet_apply(:code => pp, :node => 'mgmtd.vm') do
       its(:stderr) { should be_empty }

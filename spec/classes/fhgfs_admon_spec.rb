@@ -8,7 +8,7 @@ describe 'fhgfs::admon' do
 
   it { should create_class('fhgfs::admon') }
   it { should contain_class('fhgfs::params') }
-  it { should include_class('fhgfs') }
+  it { should contain_class('fhgfs') }
 
   it_behaves_like 'role service' do
     let(:service_name) { "fhgfs-admon" }

@@ -7,7 +7,7 @@ describe 'fhgfs::storage' do
 
   it { should create_class('fhgfs::storage') }
   it { should contain_class('fhgfs::params') }
-  it { should include_class('fhgfs') }
+  it { should contain_class('fhgfs') }
 
   it { should_not contain_class('fhgfs::interfaces') }
 

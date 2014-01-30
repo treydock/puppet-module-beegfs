@@ -8,8 +8,8 @@ describe 'fhgfs::utils' do
   let(:pre_condition) { "include fhgfs::client" }
 
   it { should create_class('fhgfs::utils') }
-  it { should include_class('fhgfs') }
-  it { should include_class('fhgfs::params') }
+  it { should contain_class('fhgfs') }
+  it { should contain_class('fhgfs::params') }
 
   it do
     should contain_package('fhgfs-utils').with({

@@ -7,11 +7,11 @@ describe 'fhgfs::interfaces' do
 
   let(:title) { 'meta' }
 
-  it { should include_class('fhgfs::params') }
+  it { should contain_class('fhgfs::params') }
 
   shared_context "with interfaces" do
     it 'should set contents for /etc/fhgfs/interfaces.meta' do
-      verify_contents(subject, '/etc/fhgfs/interfaces.meta',[
+      verify_contents(catalogue, '/etc/fhgfs/interfaces.meta',[
         'ib0',
         'eth0',
       ])

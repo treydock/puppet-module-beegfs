@@ -7,7 +7,7 @@ describe 'fhgfs::mgmtd' do
   let(:params) {{}}
 
   it { should contain_class('fhgfs::params') }
-  it { should include_class('fhgfs') }
+  it { should contain_class('fhgfs') }
 
   it_behaves_like 'role service' do
     let(:service_name) { "fhgfs-mgmtd" }

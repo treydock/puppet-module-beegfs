@@ -7,7 +7,7 @@ describe 'fhgfs::client::helperd' do
 
   it { should create_class('fhgfs::client::helperd') }
   it { should contain_class('fhgfs::params') }
-  it { should include_class('fhgfs') }
+  it { should contain_class('fhgfs') }
 
   it do
     should contain_file("/etc/fhgfs/fhgfs-helperd.conf").with({

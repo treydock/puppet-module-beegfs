@@ -7,7 +7,7 @@ describe 'fhgfs::meta' do
   let(:params) {{}}
 
   it { should contain_class('fhgfs::params') }
-  it { should include_class('fhgfs') }
+  it { should contain_class('fhgfs') }
 
   it_behaves_like 'role service' do
     let(:service_name) { "fhgfs-meta" }
@@ -22,7 +22,7 @@ describe 'fhgfs::meta' do
   end
 
   it do
-    verify_contents(subject, '/etc/fhgfs/fhgfs-meta.conf', [
+    verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
       'logLevel                  = 3',
       'logNoDate                 = false',
       'logStdFile                = /var/log/fhgfs-meta.log',

@@ -11,7 +11,8 @@ group :development, :test do
   gem 'rspec-system', '~> 2.8.0',             :require => false
   gem 'rspec-system-puppet', '~> 2.0',        :require => false
   gem 'serverspec', '~> 0.11.0',              :require => false
-  gem 'rspec-system-serverspec', '~> 1.0.1',  :require => false
+  gem 'rspec-system-serverspec',              :require => false,
+    :git => 'git://github.com/treydock/rspec-system-serverspec.git', :branch => 'multinode-support'
 end
 
 if puppetversion = ENV['PUPPET_GEM_VERSION']

@@ -6,6 +6,7 @@ describe 'fhgfs::mgmtd' do
   let(:facts) { default_facts.merge({}) }
   let(:params) {{}}
 
+  it { should create_class('fhgfs::mgmtd') }
   it { should contain_class('fhgfs::params') }
   it { should contain_class('fhgfs') }
 

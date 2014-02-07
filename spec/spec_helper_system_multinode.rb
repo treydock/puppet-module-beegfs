@@ -1,38 +1,14 @@
 require 'rspec-system/spec_helper'
-#require 'rspec-system-puppet/spec_helper'
-require 'rspec-system-puppet/helpers'
-require 'rspec-system-serverspec/helpers'
+##require 'rspec-system-puppet/spec_helper'
+#require 'rspec-system-puppet/helpers'
+#require 'rspec-system-serverspec/helpers'
 
-module LocalHelpers
-  include RSpecSystem::Helpers
+#include RSpecSystemPuppet::Helpers
+#include Serverspec::Helper::RSpecSystem
+#include Serverspec::Helper::DetectOS
+require 'support/system_helper'
 
-  def nodes
-    RSpec.configuration.rs_config['sets']['multinode']['nodes'].keys
-  end
-
-  def hosts
-    pp = <<-EOS
-host { 'mgmtd.vm':
-  ip  => '192.168.1.2',
-}
-host { 'meta.vm':
-  ip  => '192.168.1.3',
-}
-host { 'storage.vm':
-  ip  => '192.168.1.4',
-}
-host { 'client.vm':
-  ip  => '192.168.1.5',
-}
-    EOS
-    pp
-  end
-end
-
-include RSpecSystemPuppet::Helpers
-include Serverspec::Helper::RSpecSystem
-include Serverspec::Helper::DetectOS
-include LocalHelpers
+include SystemHelper
 
 RSpec.configure do |c|
   # Project root for the this module's code
@@ -41,8 +17,12 @@ RSpec.configure do |c|
   # Enable colour in Jenkins
   c.tty = true
 
-  c.include RSpecSystemPuppet::Helpers
-  c.include LocalHelpers
+  c.rs_set = 'multinode'
+
+  #c.include RSpecSystemPuppet::Helpers
+  c.include SystemHelper
+
+  c.rs_set = 'multinode'
 
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
@@ -56,5 +36,8 @@ RSpec.configure do |c|
     nodes.each { |n| puppet_apply(:code => hosts, :node => n) }
 
     nodes.each { |n| puppet_module_install(:source => proj_root, :module_name => 'fhgfs', :node => n) }
+
+    setup
+
   end
 end

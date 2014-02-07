@@ -45,10 +45,40 @@ describe 'fhgfs::client' do
   end
 
   it do
-    should contain_file('/etc/fhgfs/fhgfs-client.conf') \
-      .with_content(/^logHelperdIP\s+=\s+$/) \
-      .with_content(/^connMaxInternodeNum\s+=\s12$/) \
-      .with_content(/^sysMgmtdHost\s+=\s+$/)
+    content = catalogue.resource('file', '/etc/fhgfs/fhgfs-client.conf').send(:parameters)[:content]
+    content.split("\n").reject { |c| c =~ /(^#|^$)/ }.should == [
+      'logLevel                      = 3',
+      'logType                       = helperd',
+      'logClientID                   = false',
+      'logHelperdIP                  = ',
+      'connPortShift                 = 0',
+      'connMgmtdPortUDP              = 8008',
+      'connMgmtdPortTCP              = 8008',
+      'connClientPortUDP             = 8004',
+      'connHelperdPortTCP            = 8006',
+      'connUseSDP                    = false',
+      'connUseRDMA                   = true',
+      'connRDMABufSize               = 8192',
+      'connRDMABufNum                = 128',
+      'connRDMATypeOfService         = 0',
+      'connMaxInternodeNum           = 12',
+      'connInterfacesFile            =',
+      'connNetFilterFile             =',
+      'connNonPrimaryExpiration      = 10000',
+      'connCommRetrySecs             = 600',
+      'tuneNumWorkers                = 0',
+      'tunePreferredMetaFile         =',
+      'tunePreferredStorageFile      =',
+      'tuneFileCacheType             = buffered',
+      'tuneRemoteFSync               = true',
+      'tuneUseGlobalFileLocks        = false',
+      'sysMgmtdHost                  = ',
+      'sysCreateHardlinksAsSymlinks  = true',
+      'sysMountSanityCheckMS         = 11000',
+      'sysSyncOnClose                = false',
+      'sysSessionCheckOnClose        = false',
+      'quotaEnabled                  = false',
+    ]
   end
 
   it do

@@ -47,6 +47,8 @@ sysMountSanityCheckMS         = 11000
 sysSyncOnClose                = false
 sysSessionCheckOnClose        = false
 
+quotaEnabled                  = <%= @quota_enabled %>
+
 
 #
 # --- Section 2: [Mount Options] ---
@@ -295,4 +297,19 @@ sysSessionCheckOnClose        = false
 #    which is independent of this setting.
 # Note: If this option is set to true, more network messages are required on
 #    close(), so performance will decreased.
+# Default: false
+
+
+#
+# --- Section 3.4: [Quota Settings] ---
+#
+
+# [quotaEnabled]
+# Enables user and group quota support by transferring extra user data to the
+# servers. This uses quota information of the underlying file systems on the
+# storage servers, which needs to be enabled by the server administrator.
+# Note: In the first implementation, only quota monitoring is available.
+# Note: Get quota information with "fhgfs-ctl --getquota".
+# Note: If this option is true, performance might be slightly decreased due to
+#    extra information tracking.
 # Default: false

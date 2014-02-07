@@ -23,6 +23,7 @@ class fhgfs::client (
   $enable_intents           = true,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
   $conn_max_internode_num   = '12',
+  $quota_enabled            = false,
   $autobuild_enabled        = true,
   $include_utils            = true,
   $utils_only               = false,

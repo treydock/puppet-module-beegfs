@@ -37,4 +37,9 @@ describe 'fhgfs::admon' do
         .with_content(/^tuneNumWorkers\s+=\s+4$/)
     end
   end
+
+  context "when database_file => '/fhgfs/fhgfs-admon.db'" do
+    let (:params) {{ :database_file => '/fhgfs/fhgfs-admon.db' }}
+    it { should contain_file('/etc/fhgfs/fhgfs-admon.conf').with_content(/^databaseFile\s+=\s+\/fhgfs\/fhgfs-admon.db$/) }
+  end
 end

@@ -24,7 +24,8 @@ class fhgfs::admon (
   $service_name         = $fhgfs::params::admon_service_name,
   $service_ensure       = 'UNSET',
   $service_enable       = 'UNSET',
-  $service_autorestart  = false
+  $service_autorestart  = false,
+  $database_file        = '/var/lib/fhgfs/fhgfs-admon.db'
 ) inherits fhgfs::params {
 
   include fhgfs

@@ -77,7 +77,6 @@ class fhgfs (
         gpgkey    => $repo_gpgkey,
         gpgcheck  => $repo_gpgcheck,
         enabled   => $repo_enabled,
-        require   => Package[$package_dependencies],
       }
     }
 

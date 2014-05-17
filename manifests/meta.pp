@@ -37,6 +37,7 @@ class fhgfs::meta (
   $conn_backlog_tcp           = '128',
   $conn_max_internode_num     = '32',
   $tune_num_workers           = '0',
+  $tune_use_per_user_msg_queues = 'false',
   $mgmtd_host                 = 'UNSET',
   $package_name               = $fhgfs::params::meta_package_name,
   $package_ensure             = 'UNSET',

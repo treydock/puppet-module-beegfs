@@ -15,7 +15,6 @@ end
 group :development do
   gem 'beaker',                 :require => false
   gem 'beaker-rspec',           :require => false
-  gem 'system_timer',           :require => false
   gem 'vagrant-wrapper',        :require => false
 end
 

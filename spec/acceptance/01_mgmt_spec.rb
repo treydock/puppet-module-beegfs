@@ -2,6 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'fhgfs::meta class:' do
   context 'with fhgfs-mgmtd and fhgfs-admon' do
+    node = find_only_one(:mgmt)
+
     it 'should run successfully' do
       pp = <<-EOS
         file { '/fhgfs':
@@ -23,25 +25,25 @@ describe 'fhgfs::meta class:' do
         }
       EOS
 
-      apply_manifest_on(find_only_one(:mgmt), pp, :catch_failures => true)
-      expect(apply_manifest_on(find_only_one(:mgmt), pp, :catch_failures => true).exit_code).to be_zero
+      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, :catch_changes => true)
     end
 
-    describe service('fhgfs-mgmtd'), :node => find_only_one(:mgmt) do
+    describe service('fhgfs-mgmtd'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe service('fhgfs-admon'), :node => find_only_one(:mgmt) do
+    describe service('fhgfs-admon'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe port(8008), :node => find_only_one(:mgmt) do
+    describe port(8008), :node => node do
       it { should be_listening }
     end
 
-    describe port(8000), :node => find_only_one(:mgmt) do
+    describe port(8000), :node => node do
       it { should be_listening }
     end
   end

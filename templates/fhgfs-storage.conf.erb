@@ -19,7 +19,7 @@ logStdFile                   = /var/log/fhgfs-storage.log
 logNumLines                  = 50000
 logNumRotatedFiles           = 5
 
-connPortShift                = 0
+connPortShift                = <%= @conn_port_shift %>
 connMgmtdPortUDP             = 8008
 connMgmtdPortTCP             = 8008
 connStoragePortUDP           = 8003
@@ -34,7 +34,7 @@ connNetFilterFile            =
 storeStorageDirectory        = <%= @store_storage_directory %>
 storeAllowFirstRunInit       = true
 
-tuneNumWorkers               = 12
+tuneNumWorkers               = <%= @tune_num_workers %>
 tuneBindToNumaZone           =
 tuneWorkerBufSize            = 4m
 tuneFileReadSize             = 32k
@@ -42,7 +42,7 @@ tuneFileReadAheadTriggerSize = 4m
 tuneFileReadAheadSize        = 0m
 tuneFileWriteSize            = 64k
 tuneFileWriteSyncSize        = 0m
-tuneUsePerUserMsgQueues      = false
+tuneUsePerUserMsgQueues      = <%= @tune_use_per_user_msg_queues %>
 
 sysMgmtdHost                 = <%= @mgmtd_host_real %>
 

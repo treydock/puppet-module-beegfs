@@ -2,6 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'fhgfs::client class:' do
   context 'with fhgfs-client' do
+    node = find_only_one(:client)
+
     it 'should run successfully' do
       pp = <<-EOS
         file { '/fhgfs':
@@ -13,21 +15,21 @@ describe 'fhgfs::client class:' do
         }
       EOS
 
-      apply_manifest_on(find_only_one(:client), pp, :catch_failures => true)
-      expect(apply_manifest_on(find_only_one(:client), pp, :catch_failures => true).exit_code).to be_zero
+      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, :catch_changes => true)
     end
 
-    describe service('fhgfs-helperd'), :node => find_only_one(:client) do
+    describe service('fhgfs-helperd'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe service('fhgfs-client'), :node => find_only_one(:client) do
+    describe service('fhgfs-client'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe file('/mnt/fhgfs'), :node => find_only_one(:client) do
+    describe file('/mnt/fhgfs'), :node => node do
       it { should be_mounted.with(:type => 'fhgfs') }
     end
   end

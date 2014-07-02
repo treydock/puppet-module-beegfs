@@ -25,6 +25,9 @@
 #
 class fhgfs::storage (
   $conn_interfaces          = false,
+  $conn_port_shift          = '0',
+  $tune_num_workers         = '12',
+  $tune_use_per_user_msg_queues = 'false',
   $store_storage_directory  = $fhgfs::params::store_storage_directory,
   $mgmtd_host               = 'UNSET',
   $package_name             = $fhgfs::params::storage_package_name,

@@ -13,7 +13,9 @@
 class fhgfs::client::helperd inherits fhgfs::params {
 
   include fhgfs
+  include fhgfs::client
 
+  $conn_port_shift  = $fhgfs::client::conn_port_shift
   $package_name     = $fhgfs::params::helperd_package_name
   $package_ensure   = $fhgfs::package_ensure
   $service_name     = $fhgfs::params::helperd_service_name

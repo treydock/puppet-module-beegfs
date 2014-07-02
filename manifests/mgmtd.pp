@@ -25,6 +25,7 @@
 #
 class fhgfs::mgmtd (
   $conn_interfaces                    = false,
+  $conn_port_shift                    = '0',
   $store_mgmtd_directory              = $fhgfs::params::store_mgmtd_directory,
   $conn_backlog_tcp                   = '128',
   $tune_num_workers                   = '4',

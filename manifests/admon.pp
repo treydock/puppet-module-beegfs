@@ -17,6 +17,7 @@
 # Copyright 2013 Trey Dockendorf
 #
 class fhgfs::admon (
+  $conn_port_shift      = '0',
   $mgmtd_host           = 'UNSET',
   $package_name         = $fhgfs::params::admon_package_name,
   $package_ensure       = 'UNSET',

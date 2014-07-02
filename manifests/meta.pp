@@ -31,6 +31,7 @@
 #
 class fhgfs::meta (
   $conn_interfaces            = false,
+  $conn_port_shift            = '0',
   $store_meta_directory       = $fhgfs::params::store_meta_directory,
   $store_use_extended_attribs = true,
   $conn_use_rdma              = true,

@@ -22,6 +22,7 @@ class fhgfs::client (
   $with_infiniband          = $fhgfs::params::client_with_infiniband,
   $enable_intents           = true,
   $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
+  $conn_port_shift          = '0',
   $conn_max_internode_num   = '12',
   $quota_enabled            = false,
   $autobuild_enabled        = true,

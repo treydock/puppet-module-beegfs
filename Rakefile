@@ -6,7 +6,7 @@ PuppetLint.configuration.send("disable_80chars")
 PuppetLint.configuration.send('disable_quoted_booleans')
 PuppetLint.configuration.send('disable_only_variable_string')
 PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-PuppetLint.configuration.fail_on_warnings = true
+PuppetLint.configuration.fail_on_warnings = false
 
 # Forsake support for Puppet 2.6.2 for the benefit of cleaner code.
 # http://puppet-lint.com/checks/class_parameter_defaults/
@@ -22,11 +22,6 @@ exclude_paths = [
 
 PuppetLint.configuration.ignore_paths = exclude_paths
 PuppetSyntax.exclude_paths = exclude_paths
-
-desc "Run acceptance tests"
-RSpec::Core::RakeTask.new(:acceptance) do |t|
-  t.pattern = 'spec/acceptance'
-end
 
 desc "Run syntax, lint, and spec tests."
 task :test => [

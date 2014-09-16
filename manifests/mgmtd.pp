@@ -43,9 +43,9 @@ class fhgfs::mgmtd (
     'storeMgmtdDirectory' => $store_directory,
   }
 
-  $default_configs  = merge($fhgfs::mgmtd_default_configs[$fhgfs::release], $local_configs)
+  $default_configs  = merge($fhgfs::mgmtd_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::mgmtd_config_keys[$fhgfs::release]
+  $config_keys      = $fhgfs::mgmtd_config_keys[$release]
 
   anchor { 'fhgfs::mgmtd::start': }->
   class { 'fhgfs::mgmtd::install': }->

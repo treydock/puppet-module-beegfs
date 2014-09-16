@@ -45,9 +45,9 @@ class fhgfs::storage (
     'sysMgmtdHost'          => $mgmtd_host,
   }
 
-  $default_configs  = merge($fhgfs::storage_default_configs[$fhgfs::release], $local_configs)
+  $default_configs  = merge($fhgfs::storage_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::storage_config_keys[$fhgfs::release]
+  $config_keys      = $fhgfs::storage_config_keys[$release]
 
   anchor { 'fhgfs::storage::start': }->
   class { 'fhgfs::storage::install': }->

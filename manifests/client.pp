@@ -61,13 +61,13 @@ class fhgfs::client (
     'sysMgmtdHost'        => $mgmtd_host,
   }
 
-  $helperd_default_configs  = $fhgfs::helperd_default_configs[$fhgfs::release]
+  $helperd_default_configs  = $fhgfs::helperd_default_configs[$release]
   $helperd_configs          = merge($helperd_default_configs, $helperd_config_overrides)
-  $helperd_config_keys      = $fhgfs::helperd_config_keys[$fhgfs::release]
+  $helperd_config_keys      = $fhgfs::helperd_config_keys[$release]
 
-  $default_configs  = merge($fhgfs::client_default_configs[$fhgfs::release], $local_configs)
+  $default_configs  = merge($fhgfs::client_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::client_config_keys[$fhgfs::release]
+  $config_keys      = $fhgfs::client_config_keys[$release]
 
   anchor { 'fhgfs::client::start': }->
   class { 'fhgfs::client::install': }->

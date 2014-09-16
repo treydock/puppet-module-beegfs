@@ -45,9 +45,9 @@ class fhgfs::meta (
     'sysMgmtdHost'        => $mgmtd_host,
   }
 
-  $default_configs  = merge($fhgfs::meta_default_configs[$fhgfs::release], $local_configs)
+  $default_configs  = merge($fhgfs::meta_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::meta_config_keys[$fhgfs::release]
+  $config_keys      = $fhgfs::meta_config_keys[$release]
 
   anchor { 'fhgfs::meta::start': }->
   class { 'fhgfs::meta::install': }->

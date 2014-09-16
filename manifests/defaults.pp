@@ -1,7 +1,4 @@
-# Class: fhgfs::defaults
-#
-# Private class
-#
+# private class
 class fhgfs::defaults {
 
   $mgmtd_default_configs = {

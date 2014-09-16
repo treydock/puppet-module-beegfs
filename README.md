@@ -20,43 +20,6 @@ An example of using a custom repository URL
       repo_baseurl  => "http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6",
     }
 
-
-### Class: fhgfs::mgmtd
-
-Configures the FhGFS management server
-
-class { 'fhgfs::mgmtd': }
-
-### Class: fhgfs::meta
-
-Configures a FhGFS metadata server
-
-class { 'fhgfs::meta': }
-
-### Class: fhgfs::storage
-
-Configures a FhGFS storage server
-
-class { 'fhgfs::storage': }
-
-### Class: fhgfs::client
-
-Configures a FhGFS client
-
-class { 'fhgfs::client': }
-
-### Class: fhgfs::helperd
-
-Configures a FhGFS client's helperd service
-
-Not intended to be defined directly.
-
-### Class: fhgfs::utils
-
-Manages the installation of the FhGFS utilities package
-
-class { 'fhgfs::utils': }
-
 ### Fact: fhgfs_version
 
 This Facter fact can be used to determine the installed version of the FhGFS components.

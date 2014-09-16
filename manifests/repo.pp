@@ -1,14 +1,7 @@
-# == Class: fhgfs::repo
-#
-# Private class
-#
+# private class
 class fhgfs::repo {
 
-  include fhgfs
-  include fhgfs::params
-
-  $release  = $fhgfs::release
-  $repo     = $fhgfs::params::repo[$release]
+  $repo = $fhgfs::repo[$fhgfs::release]
 
   ensure_packages($fhgfs::package_dependencies)
 

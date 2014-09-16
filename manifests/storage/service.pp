@@ -1,17 +1,14 @@
-# == Class: fhgfs::storage::service
-#
-# Private class
-#
+# private class
 class fhgfs::storage::service {
 
-  if $fhgfs::storage::manage_service {
+  if $fhgfs::storage_manage_service {
     service { 'fhgfs-storage':
-      ensure      => $fhgfs::storage::service_ensure,
-      enable      => $fhgfs::storage::service_enable,
-      name        => $fhgfs::storage::service_name,
+      ensure      => $fhgfs::storage_service_ensure,
+      enable      => $fhgfs::storage_service_enable,
+      name        => $fhgfs::storage_service_name,
       hasstatus   => true,
       hasrestart  => true,
-      subscribe   => $fhgfs::storage::service_subscribe,
+      subscribe   => $fhgfs::storage_service_subscribe,
     }
   }
 

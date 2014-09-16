@@ -14,8 +14,8 @@
 #
 
 <%
-configs             = scope.lookupvar('fhgfs::client::configs')
-config_keys         = scope.lookupvar('fhgfs::client::config_keys')
+configs             = scope.lookupvar('fhgfs::client_configs')
+config_keys         = scope.lookupvar('fhgfs::client_config_keys')
 longest_key         = configs.keys.group_by(&:size).max.last.first
 setting_str_length  = longest_key.size + 2
 -%>

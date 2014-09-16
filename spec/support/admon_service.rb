@@ -10,23 +10,23 @@ shared_context 'fhgfs::admon::service' do
     })
   end
 
-  context 'with service_ensure => "running"' do
-    let(:params) {{ :service_ensure => 'stopped' }}
+  context 'with admon_service_ensure => "running"' do
+    let(:params) {{ :admon => true, :admon_service_ensure => 'stopped' }}
     it { should contain_service('fhgfs-admon').with_ensure('stopped') }
   end
 
-  context 'with service_enable => false' do
-    let(:params) {{ :service_enable => false }}
+  context 'with admon_service_enable => false' do
+    let(:params) {{ :admon => true, :admon_service_enable => false }}
     it { should contain_service('fhgfs-admon').with_enable('false') }
   end
 
-  context 'with service_autorestart => true' do
-    let(:params) {{ :service_autorestart => true }}
+  context 'with admon_service_autorestart => true' do
+    let(:params) {{ :admon => true, :admon_service_autorestart => true }}
     it { should contain_service('fhgfs-admon').with_subscribe('File[/etc/fhgfs/fhgfs-admon.conf]') }
   end
 
-  context 'with manage_service => false' do
-    let(:params) {{ :manage_service => false }}
+  context 'with admon_manage_service => false' do
+    let(:params) {{ :admon => true, :admon_manage_service => false }}
     it { should_not contain_service('fhgfs-admon') }
   end
 end

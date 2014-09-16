@@ -1,4 +1,4 @@
-shared_context 'fhgfs::client::service' do
+shared_examples_for 'fhgfs::client::service' do
 
   it do
     should contain_service('fhgfs-helperd').only_with({
@@ -27,20 +27,20 @@ shared_context 'fhgfs::client::service' do
     })
   end
 
-  context 'with service_ensure => "running"' do
-    let(:params) {{ :service_ensure => 'stopped' }}
+  context 'with client_service_ensure => "running"' do
+    let(:params) {{ :client_service_ensure => 'stopped' }}
     it { should contain_service('fhgfs-helperd').with_ensure('stopped') }
     it { should contain_service('fhgfs-client').with_ensure('stopped') }
   end
 
-  context 'with service_enable => false' do
-    let(:params) {{ :service_enable => false }}
+  context 'with client_service_enable => false' do
+    let(:params) {{ :client_service_enable => false }}
     it { should contain_service('fhgfs-helperd').with_enable('false') }
     it { should contain_service('fhgfs-client').with_enable('false') }
   end
 
-  context 'with service_autorestart => false' do
-    let(:params) {{ :service_autorestart => false }}
+  context 'with client_service_autorestart => false' do
+    let(:params) {{ :client_service_autorestart => false }}
     it { should contain_service('fhgfs-helperd').without_subscribe }
     it { should contain_service('fhgfs-client').without_subscribe }
   end
@@ -70,8 +70,8 @@ shared_context 'fhgfs::client::service' do
     end
   end
 
-  context 'with manage_service => false' do
-    let(:params) {{ :manage_service => false }}
+  context 'with client_manage_service => false' do
+    let(:params) {{ :client_manage_service => false }}
     it { should_not contain_service('fhgfs-helperd') }
     it { should_not contain_service('fhgfs-client') }
   end

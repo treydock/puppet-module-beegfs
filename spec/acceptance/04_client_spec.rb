@@ -1,21 +1,16 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs::client class:' do
-  context 'with fhgfs-client' do
+describe 'fhgfs class:' do
+  context 'with client' do
     node = find_only_one(:client)
 
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'fhgfs':
-          mgmtd_host  => '#{mgmt_ip}',
-          release     => '#{RSpec.configuration.fhgfs_release}',
-        }
-        file { '/fhgfs':
-          ensure  => directory,
-        }->
-        class { 'fhgfs::client':
-          mount_path => '/mnt/fhgfs',
-        }
+      class { 'fhgfs':
+        mgmtd_host  => '#{mgmt_ip}',
+        release     => '#{RSpec.configuration.fhgfs_release}',
+        mount_path  => '/mnt/fhgfs',
+      }
       EOS
 
       apply_manifest_on(node, pp, :catch_failures => true)

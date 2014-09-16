@@ -1,17 +1,14 @@
-# == Class: fhgfs::mgmtd::service
-#
-# Private class
-#
+# private class
 class fhgfs::mgmtd::service {
 
-  if $fhgfs::mgmtd::manage_service {
+  if $fhgfs::mgmtd_manage_service {
     service { 'fhgfs-mgmtd':
-      ensure      => $fhgfs::mgmtd::service_ensure,
-      enable      => $fhgfs::mgmtd::service_enable,
-      name        => $fhgfs::mgmtd::service_name,
+      ensure      => $fhgfs::mgmtd_service_ensure,
+      enable      => $fhgfs::mgmtd_service_enable,
+      name        => $fhgfs::mgmtd_service_name,
       hasstatus   => true,
       hasrestart  => true,
-      subscribe   => $fhgfs::mgmtd::service_subscribe,
+      subscribe   => $fhgfs::mgmtd_service_subscribe,
     }
   }
 

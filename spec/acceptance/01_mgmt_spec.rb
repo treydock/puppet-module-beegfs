@@ -1,29 +1,25 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs::meta class:' do
-  context 'with fhgfs-mgmtd and fhgfs-admon' do
+describe 'fhgfs class:' do
+  context 'with mgmtd and admon' do
     node = find_only_one(:mgmt)
 
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'fhgfs':
-          mgmtd_host  => '#{mgmt_ip}',
-          release     => '#{RSpec.configuration.fhgfs_release}',
-        }
         file { '/fhgfs':
           ensure  => directory,
         }->
-        class { 'fhgfs::mgmtd':
-          service_ensure  => 'running',
-          service_enable  => true,
-          store_directory => '/fhgfs/mgmtd',
-        }->
-        class { 'fhgfs::admon':
-          service_ensure  => 'running',
-          service_enable  => true,
-        }->
-        class { 'fhgfs::client':
-          utils_only => true,
+        class { 'fhgfs':
+          mgmtd                 => true,
+          admon                 => true,
+          utils_only            => true,
+          mgmtd_host            => '#{mgmt_ip}',
+          release               => '#{RSpec.configuration.fhgfs_release}',
+          mgmtd_service_ensure  => 'running',
+          mgmtd_service_enable  => true,
+          mgmtd_store_directory => '/fhgfs/mgmtd',
+          admon_service_ensure  => 'running',
+          admon_service_enable  => true,
         }
       EOS
 

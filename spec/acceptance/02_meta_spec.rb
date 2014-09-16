@@ -1,26 +1,23 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs::meta class:' do
-  context 'with fhgfs-meta' do
+describe 'fhgfs class:' do
+  context 'with meta' do
     node = find_only_one(:meta)
 
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'fhgfs':
-          mgmtd_host  => '#{mgmt_ip}',
-          release     => '#{RSpec.configuration.fhgfs_release}',
-        }
-        file { '/fhgfs':
-          ensure  => directory,
-        }->
-        class { 'fhgfs::meta':
-          service_ensure  => 'running',
-          service_enable  => true,
-          store_directory => '/fhgfs/meta',
-        }->
-        class { 'fhgfs::client':
-          utils_only => true,
-        }
+      file { '/fhgfs':
+        ensure  => directory,
+      }->
+      class { 'fhgfs':
+        meta                  => true,
+        utils_only            => true,
+        mgmtd_host            => '#{mgmt_ip}',
+        release               => '#{RSpec.configuration.fhgfs_release}',
+        meta_service_ensure   => 'running',
+        meta_service_enable   => true,
+        meta_store_directory  => '/fhgfs/meta',
+      }
       EOS
 
       apply_manifest_on(node, pp, :catch_failures => true)

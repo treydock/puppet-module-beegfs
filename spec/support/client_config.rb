@@ -1,4 +1,4 @@
-shared_context 'fhgfs::client::config' do
+shared_examples_for 'fhgfs::client::config' do
   it do
     should contain_file('/etc/fhgfs/fhgfs-client.conf').with({
       :ensure   => 'present',
@@ -107,7 +107,7 @@ shared_context 'fhgfs::client::config' do
 
   it do
     should contain_file('/etc/fhgfs/interfaces.client').with({
-      :ensure => 'file',
+      :ensure => 'absent',
       :content  => /^$/,
       :owner    => 'root',
       :group    => 'root',
@@ -115,10 +115,10 @@ shared_context 'fhgfs::client::config' do
     })
   end
 
-  context 'when config_overrides defined' do
+  context 'when client_config_overrides defined' do
     let(:params) do
       {
-        :config_overrides => {
+        :client_config_overrides => {
           'tuneNumWorkers'  => '8',
         }
       }
@@ -147,8 +147,8 @@ shared_context 'fhgfs::client::config' do
     end
   end
 
-  context 'when conn_interfaces => ["eth0"]' do
-    let(:params) {{ :conn_interfaces => ["eth0"] }}
+  context 'when client_conn_interfaces => ["eth0"]' do
+    let(:params) {{ :client_conn_interfaces => ["eth0"] }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
@@ -156,13 +156,15 @@ shared_context 'fhgfs::client::config' do
       ])
     end
 
+    it { should contain_file('/etc/fhgfs/interfaces.client').with_ensure('present') }
+
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.client', ['eth0'])
     end
   end
 
-  context 'when mount_path => "/fhgfs"' do
-    let(:params) {{ :mount_path => "/fhgfs" }}
+  context 'when client_mount_path => "/fhgfs"' do
+    let(:params) {{ :client_mount_path => "/fhgfs" }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mounts.conf', [
@@ -171,8 +173,8 @@ shared_context 'fhgfs::client::config' do
     end
   end
 
-  context 'when service_autorestart => false' do
-    let(:params) {{ :service_autorestart => false }}
+  context 'when client_service_autorestart => false' do
+    let(:params) {{ :client_service_autorestart => false }}
     it { should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf').without_notify }
   end
 
@@ -182,7 +184,7 @@ shared_context 'fhgfs::client::config' do
   end
 
   context 'when fhgfs::mgmtd_host => "mgmtd.foo"' do
-    let(:pre_condition) { "class { 'fhgfs': mgmtd_host => 'mgmtd.foo' }" }
+    let(:params) {{ :mgmtd_host => 'mgmtd.foo' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
@@ -192,7 +194,7 @@ shared_context 'fhgfs::client::config' do
   end
 
   context 'when fhgfs::release => "2014.01"' do
-    let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+    let(:params) {{ :release => '2014.01' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [

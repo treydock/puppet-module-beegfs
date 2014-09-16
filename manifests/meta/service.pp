@@ -1,17 +1,14 @@
-# == Class: fhgfs::meta::service
-#
-# Private class
-#
+# private class
 class fhgfs::meta::service {
 
-  if $fhgfs::meta::manage_service {
+  if $fhgfs::meta_manage_service {
     service { 'fhgfs-meta':
-      ensure      => $fhgfs::meta::service_ensure,
-      enable      => $fhgfs::meta::service_enable,
-      name        => $fhgfs::meta::service_name,
+      ensure      => $fhgfs::meta_service_ensure,
+      enable      => $fhgfs::meta_service_enable,
+      name        => $fhgfs::meta_service_name,
       hasstatus   => true,
       hasrestart  => true,
-      subscribe   => $fhgfs::meta::service_subscribe,
+      subscribe   => $fhgfs::meta_service_subscribe,
     }
   }
 

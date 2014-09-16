@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe 'fhgfs::repo' do
+shared_context 'fhgfs::repo' do
   let(:facts) do
     {
       :osfamily                   => 'RedHat',
@@ -10,7 +8,6 @@ describe 'fhgfs::repo' do
   end
 
   it { should create_class('fhgfs::repo') }
-  it { should contain_class('fhgfs') }
 
   it { should contain_package('kernel-devel').with_ensure('present') }
 
@@ -51,7 +48,7 @@ describe 'fhgfs::repo' do
     end
 
     context "when release => '2014.01'" do
-      let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+      let(:params) {{ :release => '2014.01' }}
       it do
         should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs').with({
           'ensure'  => 'present',
@@ -81,25 +78,25 @@ describe 'fhgfs::repo' do
     end
 
     context "with custom baseurl" do
-      let(:pre_condition) { "class { 'fhgfs': repo_baseurl => 'http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6' }" }
+      let(:params) {{ :repo_baseurl => 'http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6' }}
 
       it { should contain_yumrepo('fhgfs').with_baseurl("http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6") }
     end
 
     context "with custom gpgkey" do
-      let(:pre_condition) { "class { 'fhgfs': repo_gpgkey => 'http://foo.com/RPM-GPG-KEY-fhgfs' }" }
+      let(:params) {{ :repo_gpgkey => 'http://foo.com/RPM-GPG-KEY-fhgfs' }}
 
       it { should contain_yumrepo('fhgfs').with_gpgkey("http://foo.com/RPM-GPG-KEY-fhgfs") }
     end
 
     context "with gpgcheck => '1'" do
-      let(:pre_condition) { "class { 'fhgfs': repo_gpgcheck => '1' }" }
+      let(:params) {{ :repo_gpgcheck => '1' }}
 
       it { should contain_yumrepo('fhgfs').with_gpgcheck('1') }
     end
 
     context "with enabled => '0'" do
-      let(:pre_condition) { "class { 'fhgfs': repo_enabled => '0' }" }
+      let(:params) {{ :repo_enabled => '0' }}
 
       it { should contain_yumrepo('fhgfs').with_enabled('0') }
     end

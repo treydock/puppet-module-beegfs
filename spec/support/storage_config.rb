@@ -44,7 +44,7 @@ shared_context 'fhgfs::storage::config' do
 
   it do
     should contain_file('/etc/fhgfs/interfaces.storage').with({
-      :ensure => 'file',
+      :ensure   => 'absent',
       :content  => /^$/,
       :owner    => 'root',
       :group    => 'root',
@@ -52,14 +52,8 @@ shared_context 'fhgfs::storage::config' do
     })
   end
 
-  context 'when config_overrides defined' do
-    let(:params) do
-      {
-        :config_overrides => {
-          'tuneNumWorkers'  => '24',
-        }
-      }
-    end
+  context 'when storage_config_overrides defined' do
+    let(:params) {{ :storage => true, :storage_config_overrides => {'tuneNumWorkers'  => '24'} }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
@@ -68,8 +62,8 @@ shared_context 'fhgfs::storage::config' do
     end
   end
 
-  context 'when conn_interfaces => ["eth0"]' do
-    let(:params) {{ :conn_interfaces => ["eth0"] }}
+  context 'when storage_conn_interfaces => ["eth0"]' do
+    let(:params) {{ :storage => true, :storage_conn_interfaces => ["eth0"] }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
@@ -77,13 +71,15 @@ shared_context 'fhgfs::storage::config' do
       ])
     end
 
+    it { should contain_file('/etc/fhgfs/interfaces.storage').with_ensure('present') }
+
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.storage', ['eth0'])
     end
   end
 
-  context 'when store_directory => "/fhgfs/storage"' do
-    let(:params) {{ :store_directory => "/fhgfs/storage" }}
+  context 'when storage_store_directory => "/fhgfs/storage"' do
+    let(:params) {{ :storage => true, :storage_store_directory => "/fhgfs/storage" }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
@@ -92,8 +88,8 @@ shared_context 'fhgfs::storage::config' do
     end
   end
 
-  context 'when fhgfs::mgmtd_host => "mgmtd.foo"' do
-    let(:pre_condition) { "class { 'fhgfs': mgmtd_host => 'mgmtd.foo' }" }
+  context 'when mgmtd_host => "mgmtd.foo"' do
+    let(:params) {{ :storage => true, :mgmtd_host => 'mgmtd.foo' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
@@ -102,8 +98,8 @@ shared_context 'fhgfs::storage::config' do
     end
   end
 
-  context 'when fhgfs::release => "2014.01"' do
-    let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+  context 'when release => "2014.01"' do
+    let(:params) {{ :storage => true, :release => '2014.01' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [

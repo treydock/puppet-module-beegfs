@@ -1,26 +1,23 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs::storage class:' do
-  context 'with fhgfs-storage' do
+describe 'fhgfs class:' do
+  context 'with storage' do
     node = find_only_one(:storage)
 
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'fhgfs':
-          mgmtd_host  => '#{mgmt_ip}',
-          release     => '#{RSpec.configuration.fhgfs_release}',
-        }
-        file { '/fhgfs':
-          ensure  => directory,
-        }->
-        class { 'fhgfs::storage':
-          service_ensure  => 'running',
-          service_enable  => true,
-          store_directory => '/fhgfs/storage',
-        }->
-        class { 'fhgfs::client':
-          utils_only => true,
-        }
+      file { '/fhgfs':
+        ensure  => directory,
+      }->
+      class { 'fhgfs':
+        storage                 => true,
+        utils_only              => true,
+        mgmtd_host              => '#{mgmt_ip}',
+        release                 => '#{RSpec.configuration.fhgfs_release}',
+        storage_service_ensure  => 'running',
+        storage_service_enable  => true,
+        storage_store_directory => '/fhgfs/storage',
+      }
       EOS
 
       apply_manifest_on(node, pp, :catch_failures => true)

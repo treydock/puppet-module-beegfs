@@ -1,4 +1,4 @@
-shared_context 'fhgfs::mgmtd::config' do
+shared_examples_for 'fhgfs::mgmtd::config' do
   it do
     should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
       :ensure   => 'present',
@@ -38,7 +38,7 @@ shared_context 'fhgfs::mgmtd::config' do
 
   it do
     should contain_file('/etc/fhgfs/interfaces.mgmtd').with({
-      :ensure => 'file',
+      :ensure   => 'absent',
       :content  => /^$/,
       :owner    => 'root',
       :group    => 'root',
@@ -46,14 +46,8 @@ shared_context 'fhgfs::mgmtd::config' do
     })
   end
 
-  context 'when config_overrides defined' do
-    let(:params) do
-      {
-        :config_overrides => {
-          'tuneNumWorkers'  => '8',
-        }
-      }
-    end
+  context 'when mgmtd_config_overrides defined' do
+    let(:params) {{ :mgmtd => true, :mgmtd_config_overrides => {'tuneNumWorkers'  => '8'} }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
@@ -62,8 +56,8 @@ shared_context 'fhgfs::mgmtd::config' do
     end
   end
 
-  context 'when conn_interfaces => ["eth0"]' do
-    let(:params) {{ :conn_interfaces => ["eth0"] }}
+  context 'when mgmtd_conn_interfaces => ["eth0"]' do
+    let(:params) {{ :mgmtd => true, :mgmtd_conn_interfaces => ["eth0"] }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
@@ -71,13 +65,15 @@ shared_context 'fhgfs::mgmtd::config' do
       ])
     end
 
+    it { should contain_file('/etc/fhgfs/interfaces.mgmtd').with_ensure('present') }
+
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.mgmtd', ['eth0'])
     end
   end
 
-  context 'when store_directory => "/fhgfs/mgmtd"' do
-    let(:params) {{ :store_directory => "/fhgfs/mgmtd" }}
+  context 'when mgmtd_store_directory => "/fhgfs/mgmtd"' do
+    let(:params) {{ :mgmtd => true, :mgmtd_store_directory => "/fhgfs/mgmtd" }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
@@ -86,8 +82,8 @@ shared_context 'fhgfs::mgmtd::config' do
     end
   end
 
-  context 'when fhgfs::release => "2014.01"' do
-    let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+  context 'when release => "2014.01"' do
+    let(:params) {{ :mgmtd => true, :release => '2014.01' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [

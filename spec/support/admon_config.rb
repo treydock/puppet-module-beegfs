@@ -41,21 +41,15 @@ shared_context 'fhgfs::admon::config' do
 
   it do
     should contain_file('/var/lib/fhgfs').with({
-      :ensure => 'directory',
+      :ensure   => 'directory',
       :owner    => 'root',
       :group    => 'root',
       :mode     => '0755',
     })
   end
 
-  context 'when config_overrides defined' do
-    let(:params) do
-      {
-        :config_overrides => {
-          'tuneNumWorkers'  => '8',
-        }
-      }
-    end
+  context 'when admon_config_overrides defined' do
+    let(:params) {{ :admon => true, :admon_config_overrides => {'tuneNumWorkers'  => '8' } }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-admon.conf', [
@@ -64,8 +58,8 @@ shared_context 'fhgfs::admon::config' do
     end
   end
 
-  context 'when database_file_dir => "/fhgfs"' do
-    let(:params) {{ :database_file_dir => "/fhgfs" }}
+  context 'when admon_database_file_dir => "/fhgfs"' do
+    let(:params) {{ :admon => true, :admon_database_file_dir => "/fhgfs" }}
 
     it { should_not contain_file('/var/lib/fhgfs') }
 
@@ -85,8 +79,8 @@ shared_context 'fhgfs::admon::config' do
     end
   end
 
-  context 'when fhgfs::mgmtd_host => "mgmtd.foo"' do
-    let(:pre_condition) { "class { 'fhgfs': mgmtd_host => 'mgmtd.foo' }" }
+  context 'when mgmtd_host => "mgmtd.foo"' do
+    let(:params) {{ :admon => true, :mgmtd_host => 'mgmtd.foo' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-admon.conf', [
@@ -95,8 +89,8 @@ shared_context 'fhgfs::admon::config' do
     end
   end
 
-  context 'when fhgfs::release => "2014.01"' do
-    let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+  context 'when release => "2014.01"' do
+    let(:params) {{ :admon => true, :release => '2014.01' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-admon.conf', [

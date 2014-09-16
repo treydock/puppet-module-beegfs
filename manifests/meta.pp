@@ -3,20 +3,19 @@
 # Public class
 #
 class fhgfs::meta (
-  $mgmtd_host           = $fhgfs::mgmtd_host,
   $conn_interfaces      = [],
-  $conn_interfaces_file = $fhgfs::conn_interfaces_file['meta'],
+  $conn_interfaces_file = $fhgfs::params::conn_interfaces_file['meta'],
   $store_directory      = '',
-  $release              = $fhgfs::release,
-  $package_version      = $fhgfs::package_version,
-  $package_name         = $fhgfs::meta_package_name,
+  $package_name         = $fhgfs::params::meta_package_name,
   $manage_service       = true,
-  $service_name         = $fhgfs::meta_service_name,
+  $service_name         = $fhgfs::params::meta_service_name,
   $service_ensure       = 'running',
   $service_enable       = true,
   $service_autorestart  = false,
   $config_overrides     = {},
-) inherits fhgfs {
+) inherits fhgfs::params {
+
+  include fhgfs
 
   validate_bool($manage_service)
   validate_bool($service_autorestart)
@@ -24,6 +23,10 @@ class fhgfs::meta (
   validate_array($conn_interfaces)
 
   validate_hash($config_overrides)
+
+  $mgmtd_host       = $fhgfs::mgmtd_host
+  $package_version  = $fhgfs::package_version
+  $release          = $fhgfs::release
 
   if $service_autorestart {
     $service_subscribe = empty($conn_interfaces) ? {
@@ -45,9 +48,9 @@ class fhgfs::meta (
     'sysMgmtdHost'        => $mgmtd_host,
   }
 
-  $default_configs  = merge($fhgfs::meta_default_configs[$release], $local_configs)
+  $default_configs  = merge($fhgfs::params::meta_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::meta_config_keys[$release]
+  $config_keys      = $fhgfs::params::meta_config_keys[$release]
 
   anchor { 'fhgfs::meta::start': }->
   class { 'fhgfs::meta::install': }->

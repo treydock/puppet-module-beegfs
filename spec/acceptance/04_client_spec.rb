@@ -6,12 +6,14 @@ describe 'fhgfs::client class:' do
 
     it 'should run successfully' do
       pp = <<-EOS
+        class { 'fhgfs':
+          mgmtd_host  => '#{mgmt_ip}',
+          release     => '#{RSpec.configuration.fhgfs_release}',
+        }
         file { '/fhgfs':
           ensure  => directory,
         }->
         class { 'fhgfs::client':
-          release    => '#{RSpec.configuration.fhgfs_release}',
-          mgmtd_host => '#{mgmt_ip}',
           mount_path => '/mnt/fhgfs',
         }
       EOS
@@ -28,6 +30,16 @@ describe 'fhgfs::client class:' do
     describe service('fhgfs-client'), :node => node do
       it { should be_enabled }
       it { should be_running }
+    end
+
+    describe service('fhgfs-helperd'), :node => node do
+      it { should_not be_enabled }
+      it { should_not be_running }
+    end
+
+    describe service('fhgfs-client'), :node => node do
+      it { should_not be_enabled }
+      it { should_not be_running }
     end
 
     describe file('/mnt/fhgfs'), :node => node do

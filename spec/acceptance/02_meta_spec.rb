@@ -6,19 +6,19 @@ describe 'fhgfs::meta class:' do
 
     it 'should run successfully' do
       pp = <<-EOS
+        class { 'fhgfs':
+          mgmtd_host  => '#{mgmt_ip}',
+          release     => '#{RSpec.configuration.fhgfs_release}',
+        }
         file { '/fhgfs':
           ensure  => directory,
         }->
         class { 'fhgfs::meta':
-          release         => '#{RSpec.configuration.fhgfs_release}',
           service_ensure  => 'running',
           service_enable  => true,
           store_directory => '/fhgfs/meta',
-          mgmtd_host      => '#{mgmt_ip}',
         }->
         class { 'fhgfs::client':
-          release    => '#{RSpec.configuration.fhgfs_release}',
-          mgmtd_host => '#{mgmt_ip}',
           utils_only => true,
         }
       EOS
@@ -30,6 +30,16 @@ describe 'fhgfs::meta class:' do
     describe service('fhgfs-meta'), :node => node do
       it { should be_enabled }
       it { should be_running }
+    end
+
+    describe service('fhgfs-helperd'), :node => node do
+      it { should_not be_enabled }
+      it { should_not be_running }
+    end
+
+    describe service('fhgfs-client'), :node => node do
+      it { should_not be_enabled }
+      it { should_not be_running }
     end
 
     describe port(8005), :node => node do

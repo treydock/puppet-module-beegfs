@@ -3,29 +3,28 @@
 # Public class
 #
 class fhgfs::client (
-  $mgmtd_host               = $fhgfs::mgmtd_host,
   $conn_interfaces          = [],
-  $conn_interfaces_file     = $fhgfs::conn_interfaces_file['client'],
+  $conn_interfaces_file     = $fhgfs::params::conn_interfaces_file['client'],
   $store_directory          = '',
   $mount_path               = '/mnt/fhgfs',
-  $build_args               = $fhgfs::client_build_args,
+  $build_args               = $fhgfs::params::client_build_args,
   $build_enabled            = true,
-  $rebuild_command          = $fhgfs::client_rebuild_command,
-  $release                  = $fhgfs::release,
-  $package_version          = $fhgfs::package_version,
-  $package_name             = $fhgfs::client_package_name,
-  $helperd_package_name     = $fhgfs::helperd_package_name,
-  $utils_package_name       = $fhgfs::utils_package_name,
+  $rebuild_command          = $fhgfs::params::client_rebuild_command,
+  $package_name             = $fhgfs::params::client_package_name,
+  $helperd_package_name     = $fhgfs::params::helperd_package_name,
+  $utils_package_name       = $fhgfs::params::utils_package_name,
   $manage_service           = true,
-  $service_name             = $fhgfs::client_service_name,
-  $helperd_service_name     = $fhgfs::helperd_service_name,
+  $service_name             = $fhgfs::params::client_service_name,
+  $helperd_service_name     = $fhgfs::params::helperd_service_name,
   $service_ensure           = 'running',
   $service_enable           = true,
   $service_autorestart      = true,
   $config_overrides         = {},
   $helperd_config_overrides = {},
   $utils_only               = false,
-) inherits fhgfs {
+) inherits fhgfs::params {
+
+  include fhgfs
 
   validate_bool($build_enabled)
   validate_bool($manage_service)
@@ -36,6 +35,10 @@ class fhgfs::client (
 
   validate_hash($config_overrides)
   validate_hash($helperd_config_overrides)
+
+  $mgmtd_host       = $fhgfs::mgmtd_host
+  $package_version  = $fhgfs::package_version
+  $release          = $fhgfs::release
 
   if $service_autorestart {
     $service_subscribe          = [
@@ -61,13 +64,13 @@ class fhgfs::client (
     'sysMgmtdHost'        => $mgmtd_host,
   }
 
-  $helperd_default_configs  = $fhgfs::helperd_default_configs[$release]
+  $helperd_default_configs  = $fhgfs::params::helperd_default_configs[$release]
   $helperd_configs          = merge($helperd_default_configs, $helperd_config_overrides)
-  $helperd_config_keys      = $fhgfs::helperd_config_keys[$release]
+  $helperd_config_keys      = $fhgfs::params::helperd_config_keys[$release]
 
-  $default_configs  = merge($fhgfs::client_default_configs[$release], $local_configs)
+  $default_configs  = merge($fhgfs::params::client_default_configs[$release], $local_configs)
   $configs          = merge($default_configs, $config_overrides)
-  $config_keys      = $fhgfs::client_config_keys[$release]
+  $config_keys      = $fhgfs::params::client_config_keys[$release]
 
   anchor { 'fhgfs::client::start': }->
   class { 'fhgfs::client::install': }->

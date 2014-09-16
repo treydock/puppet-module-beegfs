@@ -140,7 +140,7 @@ class fhgfs (
   anchor { 'fhgfs::start': }
   anchor { 'fhgfs::end': }
 
-  if $client {
+  if $client or $utils_only {
     if $client_service_autorestart {
       $client_service_subscribe   = [
         File['/etc/fhgfs/fhgfs-client.conf'],

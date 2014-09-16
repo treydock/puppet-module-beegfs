@@ -7,9 +7,8 @@ describe 'fhgfs class:' do
     it 'should run successfully' do
       pp = <<-EOS
       class { 'fhgfs':
-        mgmtd_host  => '#{mgmt_ip}',
-        release     => '#{RSpec.configuration.fhgfs_release}',
-        mount_path  => '/mnt/fhgfs',
+        mgmtd_host        => '#{mgmt_ip}',
+        release           => '#{RSpec.configuration.fhgfs_release}',
       }
       EOS
 

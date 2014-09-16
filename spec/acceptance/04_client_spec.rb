@@ -32,16 +32,6 @@ describe 'fhgfs::client class:' do
       it { should be_running }
     end
 
-    describe service('fhgfs-helperd'), :node => node do
-      it { should_not be_enabled }
-      it { should_not be_running }
-    end
-
-    describe service('fhgfs-client'), :node => node do
-      it { should_not be_enabled }
-      it { should_not be_running }
-    end
-
     describe file('/mnt/fhgfs'), :node => node do
       it { should be_mounted.with(:type => 'fhgfs') }
     end

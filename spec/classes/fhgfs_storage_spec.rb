@@ -1,97 +1,56 @@
 require 'spec_helper'
 
 describe 'fhgfs::storage' do
-  include_context :defaults
-
-  let(:facts) { default_facts }
+  let(:facts) do
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystemrelease     => '6.4',
+      :operatingsystemmajrelease  => '6',
+    }
+  end
 
   it { should create_class('fhgfs::storage') }
   it { should contain_class('fhgfs::params') }
   it { should contain_class('fhgfs') }
 
-  it { should_not contain_class('fhgfs::interfaces') }
+  it { should contain_anchor('fhgfs::storage::start').that_comes_before('Class[fhgfs::storage::install]') }
+  it { should contain_class('fhgfs::storage::install').that_comes_before('Class[fhgfs::storage::config]') }
+  it { should contain_class('fhgfs::storage::config').that_comes_before('Class[fhgfs::storage::service]') }
+  it { should contain_class('fhgfs::storage::service').that_comes_before('Anchor[fhgfs::storage::end]') }
+  it { should contain_anchor('fhgfs::storage::end') }
 
-  it_behaves_like 'role service' do
-    let(:service_name) { "fhgfs-storage" }
-  end
+  include_context 'fhgfs::storage::install'
+  include_context 'fhgfs::storage::config'
+  include_context 'fhgfs::storage::service'
 
-  it_behaves_like 'role package' do
-    let(:package_name) { "fhgfs-storage" }
-  end
-
-  it_behaves_like 'role files' do
-    let(:name) { "fhgfs-storage" }
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
-      .with_content(/^connInterfacesFile\s+=\s+$/) \
-      .with_content(/^storeStorageDirectory\s+=\s+$/) \
-      .with_content(/^sysMgmtdHost\s+=\s+$/)
-  end
-
-  it { should_not contain_file('') }
-
-  context "with conf values defined" do
-    let(:params) {
-      {
-        :store_storage_directory  => "/tank/fhgfs",
-        :mgmtd_host               => 'mgmt01',
-      }
-    }
-
-    it do
-      should contain_file('/etc/fhgfs/fhgfs-storage.conf') \
-        .with_content(/^storeStorageDirectory\s+=\s#{params[:store_storage_directory]}$/) \
-        .with_content(/^sysMgmtdHost\s+=\s+#{params[:mgmtd_host]}$/)
-    end
-
-#    it do
-#      should contain_file('/tank/fhgfs').with({
-#        'ensure'  => 'directory',
-#        'before'  => 'Service[fhgfs-storage]',
-#      })
-#    end
-  end
-
-  shared_context "storage with conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces.storage$/) }
-    it do
-      should create_fhgfs__interfaces('storage').with({
-        'interfaces'  => params[:conn_interfaces],
-        'conf_path'   => '/etc/fhgfs/interfaces.storage',
-        'service'     => 'fhgfs-storage',
-        'restart'     => 'false',
-      })
+  # Test validate_bool parameters
+  [
+    :manage_service,
+    :service_autorestart,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::storage') }.to raise_error(Puppet::Error, /is not a boolean/) }
     end
   end
 
-  shared_context "storage without conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-storage.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not create_fhgfs__interfaces('storage') }
+  # Test validate_array parameters
+  [
+    :conn_interfaces,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::storage') }.to raise_error(Puppet::Error, /is not an Array/) }
+    end
   end
 
-  context "storage with conn_interfaces => ['ib0','eth0']" do
-    let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
-
-    include_context "storage with conn_interfaces"
-  end
-  
-  context "storage with conn_interfaces => 'ib0,eth0'" do
-    let(:params){{ :conn_interfaces => 'ib0,eth0' }}
-
-    include_context "storage with conn_interfaces"
-  end
-
-  context "storage with conn_interfaces => []" do
-    let(:params){{ :conn_interfaces => [] }}
-
-    include_context "storage without conn_interfaces"
-  end
-
-  context "storage with conn_interfaces => ''" do
-    let(:params){{ :conn_interfaces => '' }}
-
-    include_context "storage without conn_interfaces"
+  # Test validate_array parameters
+  [
+    :config_overrides,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::storage') }.to raise_error(Puppet::Error, /is not a Hash/) }
+    end
   end
 end

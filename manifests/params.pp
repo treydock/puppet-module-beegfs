@@ -1,69 +1,28 @@
 # Class: fhgfs::params
 #
-#   The fhgfs configuration settings.
+# Private class
 #
-# === Variables
-#
-# [*fhgfs_repo_version*]
-#
-# [*fhgfs_store_storage_directory*]
-#
-# [*fhgfs_meta_storage_directory*]
-#
-# [*fhgfs_mgmtd_storage_directory*]
-#
-# [*fhgfs_mgmtd_host*]
-#
-# === Authors
-#
-# Trey Dockendorf <treydock@gmail.com>
-#
-# === Copyright
-#
-# Copyright 2013 Trey Dockendorf
-#
-class fhgfs::params {
+class fhgfs::params inherits fhgfs::defaults {
 
   $os_major = $::operatingsystemmajrelease ? {
     undef   => inline_template("<%= \"${::operatingsystemrelease}\".split('.').first %>"),
     default => $::operatingsystemmajrelease,
   }
 
-  $store_storage_directory = $::fhgfs_store_storage_directory ? {
-    undef   => '',
-    default => $::fhgfs_store_storage_directory,
-  }
-
-  $store_meta_directory = $::fhgfs_store_meta_directory ? {
-    undef   => '',
-    default => $::fhgfs_store_meta_directory,
-  }
-
-  $store_mgmtd_directory = $::fhgfs_store_mgmtd_directory ? {
-    undef   => '',
-    default => $::fhgfs_store_mgmtd_directory,
-  }
-
-  $client_with_infiniband = $::has_infiniband ? {
-    undef   => false,
-    default => $::has_infiniband,
-  }
-
-  $mgmtd_host = $::fhgfs_mgmtd_host ? {
-    undef   => '',
-    default => $::fhgfs_mgmtd_host,
-  }
-
-  $meta_with_infiniband = $::has_infiniband ? {
-    undef   => false,
-    default => $::has_infiniband,
+  $release            = '2012.10'
+  $package_version    = 'present'
+  $mgmtd_host         = ''
+  $with_infiniband    = str2bool($::has_infiniband)
+  $client_build_args  = $with_infiniband ? {
+    true    => '-j8 FHGFS_OPENTK_IBVERBS=1',
+    default => '-j8',
   }
 
   case $::osfamily {
     'RedHat': {
       $repo_dir                       = "rhel${os_major}"
-      $repo_descr                     = "FhGFS 2012.10 (RHEL${os_major})"
-      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_2012.10/dists/${repo_dir}"
+      $repo_descr                     = "FhGFS ${release} (RHEL${os_major})"
+      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_${release}/dists/${repo_dir}"
       $repo_gpgkey                    = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs'
       $mgmtd_package_name             = 'fhgfs-mgmtd'
       $mgmtd_service_name             = 'fhgfs-mgmtd'
@@ -80,7 +39,13 @@ class fhgfs::params {
       $utils_package_name             = 'fhgfs-utils'
 
       $package_dependencies           = ['kernel-devel']
-      $interfaces_file                = '/etc/fhgfs/interfaces'
+      $conn_interfaces_file           = {
+        'mgmtd'   => '/etc/fhgfs/interfaces.mgmtd',
+        'meta'    => '/etc/fhgfs/interfaces.meta',
+        'storage' => '/etc/fhgfs/interfaces.storage',
+        'client'  => '/etc/fhgfs/interfaces.client',
+      }
+      $client_rebuild_command         = '/etc/init.d/fhgfs-client rebuild'
     }
 
     default: {

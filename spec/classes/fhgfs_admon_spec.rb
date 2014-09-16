@@ -1,45 +1,46 @@
 require 'spec_helper'
 
 describe 'fhgfs::admon' do
-  include_context :defaults
-
-  let(:facts) { default_facts.merge({}) }
-  let(:params) {{}}
+  let(:facts) do
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystemrelease     => '6.4',
+      :operatingsystemmajrelease  => '6',
+    }
+  end
 
   it { should create_class('fhgfs::admon') }
   it { should contain_class('fhgfs::params') }
   it { should contain_class('fhgfs') }
 
-  it_behaves_like 'role service' do
-    let(:service_name) { "fhgfs-admon" }
-  end
+  it { should contain_anchor('fhgfs::admon::start').that_comes_before('Class[fhgfs::admon::install]') }
+  it { should contain_class('fhgfs::admon::install').that_comes_before('Class[fhgfs::admon::config]') }
+  it { should contain_class('fhgfs::admon::config').that_comes_before('Class[fhgfs::admon::service]') }
+  it { should contain_class('fhgfs::admon::service').that_comes_before('Anchor[fhgfs::admon::end]') }
+  it { should contain_anchor('fhgfs::admon::end') }
 
-  it_behaves_like 'role package' do
-    let(:package_name) { "fhgfs-admon" }
-  end
+  include_context 'fhgfs::admon::install'
+  include_context 'fhgfs::admon::config'
+  include_context 'fhgfs::admon::service'
 
-  it_behaves_like 'role files' do
-    let(:name) { "fhgfs-admon" }
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-admon.conf') \
-      .with_content(/^sysMgmtdHost\s+=\s+$/) \
-      .with_content(/^tuneNumWorkers\s+=\s+4$/)
-  end
-
-  context "with conf values defined" do
-    let(:params) {{ :mgmtd_host  => "foo" }}
-
-    it do
-      should contain_file('/etc/fhgfs/fhgfs-admon.conf') \
-        .with_content(/^sysMgmtdHost\s+=\s#{params[:mgmtd_host]}$/) \
-        .with_content(/^tuneNumWorkers\s+=\s+4$/)
+  # Test validate_bool parameters
+  [
+    :manage_service,
+    :service_autorestart,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::admon') }.to raise_error(Puppet::Error, /is not a boolean/) }
     end
   end
 
-  context "when database_file => '/fhgfs/fhgfs-admon.db'" do
-    let (:params) {{ :database_file => '/fhgfs/fhgfs-admon.db' }}
-    it { should contain_file('/etc/fhgfs/fhgfs-admon.conf').with_content(/^databaseFile\s+=\s+\/fhgfs\/fhgfs-admon.db$/) }
+  # Test validate_array parameters
+  [
+    :config_overrides,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::admon') }.to raise_error(Puppet::Error, /is not a Hash/) }
+    end
   end
 end

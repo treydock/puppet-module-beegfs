@@ -1,156 +1,78 @@
 # == Class: fhgfs::client
 #
-# Manages a FHGFS client server
-#
-# === Parameters
-#
-# === Examples
-#
-#  class { 'fhgfs::client': }
-#
-# === Authors
-#
-# Trey Dockendorf <treydock@gmail.com>
-#
-# === Copyright
-#
-# Copyright 2013 Trey Dockendorf
+# Public class
 #
 class fhgfs::client (
-  $mgmtd_host               = 'UNSET',
+  $mgmtd_host               = $fhgfs::mgmtd_host,
+  $conn_interfaces          = [],
+  $conn_interfaces_file     = $fhgfs::conn_interfaces_file['client'],
+  $store_directory          = '',
   $mount_path               = '/mnt/fhgfs',
-  $with_infiniband          = $fhgfs::params::client_with_infiniband,
-  $enable_intents           = true,
-  $log_helperd_ip           = $fhgfs::params::log_helperd_ip,
-  $conn_port_shift          = '0',
-  $conn_max_internode_num   = '12',
-  $quota_enabled            = false,
-  $autobuild_enabled        = true,
-  $include_utils            = true,
-  $utils_only               = false,
+  $build_args               = $fhgfs::client_build_args,
+  $build_enabled            = true,
+  $rebuild_command          = $fhgfs::client_rebuild_command,
+  $release                  = $fhgfs::release,
+  $package_version          = $fhgfs::package_version,
+  $package_name             = $fhgfs::client_package_name,
+  $helperd_package_name     = $fhgfs::helperd_package_name,
+  $utils_package_name       = $fhgfs::utils_package_name,
   $manage_service           = true,
-  $package_ensure           = 'UNSET'
-) inherits fhgfs::params {
+  $service_name             = $fhgfs::client_service_name,
+  $helperd_service_name     = $fhgfs::helperd_service_name,
+  $service_ensure           = 'running',
+  $service_enable           = true,
+  $service_autorestart      = true,
+  $config_overrides         = {},
+  $helperd_config_overrides = {},
+  $utils_only               = false,
+) inherits fhgfs {
 
-  include fhgfs
-
-  validate_bool($include_utils)
-  validate_bool($utils_only)
+  validate_bool($build_enabled)
   validate_bool($manage_service)
+  validate_bool($service_autorestart)
+  validate_bool($utils_only)
 
-  $mgmtd_host_real = $mgmtd_host ? {
-    'UNSET' => $fhgfs::mgmtd_host,
-    default => $mgmtd_host,
-  }
+  validate_array($conn_interfaces)
 
-  $package_ensure_real = $package_ensure ? {
-    'UNSET' => $fhgfs::package_ensure,
-    default => $package_ensure,
-  }
+  validate_hash($config_overrides)
+  validate_hash($helperd_config_overrides)
 
-  if $include_utils { include fhgfs::utils }
-
-  if $utils_only {
-    Class['fhgfs'] -> Class['fhgfs::client']
-
-    $package_before     = [File['/etc/fhgfs/fhgfs-client.conf'],Service['fhgfs-client']]
-    $service_ensure     = false
-    $service_enable     = false
-    $service_subscribe  = undef
-    $service_require    = undef
+  if $service_autorestart {
+    $service_subscribe          = [
+      File['/etc/fhgfs/fhgfs-client.conf'],
+      File['/etc/fhgfs/fhgfs-mounts.conf'],
+      File[$conn_interfaces_file],
+    ]
+    $helperd_service_subscribe  = File['/etc/fhgfs/fhgfs-helperd.conf']
+    $autobuild_notify           = Exec['fhgfs-client rebuild']
   } else {
-    include fhgfs::client::helperd
-
-    Class['fhgfs'] -> Class['fhgfs::client::helperd'] -> Class['fhgfs::client']
-
-    $package_before     = [ File['/etc/fhgfs/fhgfs-client.conf'],
-                            File['/etc/fhgfs/fhgfs-mounts.conf'],
-                            File['/etc/fhgfs/fhgfs-client-autobuild.conf'],
-                            ]
-    $service_ensure     = true
-    $service_enable     = true
-    $service_subscribe  = $package_before
-    $service_require    = Service['fhgfs-helperd']
+    $service_subscribe          = undef
+    $helperd_service_subscribe  = undef
+    $autobuild_notify           = undef
   }
 
-  $package_name     = $fhgfs::params::client_package_name
-  $service_name     = $fhgfs::params::client_service_name
-
-  $with_infiniband_real = is_string($with_infiniband) ? {
-    true  => str2bool($with_infiniband),
-    false => $with_infiniband,
-  }
-  validate_bool($with_infiniband_real)
-
-  $enable_intents_real = is_string($enable_intents) ? {
-    true  => str2bool($enable_intents),
-    false => $enable_intents,
-  }
-  validate_bool($enable_intents_real)
-
-  $config_file_before = $manage_service ? {
-    true  => Service['fhgfs-client'],
-    false => undef,
+  $conn_interfaces_file_value = empty($conn_interfaces) ? {
+    true  => '',
+    false => $conn_interfaces_file,
   }
 
-  if $with_infiniband_real {
-    $autobuild_opentk_ibverbs = '1'
-  } else {
-    $autobuild_opentk_ibverbs = '0'
+  $local_configs = {
+    'connInterfacesFile'  => $conn_interfaces_file_value,
+    'sysMgmtdHost'        => $mgmtd_host,
   }
 
-  if $enable_intents_real {
-    $autobuild_intent = '1'
-  } else {
-    $autobuild_intent = '0'
-  }
+  $helperd_default_configs  = $fhgfs::helperd_default_configs[$fhgfs::release]
+  $helperd_configs          = merge($helperd_default_configs, $helperd_config_overrides)
+  $helperd_config_keys      = $fhgfs::helperd_config_keys[$fhgfs::release]
 
-  ensure_resource('file', '/etc/fhgfs', {'ensure' => 'directory'})
+  $default_configs  = merge($fhgfs::client_default_configs[$fhgfs::release], $local_configs)
+  $configs          = merge($default_configs, $config_overrides)
+  $config_keys      = $fhgfs::client_config_keys[$fhgfs::release]
 
-  package { 'fhgfs-client':
-    ensure  => $package_ensure_real,
-    name    => $package_name,
-    before  => $package_before,
-    require => Yumrepo['fhgfs'],
-  }
-
-  if $manage_service {
-    service { 'fhgfs-client':
-      ensure      => $service_ensure,
-      enable      => $service_enable,
-      name        => $service_name,
-      hasstatus   => true,
-      hasrestart  => true,
-      subscribe   => $service_subscribe,
-      require     => $service_require,
-    }
-  }
-
-  file { '/etc/fhgfs/fhgfs-client.conf':
-    ensure  => 'present',
-    content => template('fhgfs/fhgfs-client.conf.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    before  => $config_file_before,
-  }
-
-  file { '/etc/fhgfs/fhgfs-mounts.conf':
-    ensure  => 'present',
-    content => template('fhgfs/fhgfs-mounts.conf.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    before  => $config_file_before,
-  }
-
-  file { '/etc/fhgfs/fhgfs-client-autobuild.conf':
-    ensure  => 'present',
-    content => template('fhgfs/fhgfs-client-autobuild.conf.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    before  => $config_file_before,
-  }
+  anchor { 'fhgfs::client::start': }->
+  class { 'fhgfs::client::install': }->
+  class { 'fhgfs::client::config': }->
+  class { 'fhgfs::client::service': }->
+  anchor { 'fhgfs::client::end': }
 
 }

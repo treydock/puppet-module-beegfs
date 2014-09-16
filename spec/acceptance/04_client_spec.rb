@@ -10,6 +10,7 @@ describe 'fhgfs::client class:' do
           ensure  => directory,
         }->
         class { 'fhgfs::client':
+          release    => '#{RSpec.configuration.fhgfs_release}',
           mgmtd_host => '#{mgmt_ip}',
           mount_path => '/mnt/fhgfs',
         }

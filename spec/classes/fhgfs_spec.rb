@@ -11,6 +11,7 @@ describe 'fhgfs' do
 
   it { should create_class('fhgfs') }
   it { should contain_class('fhgfs::params') }
+  it { should contain_class('fhgfs::defaults') }
   it { should contain_class('fhgfs::repo') }
 
   context 'osfamily => Foo' do

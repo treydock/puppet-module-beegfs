@@ -10,12 +10,14 @@ describe 'fhgfs::meta class:' do
           ensure  => directory,
         }->
         class { 'fhgfs::meta':
-          service_ensure        => 'running',
-          service_enable        => true,
-          store_meta_directory  => '/fhgfs/meta',
-          mgmtd_host            => '#{mgmt_ip}',
+          release         => '#{RSpec.configuration.fhgfs_release}',
+          service_ensure  => 'running',
+          service_enable  => true,
+          store_directory => '/fhgfs/meta',
+          mgmtd_host      => '#{mgmt_ip}',
         }->
         class { 'fhgfs::client':
+          release    => '#{RSpec.configuration.fhgfs_release}',
           mgmtd_host => '#{mgmt_ip}',
           utils_only => true,
         }

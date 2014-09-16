@@ -20,6 +20,10 @@ RSpec.configure do |c|
   # Readable test descriptions
   c.formatter = :documentation
 
+  # Local settings based on environment variables
+  c.add_setting :fhgfs_release
+  c.fhgfs_release = ENV['BEAKER_fhgfs_release'] || '2012.10'
+
   # Configure all nodes in nodeset
   c.before :suite do
     puppet_pp = <<-EOF

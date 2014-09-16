@@ -1,90 +1,56 @@
 require 'spec_helper'
 
 describe 'fhgfs::mgmtd' do
-  include_context :defaults
-
-  let(:facts) { default_facts.merge({}) }
-  let(:params) {{}}
+  let(:facts) do
+    {
+      :osfamily                   => 'RedHat',
+      :operatingsystemrelease     => '6.4',
+      :operatingsystemmajrelease  => '6',
+    }
+  end
 
   it { should create_class('fhgfs::mgmtd') }
   it { should contain_class('fhgfs::params') }
   it { should contain_class('fhgfs') }
 
-  it_behaves_like 'role service' do
-    let(:service_name) { "fhgfs-mgmtd" }
-  end
+  it { should contain_anchor('fhgfs::mgmtd::start').that_comes_before('Class[fhgfs::mgmtd::install]') }
+  it { should contain_class('fhgfs::mgmtd::install').that_comes_before('Class[fhgfs::mgmtd::config]') }
+  it { should contain_class('fhgfs::mgmtd::config').that_comes_before('Class[fhgfs::mgmtd::service]') }
+  it { should contain_class('fhgfs::mgmtd::service').that_comes_before('Anchor[fhgfs::mgmtd::end]') }
+  it { should contain_anchor('fhgfs::mgmtd::end') }
 
-  it_behaves_like 'role package' do
-    let(:package_name) { "fhgfs-mgmtd" }
-  end
+  include_context 'fhgfs::mgmtd::install'
+  include_context 'fhgfs::mgmtd::config'
+  include_context 'fhgfs::mgmtd::service'
 
-  it_behaves_like 'role files' do
-    let(:name) { "fhgfs-mgmtd" }
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
-      .with_content(/^storeMgmtdDirectory\s+=\s+$/) \
-      .with_content(/^tuneNumWorkers\s+=\s+4$/)
-  end
-
-  it { should_not contain_file('') }
-
-  context "with conf values defined" do
-    let(:params) {{ :store_mgmtd_directory  => "/tank/fhgfs/mgmtd" }}
-
-    it do
-      should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf') \
-        .with_content(/^storeMgmtdDirectory\s+=\s#{params[:store_mgmtd_directory]}$/) \
-        .with_content(/^tuneNumWorkers\s+=\s+4$/)
-    end
-
-#    it do
-#      should contain_file(params[:store_mgmtd_directory]).with({
-#        'ensure'  => 'directory',
-#        'before'  => 'Service[fhgfs-mgmtd]',
-#      })
-#    end
-  end
-
-  shared_context "mgmtd with conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s\/etc\/fhgfs\/interfaces.mgmtd$/) }
-    it do
-      should create_fhgfs__interfaces('mgmtd').with({
-        'interfaces'  => params[:conn_interfaces],
-        'conf_path'   => '/etc/fhgfs/interfaces.mgmtd',
-        'service'     => 'fhgfs-mgmtd',
-        'restart'     => 'false',
-      })
+  # Test validate_bool parameters
+  [
+    :manage_service,
+    :service_autorestart,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::mgmtd') }.to raise_error(Puppet::Error, /is not a boolean/) }
     end
   end
 
-  shared_context "mgmtd without conn_interfaces" do
-    it { should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with_content(/^connInterfacesFile\s+=\s+$/) }
-    it { should_not create_fhgfs__interfaces('mgmtd') }
+  # Test validate_array parameters
+  [
+    :conn_interfaces,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::mgmtd') }.to raise_error(Puppet::Error, /is not an Array/) }
+    end
   end
 
-  context "mgmtd with conn_interfaces => ['ib0','eth0']" do
-    let(:params){{ :conn_interfaces => ['ib0','eth0'] }}
-
-    include_context "mgmtd with conn_interfaces"
-  end
-  
-  context "mgmtd with conn_interfaces => 'ib0,eth0'" do
-    let(:params){{ :conn_interfaces => 'ib0,eth0' }}
-
-    include_context "mgmtd with conn_interfaces"
-  end
-
-  context "mgmtd with conn_interfaces => []" do
-    let(:params){{ :conn_interfaces => [] }}
-
-    include_context "mgmtd without conn_interfaces"
-  end
-
-  context "mgmtd with conn_interfaces => ''" do
-    let(:params){{ :conn_interfaces => '' }}
-
-    include_context "mgmtd without conn_interfaces"
+  # Test validate_array parameters
+  [
+    :config_overrides,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param => 'foo' }}
+      it { expect { should create_class('fhgfs::mgmtd') }.to raise_error(Puppet::Error, /is not a Hash/) }
+    end
   end
 end

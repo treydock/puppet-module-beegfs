@@ -1,0 +1,40 @@
+# == Class: fhgfs::client::service
+#
+# Private class
+#
+class fhgfs::client::service {
+
+  if $fhgfs::client::utils_only {
+    $service_ensure             = 'stopped'
+    $service_enable             = false
+    $service_subscribe          = undef
+    $helperd_service_subscribe  = undef
+  } else {
+    $service_ensure             = $fhgfs::client::service_ensure
+    $service_enable             = $fhgfs::client::service_enable
+    $service_subscribe          = $fhgfs::client::service_subscribe
+    $helperd_service_subscribe  = $fhgfs::client::helperd_service_subscribe
+  }
+
+  if $fhgfs::client::manage_service {
+    service { 'fhgfs-helperd':
+      ensure      => $service_ensure,
+      enable      => $service_enable,
+      name        => $fhgfs::client::helperd_service_name,
+      hasstatus   => true,
+      hasrestart  => true,
+      subscribe   => $helperd_service_subscribe,
+      before      => Service['fhgfs-client'],
+    }
+
+    service { 'fhgfs-client':
+      ensure      => $service_ensure,
+      enable      => $service_enable,
+      name        => $fhgfs::client::service_name,
+      hasstatus   => true,
+      hasrestart  => true,
+      subscribe   => $service_subscribe,
+    }
+  }
+
+}

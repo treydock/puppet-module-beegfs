@@ -5,8 +5,27 @@
 class fhgfs::repo {
 
   include fhgfs
+  include fhgfs::params
+
+  $release  = $fhgfs::release
+  $repo     = $fhgfs::params::repo[$release]
 
   ensure_packages($fhgfs::package_dependencies)
+
+  $repo_descr = $fhgfs::repo_descr ? {
+    'UNSET' => $repo['descr'],
+    default => $fhgfs::repo_descr,
+  }
+  
+  $repo_baseurl = $fhgfs::repo_baseurl ? {
+    'UNSET' => $repo['baseurl'],
+    default => $fhgfs::repo_baseurl,
+  }
+
+  $repo_gpgkey = $fhgfs::repo_gpgkey ? {
+    'UNSET' => $repo['gpgkey'],
+    default => $fhgfs::repo_gpgkey,
+  }
 
   case $::osfamily {
     'RedHat': {
@@ -24,9 +43,9 @@ class fhgfs::repo {
       }
 
       yumrepo { 'fhgfs':
-        descr     => $fhgfs::repo_descr,
-        baseurl   => $fhgfs::repo_baseurl,
-        gpgkey    => $fhgfs::repo_gpgkey,
+        descr     => $repo_descr,
+        baseurl   => $repo_baseurl,
+        gpgkey    => $repo_gpgkey,
         gpgcheck  => $fhgfs::repo_gpgcheck,
         enabled   => $fhgfs::repo_enabled,
       }

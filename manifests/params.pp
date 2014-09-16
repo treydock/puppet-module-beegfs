@@ -20,10 +20,18 @@ class fhgfs::params inherits fhgfs::defaults {
 
   case $::osfamily {
     'RedHat': {
-      $repo_dir                       = "rhel${os_major}"
-      $repo_descr                     = "FhGFS ${release} (RHEL${os_major})"
-      $repo_baseurl                   = "http://www.fhgfs.com/release/fhgfs_${release}/dists/${repo_dir}"
-      $repo_gpgkey                    = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs'
+      $repo                           = {
+        '2012.10' => {
+          'descr'   => "FhGFS 2012.10 (RHEL${os_major})",
+          'baseurl' => "http://www.fhgfs.com/release/fhgfs_2012.10/dists/rhel${os_major}",
+          'gpgkey'  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+        },
+        '2014.01' => {
+          'descr'   => "FhGFS 2014.01 (RHEL${os_major})",
+          'baseurl' => "http://www.fhgfs.com/release/fhgfs_2014.01/dists/rhel${os_major}",
+          'gpgkey'  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+        }
+      }
       $mgmtd_package_name             = 'fhgfs-mgmtd'
       $mgmtd_service_name             = 'fhgfs-mgmtd'
       $meta_package_name              = 'fhgfs-meta'

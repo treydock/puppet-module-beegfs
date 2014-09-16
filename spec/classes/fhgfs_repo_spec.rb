@@ -50,6 +50,36 @@ describe 'fhgfs::repo' do
       })
     end
 
+    context "when release => '2014.01'" do
+      let(:pre_condition) { "class { 'fhgfs': release => '2014.01' }" }
+      it do
+        should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs').with({
+          'ensure'  => 'present',
+          'source'  => 'puppet:///modules/fhgfs/RPM-GPG-KEY-fhgfs',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+        })
+      end
+
+      it do
+        should contain_gpg_key('fhgfs').with({
+          'path'    => '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+          'before'  => 'Yumrepo[fhgfs]',
+        })
+      end
+
+      it do
+        should contain_yumrepo('fhgfs').with({
+          'descr'     => "FhGFS 2014.01 (RHEL6)",
+          'baseurl'   => "http://www.fhgfs.com/release/fhgfs_2014.01/dists/rhel6",
+          'gpgkey'    => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+          'gpgcheck'  => '0',
+          'enabled'   => '1',
+        })
+      end
+    end
+
     context "with custom baseurl" do
       let(:pre_condition) { "class { 'fhgfs': repo_baseurl => 'http://yum.example.com/fhgfs/fhgfs_2012.10/dists/rhel6' }" }
 

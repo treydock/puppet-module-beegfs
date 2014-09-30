@@ -15,22 +15,22 @@ class fhgfs::client::service {
 
   if $fhgfs::client_manage_service {
     service { 'fhgfs-helperd':
-      ensure      => $service_ensure,
-      enable      => $service_enable,
-      name        => $fhgfs::helperd_service_name,
-      hasstatus   => true,
-      hasrestart  => true,
-      subscribe   => $helperd_service_subscribe,
-      before      => Service['fhgfs-client'],
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      name       => $fhgfs::helperd_service_name,
+      hasstatus  => true,
+      hasrestart => true,
+      subscribe  => $helperd_service_subscribe,
+      before     => Service['fhgfs-client'],
     }
 
     service { 'fhgfs-client':
-      ensure      => $service_ensure,
-      enable      => $service_enable,
-      name        => $fhgfs::client_service_name,
-      hasstatus   => true,
-      hasrestart  => true,
-      subscribe   => $service_subscribe,
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      name       => $fhgfs::client_service_name,
+      hasstatus  => true,
+      hasrestart => true,
+      subscribe  => $service_subscribe,
     }
   }
 

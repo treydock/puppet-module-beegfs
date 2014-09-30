@@ -2,8 +2,8 @@
 class fhgfs::admon::install {
 
   package { 'fhgfs-admon':
-    ensure  => $fhgfs::version,
-    name    => $fhgfs::admon_package,
+    ensure => $fhgfs::version,
+    name   => $fhgfs::admon_package,
   }
 
 }

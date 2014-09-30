@@ -10,10 +10,10 @@ class fhgfs::admon::config {
   }
 
   file { $fhgfs::admon_database_file_dir:
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
   }
 
 }

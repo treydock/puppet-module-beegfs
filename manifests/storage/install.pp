@@ -2,8 +2,8 @@
 class fhgfs::storage::install {
 
   package { 'fhgfs-storage':
-    ensure  => $fhgfs::version,
-    name    => $fhgfs::storage_package,
+    ensure => $fhgfs::version,
+    name   => $fhgfs::storage_package,
   }
 
 }

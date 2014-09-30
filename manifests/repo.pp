@@ -23,24 +23,24 @@ class fhgfs::repo {
   case $::osfamily {
     'RedHat': {
       file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs':
-        ensure  => present,
-        source  => 'puppet:///modules/fhgfs/RPM-GPG-KEY-fhgfs',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
+        ensure => present,
+        source => 'puppet:///modules/fhgfs/RPM-GPG-KEY-fhgfs',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
       }
 
       gpg_key { 'fhgfs':
-        path    => '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
-        before  => Yumrepo['fhgfs'],
+        path   => '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
+        before => Yumrepo['fhgfs'],
       }
 
       yumrepo { 'fhgfs':
-        descr     => $repo_descr,
-        baseurl   => $repo_baseurl,
-        gpgkey    => $repo_gpgkey,
-        gpgcheck  => $fhgfs::repo_gpgcheck,
-        enabled   => $fhgfs::repo_enabled,
+        descr    => $repo_descr,
+        baseurl  => $repo_baseurl,
+        gpgkey   => $repo_gpgkey,
+        gpgcheck => $fhgfs::repo_gpgcheck,
+        enabled  => $fhgfs::repo_enabled,
       }
     }
 

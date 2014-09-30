@@ -19,7 +19,8 @@ class fhgfs (
   $package_dependencies = $fhgfs::params::package_dependencies,
 
   # common configuration
-  $mgmtd_host = '',
+  $mgmtd_host       = '',
+  $conn_port_shift  = '0',
 
   # interfaces
   $client_conn_interfaces       = [],
@@ -35,7 +36,6 @@ class fhgfs (
   $client_mount_path          = '/mnt/fhgfs',
   $client_build_args          = $fhgfs::params::client_build_args,
   $client_build_enabled       = true,
-  $client_rebuild_command     = $fhgfs::params::client_rebuild_command,
   $client_config_overrides    = {},
   $helperd_config_overrides   = {},
   # client specific - packages
@@ -140,19 +140,20 @@ class fhgfs (
   anchor { 'fhgfs::start': }
   anchor { 'fhgfs::end': }
 
+  ## fhgfs-client ##
+
   if $client or $utils_only {
     if $client_service_autorestart {
       $client_service_subscribe   = [
         File['/etc/fhgfs/fhgfs-client.conf'],
         File['/etc/fhgfs/fhgfs-mounts.conf'],
+        File['/etc/fhgfs/fhgfs-client-autobuild.conf'],
         File[$client_conn_interfaces_file],
       ]
       $helperd_service_subscribe  = File['/etc/fhgfs/fhgfs-helperd.conf']
-      $client_autobuild_notify    = Exec['fhgfs-client rebuild']
     } else {
       $client_service_subscribe   = undef
       $helperd_service_subscribe  = undef
-      $client_autobuild_notify    = undef
     }
 
     if empty($client_conn_interfaces) {
@@ -182,6 +183,8 @@ class fhgfs (
     Class['fhgfs::client']->
     Anchor['fhgfs::end']
   }
+
+  ## fhgfs-mgmtd ##
 
   if $mgmtd {
     if $mgmtd_service_autorestart {
@@ -213,6 +216,8 @@ class fhgfs (
     Class['fhgfs::mgmtd']->
     Anchor['fhgfs::end']
   }
+
+  ## fhgfs-meta ##
 
   if $meta {
     if $meta_service_autorestart {
@@ -246,6 +251,8 @@ class fhgfs (
     Anchor['fhgfs::end']
   }
 
+  ## fhgfs-storage ##
+
   if $storage {
     if $storage_service_autorestart {
       $storage_service_subscribe = [File['/etc/fhgfs/fhgfs-storage.conf'], File[$storage_conn_interfaces_file]]
@@ -277,6 +284,8 @@ class fhgfs (
     Class['fhgfs::storage']->
     Anchor['fhgfs::end']
   }
+
+  ## fhgfs-admon ##
 
   if $admon {
     if $admon_service_autorestart {

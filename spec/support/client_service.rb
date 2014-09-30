@@ -22,6 +22,7 @@ shared_examples_for 'fhgfs::client::service' do
       :subscribe    => [
         'File[/etc/fhgfs/fhgfs-client.conf]',
         'File[/etc/fhgfs/fhgfs-mounts.conf]',
+        'File[/etc/fhgfs/fhgfs-client-autobuild.conf]',
         'File[/etc/fhgfs/interfaces.client]',
       ],
     })

@@ -20,6 +20,13 @@ shared_examples_for 'fhgfs::client::install' do
     })
   end
 
+  context 'when utils_only => true' do
+    let(:params) {{ :utils_only => true }}
+    it { should_not contain_package('fhgfs-helperd') }
+    it { should_not contain_package('fhgfs-client') }
+    it { should contain_package('fhgfs-utils') }
+  end
+
   context "when version => '2012.10.r9'" do
     let(:params) {{ :version => '2012.10.r9' }}
     it { should contain_package('fhgfs-helperd').with_ensure('2012.10.r9') }

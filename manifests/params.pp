@@ -47,7 +47,6 @@ class fhgfs::params inherits fhgfs::defaults {
         'storage' => '/etc/fhgfs/interfaces.storage',
         'client'  => '/etc/fhgfs/interfaces.client',
       }
-      $client_rebuild_command = '/etc/init.d/fhgfs-client rebuild'
     }
 
     default: {

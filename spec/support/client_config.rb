@@ -87,7 +87,6 @@ shared_examples_for 'fhgfs::client::config' do
       :owner    => 'root',
       :group    => 'root',
       :mode     => '0644',
-      :notify   => 'Exec[fhgfs-client rebuild]',
     })
   end
 
@@ -96,13 +95,6 @@ shared_examples_for 'fhgfs::client::config' do
       'buildArgs=-j8',
       'buildEnabled=true',
     ])
-  end
-
-  it do
-    should contain_exec('fhgfs-client rebuild').with({
-      :command      => '/etc/init.d/fhgfs-client rebuild',
-      :refreshonly  => 'true',
-    })
   end
 
   it do
@@ -180,7 +172,10 @@ shared_examples_for 'fhgfs::client::config' do
 
   context 'when utils_only => true' do
     let(:params) {{ :utils_only => true }}
-    it { should contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf').without_notify }
+    it { should contain_file('/etc/fhgfs/fhgfs-client.conf') }
+    it { should_not contain_file('/etc/fhgfs/fhgfs-helperd.conf') }
+    it { should_not contain_file('/etc/fhgfs/fhgfs-mounts.conf') }
+    it { should_not contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') }
   end
 
   context 'when fhgfs::mgmtd_host => "mgmtd.foo"' do

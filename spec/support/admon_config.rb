@@ -58,6 +58,16 @@ shared_context 'fhgfs::admon::config' do
     end
   end
 
+  context 'when conn_port_shift => 1000' do
+    let(:params) {{ :admon => true, :conn_port_shift => 1000 }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-admon.conf', [
+        'connPortShift            = 1000',
+      ])
+    end
+  end
+
   context 'when admon_database_file_dir => "/fhgfs"' do
     let(:params) {{ :admon => true, :admon_database_file_dir => "/fhgfs" }}
 

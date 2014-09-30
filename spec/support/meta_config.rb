@@ -61,6 +61,16 @@ shared_context 'fhgfs::meta::config' do
     end
   end
 
+  context 'when conn_port_shift => 1000' do
+    let(:params) {{ :meta => true, :conn_port_shift => 1000 }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
+        'connPortShift             = 1000',
+      ])
+    end
+  end
+
   context 'when meta_conn_interfaces => ["eth0"]' do
     let(:params) {{ :meta => true, :meta_conn_interfaces => ["eth0"] }}
 

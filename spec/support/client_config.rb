@@ -139,6 +139,22 @@ shared_examples_for 'fhgfs::client::config' do
     end
   end
 
+  context 'when conn_port_shift => 1000' do
+    let(:params) {{ :conn_port_shift => 1000 }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
+        'connPortShift                 = 1000',
+      ])
+    end
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-helperd.conf', [
+        'connPortShift      = 1000',
+      ])
+    end
+  end
+
   context 'when client_conn_interfaces => ["eth0"]' do
     let(:params) {{ :client_conn_interfaces => ["eth0"] }}
 

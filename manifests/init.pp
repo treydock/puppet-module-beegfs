@@ -164,12 +164,17 @@ class fhgfs (
       $client_conn_interfaces_file_ensure = 'present'
     }
 
+    $helperd_local_configs = {
+      'connPortShift'       => $conn_port_shift,
+    }
+
     $client_local_configs = {
+      'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $client_conn_interfaces_file_value,
       'sysMgmtdHost'        => $mgmtd_host,
     }
 
-    $helperd_default_configs  = $fhgfs::params::helperd_default_configs[$release]
+    $helperd_default_configs  = merge($fhgfs::params::helperd_default_configs[$release], $helperd_local_configs)
     $helperd_configs          = merge($helperd_default_configs, $helperd_config_overrides)
     $helperd_config_keys      = $fhgfs::params::helperd_config_keys[$release]
 
@@ -202,6 +207,7 @@ class fhgfs (
     }
 
     $mgmtd_local_configs = {
+      'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $mgmtd_conn_interfaces_file_value,
       'storeMgmtdDirectory' => $mgmtd_store_directory,
     }
@@ -235,6 +241,7 @@ class fhgfs (
     }
 
     $meta_local_configs = {
+      'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $meta_conn_interfaces_file_value,
       'storeMetaDirectory'  => $meta_store_directory,
       'sysMgmtdHost'        => $mgmtd_host,
@@ -269,6 +276,7 @@ class fhgfs (
     }
 
     $storage_local_configs = {
+      'connPortShift'         => $conn_port_shift,
       'connInterfacesFile'    => $storage_conn_interfaces_file_value,
       'storeStorageDirectory' => $storage_store_directory,
       'sysMgmtdHost'          => $mgmtd_host,
@@ -295,6 +303,7 @@ class fhgfs (
     }
 
     $admon_local_configs = {
+      'connPortShift' => $conn_port_shift,
       'sysMgmtdHost'  => $mgmtd_host,
       'databaseFile'  => "${admon_database_file_dir}/fhgfs-admon.db",
     }

@@ -56,6 +56,16 @@ shared_examples_for 'fhgfs::mgmtd::config' do
     end
   end
 
+  context 'when conn_port_shift => 1000' do
+    let(:params) {{ :mgmtd => true, :conn_port_shift => 1000 }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
+        'connPortShift                  = 1000',
+      ])
+    end
+  end
+
   context 'when mgmtd_conn_interfaces => ["eth0"]' do
     let(:params) {{ :mgmtd => true, :mgmtd_conn_interfaces => ["eth0"] }}
 

@@ -62,6 +62,16 @@ shared_context 'fhgfs::storage::config' do
     end
   end
 
+  context 'when conn_port_shift => 1000' do
+    let(:params) {{ :storage => true, :conn_port_shift => 1000 }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
+        'connPortShift                = 1000',
+      ])
+    end
+  end
+
   context 'when storage_conn_interfaces => ["eth0"]' do
     let(:params) {{ :storage => true, :storage_conn_interfaces => ["eth0"] }}
 

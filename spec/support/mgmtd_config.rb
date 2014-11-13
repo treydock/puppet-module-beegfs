@@ -1,4 +1,6 @@
 shared_examples_for 'fhgfs::mgmtd::config' do
+  it { should_not contain_file('fhgfs-storeMgmtdDirectory') }
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-mgmtd.conf').with({
       :ensure   => 'present',
@@ -84,6 +86,13 @@ shared_examples_for 'fhgfs::mgmtd::config' do
 
   context 'when mgmtd_store_directory => "/fhgfs/mgmtd"' do
     let(:params) {{ :mgmtd => true, :mgmtd_store_directory => "/fhgfs/mgmtd" }}
+
+    it do
+      should contain_file('fhgfs-storeMgmtdDirectory').with({
+        :ensure => 'directory',
+        :path   => '/fhgfs/mgmtd',
+      })
+    end
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [

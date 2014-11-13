@@ -1,4 +1,6 @@
 shared_context 'fhgfs::storage::config' do
+  it { should_not contain_file('fhgfs-storeStorageDirectory') }
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-storage.conf').with({
       :ensure   => 'present',
@@ -90,6 +92,13 @@ shared_context 'fhgfs::storage::config' do
 
   context 'when storage_store_directory => "/fhgfs/storage"' do
     let(:params) {{ :storage => true, :storage_store_directory => "/fhgfs/storage" }}
+
+    it do
+      should contain_file('fhgfs-storeStorageDirectory').with({
+        :ensure => 'directory',
+        :path   => '/fhgfs/storage',
+      })
+    end
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [

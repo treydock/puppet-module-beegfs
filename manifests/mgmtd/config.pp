@@ -3,6 +3,13 @@ class fhgfs::mgmtd::config {
 
   $conn_interfaces = $fhgfs::mgmtd_conn_interfaces
 
+  if $fhgfs::mgmtd_store_directory and ! empty($fhgfs::mgmtd_store_directory) {
+    file { 'fhgfs-storeMgmtdDirectory':
+      ensure => 'directory',
+      path   => $fhgfs::mgmtd_store_directory,
+    }
+  }
+
   file { '/etc/fhgfs/fhgfs-mgmtd.conf':
     ensure  => 'present',
     content => template("fhgfs/${fhgfs::release}/fhgfs-mgmtd.conf.erb"),

@@ -3,6 +3,13 @@ class fhgfs::meta::config {
 
   $conn_interfaces = $fhgfs::meta_conn_interfaces
 
+  if $fhgfs::meta_store_directory and ! empty($fhgfs::meta_store_directory) {
+    file { 'fhgfs-storeMetaDirectory':
+      ensure => 'directory',
+      path   => $fhgfs::meta_store_directory,
+    }
+  }
+
   file { '/etc/fhgfs/fhgfs-meta.conf':
     ensure  => 'present',
     content => template("fhgfs/${fhgfs::release}/fhgfs-meta.conf.erb"),

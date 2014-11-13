@@ -1,4 +1,6 @@
 shared_context 'fhgfs::meta::config' do
+  it { should_not contain_file('fhgfs-storeMetaDirectory') }
+
   it do
     should contain_file('/etc/fhgfs/fhgfs-meta.conf').with({
       :ensure   => 'present',
@@ -89,6 +91,13 @@ shared_context 'fhgfs::meta::config' do
 
   context 'when meta_store_directory => "/fhgfs/meta"' do
     let(:params) {{ :meta => true, :meta_store_directory => "/fhgfs/meta" }}
+
+    it do
+      should contain_file('fhgfs-storeMetaDirectory').with({
+        :ensure => 'directory',
+        :path   => '/fhgfs/meta',
+      })
+    end
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [

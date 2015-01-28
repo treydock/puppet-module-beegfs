@@ -1,6 +1,6 @@
 # puppet-module-fhgfs
 
-[![Build Status](https://travis-ci.org/treydock/puppet-module-fhgfs.png)](https://travis-ci.org/treydock/puppet-module-fhgfs)
+[![Build Status](https://travis-ci.org/treydock/puppet-module-fhgfs.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-fhgfs)
 
 ####Table of Contents
 

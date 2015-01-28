@@ -3,6 +3,7 @@ shared_examples_for 'fhgfs::client::install' do
     should contain_package('fhgfs-helperd').with({
       :ensure     => 'present',
       :name       => 'fhgfs-helperd',
+      :notify     => 'Service[fhgfs-helperd]',
     })
   end
 
@@ -10,6 +11,7 @@ shared_examples_for 'fhgfs::client::install' do
     should contain_package('fhgfs-client').with({
       :ensure     => 'present',
       :name       => 'fhgfs-client',
+      :notify     => 'Service[fhgfs-client]'
     })
   end
 
@@ -32,5 +34,11 @@ shared_examples_for 'fhgfs::client::install' do
     it { should contain_package('fhgfs-helperd').with_ensure('2012.10.r9') }
     it { should contain_package('fhgfs-client').with_ensure('2012.10.r9') }
     it { should contain_package('fhgfs-utils').with_ensure('2012.10.r9') }
+  end
+
+  context 'when client_service_autorestart => false' do
+    let(:params) {{ :client_service_autorestart => false }}
+    it { should contain_package('fhgfs-helperd').without_notify }
+    it { should contain_package('fhgfs-client').without_notify }
   end
 end

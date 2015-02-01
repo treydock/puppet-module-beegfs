@@ -129,6 +129,11 @@ shared_examples_for 'fhgfs::mgmtd::config' do
         'tuneStorageSpaceLowLimit       = 512G',
         'tuneStorageSpaceEmergencyLimit = 10G',
         'runDaemonized                  = true',
+        'quotaEnableEnforcement         = false',
+        'quotaUpdateIntervalMin         = 10',
+        'quotaQueryType                 = system',
+        'quotaQueryUIDRange             = ',
+        'quotaQueryGIDRange             = ',
       ])
     end
   end

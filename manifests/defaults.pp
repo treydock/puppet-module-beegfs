@@ -50,6 +50,11 @@ class fhgfs::defaults {
       'tuneStorageSpaceLowLimit' => '512G',
       'tuneStorageSpaceEmergencyLimit' => '10G',
       'runDaemonized' => 'true',
+      'quotaEnableEnforcement' => 'false',
+      'quotaUpdateIntervalMin' => '10',
+      'quotaQueryType' => 'system',
+      'quotaQueryUIDRange' => '',
+      'quotaQueryGIDRange' => '',
     }
   }
 
@@ -105,6 +110,11 @@ class fhgfs::defaults {
         'tuneStorageSpaceLowLimit',
         'tuneStorageSpaceEmergencyLimit',
         'runDaemonized',
+        'quotaEnableEnforcement',
+        'quotaUpdateIntervalMin',
+        'quotaQueryType',
+        'quotaQueryUIDRange',
+        'quotaQueryGIDRange',
       ]
       },
   }

@@ -248,3 +248,14 @@ setting_str_length  = longest_key.size + 1
 # [runDaemonized]
 # Detach the process from its parent (and from stdin/-out/-err).
 # Default: true
+
+
+# --- Section 3.7: [Quota Settings] ---
+#
+
+# [quotaEnableEnforcement]
+# Enable enforcement of user and group quota limits by denying writes and
+# creation of new chunkfiles when a limit is exceeded.
+# Note: If this option is true, performance might be slightly decreased due to
+#    extra information tracking.
+# Default: false

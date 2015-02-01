@@ -304,6 +304,7 @@ class fhgfs::defaults {
       'tuneFileWriteSyncSize' => '0m',
       'tuneUsePerUserMsgQueues' => 'false',
       'runDaemonized' => 'true',
+      'quotaEnableEnforcement' => 'false',
     },
   }
 
@@ -373,6 +374,7 @@ class fhgfs::defaults {
         'tuneFileWriteSyncSize',
         'tuneUsePerUserMsgQueues',
         'runDaemonized',
+        'quotaEnableEnforcement',
       ],
     }
   }

@@ -153,6 +153,7 @@ shared_context 'fhgfs::storage::config' do
         'tuneFileWriteSyncSize        = 0m',
         'tuneUsePerUserMsgQueues      = false',
         'runDaemonized                = true',
+        'quotaEnableEnforcement       = false',
       ])
     end
   end

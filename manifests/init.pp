@@ -32,6 +32,16 @@ class fhgfs (
   $storage_conn_interfaces      = [],
   $storage_conn_interfaces_file = $fhgfs::params::conn_interfaces_file['storage'],
 
+  # net filters
+  $client_conn_net_filters      = [],
+  $client_conn_net_filter_file  = $fhgfs::params::conn_net_filter_file['client'],
+  $mgmtd_conn_net_filters       = [],
+  $mgmtd_conn_net_filter_file   = $fhgfs::params::conn_net_filter_file['mgmtd'],
+  $meta_conn_net_filters        = [],
+  $meta_conn_net_filter_file    = $fhgfs::params::conn_net_filter_file['meta'],
+  $storage_conn_net_filters     = [],
+  $storage_conn_net_filter_file = $fhgfs::params::conn_net_filter_file['storage'],
+
   # client specific - config
   $client_mount_path          = '/mnt/fhgfs',
   $client_build_args          = $fhgfs::params::client_build_args,
@@ -129,6 +139,7 @@ class fhgfs (
   validate_array($mgmtd_conn_interfaces)
   validate_array($meta_conn_interfaces)
   validate_array($storage_conn_interfaces)
+  validate_array($client_conn_net_filters, $mgmtd_conn_net_filters, $meta_conn_net_filters, $storage_conn_net_filters)
 
   validate_hash($client_config_overrides)
   validate_hash($helperd_config_overrides)
@@ -164,6 +175,14 @@ class fhgfs (
       $client_conn_interfaces_file_ensure = 'present'
     }
 
+    if empty($client_conn_net_filters) {
+      $client_conn_net_filter_file_value  = ''
+      $client_conn_net_filter_file_ensure = 'absent'
+    } else {
+      $client_conn_net_filter_file_value  = $client_conn_net_filter_file
+      $client_conn_net_filter_file_ensure = 'present'
+    }
+
     $helperd_local_configs = {
       'connPortShift'       => $conn_port_shift,
     }
@@ -171,6 +190,7 @@ class fhgfs (
     $client_local_configs = {
       'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $client_conn_interfaces_file_value,
+      'connNetFilterFile'   => $client_conn_net_filter_file_value,
       'sysMgmtdHost'        => $mgmtd_host,
     }
 
@@ -206,9 +226,18 @@ class fhgfs (
       $mgmtd_conn_interfaces_file_ensure  = 'present'
     }
 
+    if empty($mgmtd_conn_net_filters) {
+      $mgmtd_conn_net_filter_file_value   = ''
+      $mgmtd_conn_net_filter_file_ensure  = 'absent'
+    } else {
+      $mgmtd_conn_net_filter_file_value   = $mgmtd_conn_net_filter_file
+      $mgmtd_conn_net_filter_file_ensure  = 'present'
+    }
+
     $mgmtd_local_configs = {
       'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $mgmtd_conn_interfaces_file_value,
+      'connNetFilterFile'   => $mgmtd_conn_net_filter_file_value,
       'storeMgmtdDirectory' => $mgmtd_store_directory,
     }
 
@@ -240,9 +269,18 @@ class fhgfs (
       $meta_conn_interfaces_file_ensure  = 'present'
     }
 
+    if empty($meta_conn_net_filters) {
+      $meta_conn_net_filter_file_value   = ''
+      $meta_conn_net_filter_file_ensure  = 'absent'
+    } else {
+      $meta_conn_net_filter_file_value   = $meta_conn_net_filter_file
+      $meta_conn_net_filter_file_ensure  = 'present'
+    }
+
     $meta_local_configs = {
       'connPortShift'       => $conn_port_shift,
       'connInterfacesFile'  => $meta_conn_interfaces_file_value,
+      'connNetFilterFile'   => $meta_conn_net_filter_file_value,
       'storeMetaDirectory'  => $meta_store_directory,
       'sysMgmtdHost'        => $mgmtd_host,
     }
@@ -275,9 +313,18 @@ class fhgfs (
       $storage_conn_interfaces_file_ensure  = 'present'
     }
 
+    if empty($storage_conn_net_filters) {
+      $storage_conn_net_filter_file_value   = ''
+      $storage_conn_net_filter_file_ensure  = 'absent'
+    } else {
+      $storage_conn_net_filter_file_value   = $storage_conn_net_filter_file
+      $storage_conn_net_filter_file_ensure  = 'present'
+    }
+
     $storage_local_configs = {
       'connPortShift'         => $conn_port_shift,
       'connInterfacesFile'    => $storage_conn_interfaces_file_value,
+      'connNetFilterFile'     => $storage_conn_net_filter_file_value,
       'storeStorageDirectory' => $storage_store_directory,
       'sysMgmtdHost'          => $mgmtd_host,
     }

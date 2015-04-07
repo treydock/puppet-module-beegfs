@@ -1,7 +1,8 @@
 # private class
 class fhgfs::client::config {
 
-  $conn_interfaces = $fhgfs::client_conn_interfaces
+  $conn_interfaces  = $fhgfs::client_conn_interfaces
+  $conn_net_filters = $fhgfs::client_conn_net_filters
 
   file { '/etc/fhgfs/fhgfs-client.conf':
     ensure  => 'present',
@@ -39,6 +40,14 @@ class fhgfs::client::config {
     file { $fhgfs::client_conn_interfaces_file:
       ensure  => $fhgfs::client_conn_interfaces_file_ensure,
       content => template('fhgfs/interfaces.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+
+    file { $fhgfs::client_conn_net_filter_file:
+      ensure  => $fhgfs::client_conn_net_filter_file_ensure,
+      content => template('fhgfs/netfilter.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',

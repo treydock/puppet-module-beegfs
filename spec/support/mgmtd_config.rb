@@ -48,6 +48,16 @@ shared_examples_for 'fhgfs::mgmtd::config' do
     })
   end
 
+  it do
+    should contain_file('/etc/fhgfs/netfilter.mgmtd').with({
+      :ensure   => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
   context 'when mgmtd_config_overrides defined' do
     let(:params) {{ :mgmtd => true, :mgmtd_config_overrides => {'tuneNumWorkers'  => '8'} }}
 
@@ -81,6 +91,22 @@ shared_examples_for 'fhgfs::mgmtd::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.mgmtd', ['eth0'])
+    end
+  end
+
+  context 'when mgmtd_conn_net_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :mgmtd => true, :mgmtd_conn_net_filters => ["192.168.1.0/24"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
+        'connNetFilterFile              = /etc/fhgfs/netfilter.mgmtd',
+      ])
+    end
+
+    it { should contain_file('/etc/fhgfs/netfilter.mgmtd').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/netfilter.mgmtd', ['192.168.1.0/24'])
     end
   end
 

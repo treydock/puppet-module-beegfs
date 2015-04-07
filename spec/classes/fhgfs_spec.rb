@@ -87,7 +87,9 @@ describe 'fhgfs' do
 
   context 'osfamily => Foo' do
     let(:facts) {{ :osfamily => "Foo" }}
-    it { expect { should create_class('fhgfs') }.to raise_error(Puppet::Error, /Unsupported osfamily/) }
+    it 'should raise an error' do
+      expect { should compile }.to raise_error(/Unsupported osfamily/)
+    end
   end
 
   # Test validate_bool parameters
@@ -112,7 +114,9 @@ describe 'fhgfs' do
   ].each do |param|
     context "with #{param} => 'foo'" do
       let(:params) {{ param => 'foo' }}
-      it { expect { should create_class('fhgfs') }.to raise_error(Puppet::Error, /is not a boolean/) }
+      it 'should raise an error' do
+        expect { should compile }.to raise_error(/is not a boolean/)
+      end
     end
   end
 
@@ -122,10 +126,16 @@ describe 'fhgfs' do
     :mgmtd_conn_interfaces,
     :meta_conn_interfaces,
     :storage_conn_interfaces,
+    :client_conn_net_filters,
+    :mgmtd_conn_net_filters,
+    :meta_conn_net_filters,
+    :storage_conn_net_filters,
   ].each do |param|
     context "with #{param} => 'foo'" do
       let(:params) {{ param => 'foo' }}
-      it { expect { should create_class('fhgfs') }.to raise_error(Puppet::Error, /is not an Array/) }
+      it 'should raise an error' do
+        expect { should compile }.to raise_error(/is not an Array/)
+      end
     end
   end
 
@@ -140,7 +150,9 @@ describe 'fhgfs' do
   ].each do |param|
     context "with #{param} => 'foo'" do
       let(:params) {{ param => 'foo' }}
-      it { expect { should create_class('fhgfs') }.to raise_error(Puppet::Error, /is not a Hash/) }
+      it 'should raise an error' do
+        expect { should compile }.to raise_error(/is not a Hash/)
+      end
     end
   end
 end

@@ -53,6 +53,16 @@ shared_context 'fhgfs::meta::config' do
     })
   end
 
+  it do
+    should contain_file('/etc/fhgfs/netfilter.meta').with({
+      :ensure   => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
   context 'when meta_config_overrides defined' do
     let(:params) {{ :meta => true, :meta_config_overrides => {'tuneNumWorkers'  => '8' } }}
 
@@ -86,6 +96,22 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.meta', ['eth0'])
+    end
+  end
+
+  context 'when meta_conn_net_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :meta => true, :meta_conn_net_filters => ["192.168.1.0/24"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
+        'connNetFilterFile         = /etc/fhgfs/netfilter.meta',
+      ])
+    end
+
+    it { should contain_file('/etc/fhgfs/netfilter.meta').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/netfilter.meta', ['192.168.1.0/24'])
     end
   end
 

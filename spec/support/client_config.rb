@@ -107,6 +107,16 @@ shared_examples_for 'fhgfs::client::config' do
     })
   end
 
+  it do
+    should contain_file('/etc/fhgfs/netfilter.client').with({
+      :ensure => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
   context 'when client_config_overrides defined' do
     let(:params) do
       {
@@ -168,6 +178,22 @@ shared_examples_for 'fhgfs::client::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.client', ['eth0'])
+    end
+  end
+
+  context 'when client_conn_net_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :client_conn_net_filters => ["192.168.1.0/24"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
+        'connNetFilterFile             = /etc/fhgfs/netfilter.client',
+      ])
+    end
+
+    it { should contain_file('/etc/fhgfs/netfilter.client').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/netfilter.client', ['192.168.1.0/24'])
     end
   end
 

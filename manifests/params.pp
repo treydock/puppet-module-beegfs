@@ -47,6 +47,12 @@ class fhgfs::params inherits fhgfs::defaults {
         'storage' => '/etc/fhgfs/interfaces.storage',
         'client'  => '/etc/fhgfs/interfaces.client',
       }
+      $conn_net_filter_file   = {
+        'mgmtd'   => '/etc/fhgfs/netfilter.mgmtd',
+        'meta'    => '/etc/fhgfs/netfilter.meta',
+        'storage' => '/etc/fhgfs/netfilter.storage',
+        'client'  => '/etc/fhgfs/netfilter.client',
+      }
     }
 
     default: {

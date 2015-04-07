@@ -1,7 +1,8 @@
 # private class
 class fhgfs::mgmtd::config {
 
-  $conn_interfaces = $fhgfs::mgmtd_conn_interfaces
+  $conn_interfaces  = $fhgfs::mgmtd_conn_interfaces
+  $conn_net_filters = $fhgfs::mgmtd_conn_net_filters
 
   if $fhgfs::mgmtd_store_directory and ! empty($fhgfs::mgmtd_store_directory) {
     file { 'fhgfs-storeMgmtdDirectory':
@@ -21,6 +22,14 @@ class fhgfs::mgmtd::config {
   file { $fhgfs::mgmtd_conn_interfaces_file:
     ensure  => $fhgfs::mgmtd_conn_interfaces_file_ensure,
     content => template('fhgfs/interfaces.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
+
+  file { $fhgfs::mgmtd_conn_net_filter_file:
+    ensure  => $fhgfs::mgmtd_conn_net_filter_file_ensure,
+    content => template('fhgfs/netfilter.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

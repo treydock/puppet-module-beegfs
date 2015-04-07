@@ -54,6 +54,16 @@ shared_context 'fhgfs::storage::config' do
     })
   end
 
+  it do
+    should contain_file('/etc/fhgfs/netfilter.storage').with({
+      :ensure   => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
   context 'when storage_config_overrides defined' do
     let(:params) {{ :storage => true, :storage_config_overrides => {'tuneNumWorkers'  => '24'} }}
 
@@ -87,6 +97,22 @@ shared_context 'fhgfs::storage::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/interfaces.storage', ['eth0'])
+    end
+  end
+
+  context 'when storage_conn_net_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :storage => true, :storage_conn_net_filters => ["192.168.1.0/24"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
+        'connNetFilterFile            = /etc/fhgfs/netfilter.storage',
+      ])
+    end
+
+    it { should contain_file('/etc/fhgfs/netfilter.storage').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/fhgfs/netfilter.storage', ['192.168.1.0/24'])
     end
   end
 

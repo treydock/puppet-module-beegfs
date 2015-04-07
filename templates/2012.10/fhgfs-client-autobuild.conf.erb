@@ -46,7 +46,7 @@
 # Default:
 #  buildArgs=-j8
 
-buildArgs=<%= @client_build_args %>
+buildArgs=<%= scope.lookupvar('fhgfs::client_build_args') %>
 
 
 # Turn Autobuild on/off
@@ -60,4 +60,4 @@ buildArgs=<%= @client_build_args %>
 # Default:
 #  buildEnabled=true
 
-buildEnabled=<%= @client_build_enabled %>
+buildEnabled=<%= scope.lookupvar('fhgfs::client_build_enabled') %>

@@ -9,7 +9,7 @@ class fhgfs (
   $utils_only = false,
 
   # packages
-  $release              = '2012.10',
+  $release              = '2014.01',
   $version              = 'present',
   $repo_descr           = 'UNSET',
   $repo_baseurl         = 'UNSET',

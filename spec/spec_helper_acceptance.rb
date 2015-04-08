@@ -22,7 +22,7 @@ RSpec.configure do |c|
 
   # Local settings based on environment variables
   c.add_setting :fhgfs_release
-  c.fhgfs_release = ENV['BEAKER_fhgfs_release'] || '2012.10'
+  c.fhgfs_release = ENV['BEAKER_fhgfs_release'] || '2014.01'
 
   # Configure all nodes in nodeset
   c.before :suite do

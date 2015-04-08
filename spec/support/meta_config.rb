@@ -12,34 +12,36 @@ shared_context 'fhgfs::meta::config' do
 
   it do
     verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-      'logLevel                  = 3',
-      'logNoDate                 = false',
-      'logStdFile                = /var/log/fhgfs-meta.log',
-      'logNumLines               = 50000',
-      'logNumRotatedFiles        = 5',
-      'connPortShift             = 0',
-      'connMgmtdPortUDP          = 8008',
-      'connMgmtdPortTCP          = 8008',
-      'connMetaPortUDP           = 8005',
-      'connMetaPortTCP           = 8005',
-      'connUseSDP                = false',
-      'connUseRDMA               = true',
-      'connRDMATypeOfService     = 0',
-      'connBacklogTCP            = 128',
-      'connMaxInternodeNum       = 10',
-      'connInterfacesFile        = ',
-      'connNetFilterFile         = ',
-      'connNonPrimaryExpiration  = 10000',
-      'storeMetaDirectory        = ',
-      'storeAllowFirstRunInit    = true',
-      'storeUseExtendedAttribs   = true',
-      'tuneNumWorkers            = 0',
-      'tuneBindToNumaZone        = ',
-      'tuneTargetChooser         = randomized',
-      'tuneRotateMirrorTargets   = false',
-      'tuneUsePerUserMsgQueues   = false',
-      'sysMgmtdHost              = ',
-      'runDaemonized             = true',
+      'sysMgmtdHost                 = ',
+      'storeMetaDirectory           = ',
+      'storeAllowFirstRunInit       = true',
+      '# --- Section 1.2: [Advanced Settings] ---',
+      'logLevel                     = 3',
+      'logNoDate                    = false',
+      'logStdFile                   = /var/log/fhgfs-meta.log',
+      'logNumLines                  = 50000',
+      'logNumRotatedFiles           = 5',
+      'connPortShift                = 0',
+      'connMgmtdPortUDP             = 8008',
+      'connMgmtdPortTCP             = 8008',
+      'connMetaPortUDP              = 8005',
+      'connMetaPortTCP              = 8005',
+      'connUseSDP                   = false',
+      'connUseRDMA                  = true',
+      'connRDMATypeOfService        = 0',
+      'connBacklogTCP               = 128',
+      'connMaxInternodeNum          = 10',
+      'connInterfacesFile           = ',
+      'connNetFilterFile            = ',
+      'connFallbackExpirationSecs   = 900',
+      'connAuthFile                 = ',
+      'storeUseExtendedAttribs      = true',
+      'tuneNumWorkers               = 0',
+      'tuneBindToNumaZone           = ',
+      'tuneTargetChooser            = randomized',
+      'tuneRotateMirrorTargets      = false',
+      'tuneUsePerUserMsgQueues      = false',
+      'runDaemonized                = true',
     ])
   end
 
@@ -68,7 +70,7 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'tuneNumWorkers            = 8',
+        'tuneNumWorkers               = 8',
       ])
     end
   end
@@ -78,7 +80,7 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'connPortShift             = 1000',
+        'connPortShift                = 1000',
       ])
     end
   end
@@ -88,7 +90,7 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'connInterfacesFile        = /etc/fhgfs/interfaces.meta',
+        'connInterfacesFile           = /etc/fhgfs/interfaces.meta',
       ])
     end
 
@@ -104,7 +106,7 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'connNetFilterFile         = /etc/fhgfs/netfilter.meta',
+        'connNetFilterFile            = /etc/fhgfs/netfilter.meta',
       ])
     end
 
@@ -127,7 +129,7 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'storeMetaDirectory        = /fhgfs/meta',
+        'storeMetaDirectory           = /fhgfs/meta',
       ])
     end
   end
@@ -137,46 +139,44 @@ shared_context 'fhgfs::meta::config' do
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'sysMgmtdHost              = mgmtd.foo',
+        'sysMgmtdHost                 = mgmtd.foo',
       ])
     end
   end
 
-  context 'when release => "2014.01"' do
-    let(:params) {{ :meta => true, :release => '2014.01' }}
+  context 'when release => "2012.10"' do
+    let(:params) {{ :meta => true, :release => '2012.10' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-meta.conf', [
-        'sysMgmtdHost                 = ',
-        'storeMetaDirectory           = ',
-        'storeAllowFirstRunInit       = true',
-        '# --- Section 1.2: [Advanced Settings] ---',
-        'logLevel                     = 3',
-        'logNoDate                    = false',
-        'logStdFile                   = /var/log/fhgfs-meta.log',
-        'logNumLines                  = 50000',
-        'logNumRotatedFiles           = 5',
-        'connPortShift                = 0',
-        'connMgmtdPortUDP             = 8008',
-        'connMgmtdPortTCP             = 8008',
-        'connMetaPortUDP              = 8005',
-        'connMetaPortTCP              = 8005',
-        'connUseSDP                   = false',
-        'connUseRDMA                  = true',
-        'connRDMATypeOfService        = 0',
-        'connBacklogTCP               = 128',
-        'connMaxInternodeNum          = 10',
-        'connInterfacesFile           = ',
-        'connNetFilterFile            = ',
-        'connFallbackExpirationSecs   = 900',
-        'connAuthFile                 = ',
-        'storeUseExtendedAttribs      = true',
-        'tuneNumWorkers               = 0',
-        'tuneBindToNumaZone           = ',
-        'tuneTargetChooser            = randomized',
-        'tuneRotateMirrorTargets      = false',
-        'tuneUsePerUserMsgQueues      = false',
-        'runDaemonized                = true',
+        'logLevel                  = 3',
+        'logNoDate                 = false',
+        'logStdFile                = /var/log/fhgfs-meta.log',
+        'logNumLines               = 50000',
+        'logNumRotatedFiles        = 5',
+        'connPortShift             = 0',
+        'connMgmtdPortUDP          = 8008',
+        'connMgmtdPortTCP          = 8008',
+        'connMetaPortUDP           = 8005',
+        'connMetaPortTCP           = 8005',
+        'connUseSDP                = false',
+        'connUseRDMA               = true',
+        'connRDMATypeOfService     = 0',
+        'connBacklogTCP            = 128',
+        'connMaxInternodeNum       = 10',
+        'connInterfacesFile        = ',
+        'connNetFilterFile         = ',
+        'connNonPrimaryExpiration  = 10000',
+        'storeMetaDirectory        = ',
+        'storeAllowFirstRunInit    = true',
+        'storeUseExtendedAttribs   = true',
+        'tuneNumWorkers            = 0',
+        'tuneBindToNumaZone        = ',
+        'tuneTargetChooser         = randomized',
+        'tuneRotateMirrorTargets   = false',
+        'tuneUsePerUserMsgQueues   = false',
+        'sysMgmtdHost              = ',
+        'runDaemonized             = true',
       ])
     end
   end

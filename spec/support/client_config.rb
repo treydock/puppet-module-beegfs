@@ -10,6 +10,8 @@ shared_examples_for 'fhgfs::client::config' do
 
   it do
     verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
+      'sysMgmtdHost                  = ',
+      '# --- Section 1.2: [Advanced Settings] ---',
       'logLevel                      = 3',
       'logType                       = helperd',
       'logClientID                   = false',
@@ -27,16 +29,17 @@ shared_examples_for 'fhgfs::client::config' do
       'connMaxInternodeNum           = 12',
       'connInterfacesFile            = ',
       'connNetFilterFile             = ',
-      'connNonPrimaryExpiration      = 10000',
+      'connFallbackExpirationSecs    = 900',
       'connCommRetrySecs             = 600',
+      'connAuthFile                  = ',
       'tuneNumWorkers                = 0',
       'tunePreferredMetaFile         = ',
       'tunePreferredStorageFile      = ',
       'tuneFileCacheType             = buffered',
       'tuneRemoteFSync               = true',
       'tuneUseGlobalFileLocks        = false',
-      'sysMgmtdHost                  = ',
-      'sysCreateHardlinksAsSymlinks  = true',
+      'tuneUseGlobalAppendLocks      = false',
+      'sysCreateHardlinksAsSymlinks  = false',
       'sysMountSanityCheckMS         = 11000',
       'sysSyncOnClose                = false',
       'sysSessionCheckOnClose        = false',
@@ -61,6 +64,7 @@ shared_examples_for 'fhgfs::client::config' do
       'logNumRotatedFiles = 5',
       'connPortShift      = 0',
       'connHelperdPortTCP = 8006',
+      'connAuthFile       = ',
       'tuneNumWorkers     = 2',
       'runDaemonized      = true',
     ])
@@ -230,13 +234,11 @@ shared_examples_for 'fhgfs::client::config' do
     end
   end
 
-  context 'when fhgfs::release => "2014.01"' do
-    let(:params) {{ :release => '2014.01' }}
+  context 'when fhgfs::release => "2012.10"' do
+    let(:params) {{ :release => '2012.10' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-client.conf', [
-        'sysMgmtdHost                  = ',
-        '# --- Section 1.2: [Advanced Settings] ---',
         'logLevel                      = 3',
         'logType                       = helperd',
         'logClientID                   = false',
@@ -254,17 +256,16 @@ shared_examples_for 'fhgfs::client::config' do
         'connMaxInternodeNum           = 12',
         'connInterfacesFile            = ',
         'connNetFilterFile             = ',
-        'connFallbackExpirationSecs    = 900',
+        'connNonPrimaryExpiration      = 10000',
         'connCommRetrySecs             = 600',
-        'connAuthFile                  = ',
         'tuneNumWorkers                = 0',
         'tunePreferredMetaFile         = ',
         'tunePreferredStorageFile      = ',
         'tuneFileCacheType             = buffered',
         'tuneRemoteFSync               = true',
         'tuneUseGlobalFileLocks        = false',
-        'tuneUseGlobalAppendLocks      = false',
-        'sysCreateHardlinksAsSymlinks  = false',
+        'sysMgmtdHost                  = ',
+        'sysCreateHardlinksAsSymlinks  = true',
         'sysMountSanityCheckMS         = 11000',
         'sysSyncOnClose                = false',
         'sysSessionCheckOnClose        = false',
@@ -280,7 +281,6 @@ shared_examples_for 'fhgfs::client::config' do
         'logNumRotatedFiles = 5',
         'connPortShift      = 0',
         'connHelperdPortTCP = 8006',
-        'connAuthFile       = ',
         'tuneNumWorkers     = 2',
         'runDaemonized      = true',
       ])

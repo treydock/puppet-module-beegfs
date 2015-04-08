@@ -12,6 +12,10 @@ shared_examples_for 'fhgfs::mgmtd::config' do
 
   it do
     verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
+      'storeMgmtdDirectory            = ',
+      'storeAllowFirstRunInit         = true',
+      'sysAllowNewServers             = true',
+      '# --- Section 1.2: [Advanced Settings] ---',
       'logLevel                       = 2',
       'logNoDate                      = false',
       'logStdFile                     = /var/log/fhgfs-mgmtd.log',
@@ -23,18 +27,19 @@ shared_examples_for 'fhgfs::mgmtd::config' do
       'connBacklogTCP                 = 128',
       'connInterfacesFile             = ',
       'connNetFilterFile              = ',
-      'storeMgmtdDirectory            = ',
-      'storeAllowFirstRunInit         = true',
+      'connAuthFile                   = ',
       'tuneNumWorkers                 = 4',
       'tuneClientAutoRemoveMins       = 30',
       'tuneMetaSpaceLowLimit          = 10G',
       'tuneMetaSpaceEmergencyLimit    = 3G',
       'tuneStorageSpaceLowLimit       = 512G',
       'tuneStorageSpaceEmergencyLimit = 10G',
-      'sysAllowNewServers             = true',
-      'sysForcedRoot                  = 0',
-      'sysOverrideStoredRoot          = false',
       'runDaemonized                  = true',
+      'quotaEnableEnforcement         = false',
+      'quotaUpdateIntervalMin         = 10',
+      'quotaQueryType                 = system',
+      'quotaQueryUIDRange             = ',
+      'quotaQueryGIDRange             = ',
     ])
   end
 
@@ -127,15 +132,11 @@ shared_examples_for 'fhgfs::mgmtd::config' do
     end
   end
 
-  context 'when release => "2014.01"' do
-    let(:params) {{ :mgmtd => true, :release => '2014.01' }}
+  context 'when release => "2012.10"' do
+    let(:params) {{ :mgmtd => true, :release => '2012.10' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-mgmtd.conf', [
-        'storeMgmtdDirectory            = ',
-        'storeAllowFirstRunInit         = true',
-        'sysAllowNewServers             = true',
-        '# --- Section 1.2: [Advanced Settings] ---',
         'logLevel                       = 2',
         'logNoDate                      = false',
         'logStdFile                     = /var/log/fhgfs-mgmtd.log',
@@ -147,19 +148,18 @@ shared_examples_for 'fhgfs::mgmtd::config' do
         'connBacklogTCP                 = 128',
         'connInterfacesFile             = ',
         'connNetFilterFile              = ',
-        'connAuthFile                   = ',
+        'storeMgmtdDirectory            = ',
+        'storeAllowFirstRunInit         = true',
         'tuneNumWorkers                 = 4',
         'tuneClientAutoRemoveMins       = 30',
         'tuneMetaSpaceLowLimit          = 10G',
         'tuneMetaSpaceEmergencyLimit    = 3G',
         'tuneStorageSpaceLowLimit       = 512G',
         'tuneStorageSpaceEmergencyLimit = 10G',
+        'sysAllowNewServers             = true',
+        'sysForcedRoot                  = 0',
+        'sysOverrideStoredRoot          = false',
         'runDaemonized                  = true',
-        'quotaEnableEnforcement         = false',
-        'quotaUpdateIntervalMin         = 10',
-        'quotaQueryType                 = system',
-        'quotaQueryUIDRange             = ',
-        'quotaQueryGIDRange             = ',
       ])
     end
   end

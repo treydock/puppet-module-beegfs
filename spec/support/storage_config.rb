@@ -12,6 +12,10 @@ shared_context 'fhgfs::storage::config' do
 
   it do
     verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
+      'sysMgmtdHost                 = ',
+      'storeStorageDirectory        = ',
+      'storeAllowFirstRunInit       = true',
+      '# --- Section 1.2: [Advanced Settings] ---',
       'logLevel                     = 3',
       'logNoDate                    = false',
       'logStdFile                   = /var/log/fhgfs-storage.log',
@@ -28,8 +32,7 @@ shared_context 'fhgfs::storage::config' do
       'connBacklogTCP               = 128',
       'connInterfacesFile           = ',
       'connNetFilterFile            = ',
-      'storeStorageDirectory        = ',
-      'storeAllowFirstRunInit       = true',
+      'connAuthFile                 = ',
       'tuneNumWorkers               = 12',
       'tuneBindToNumaZone           = ',
       'tuneWorkerBufSize            = 4m',
@@ -39,8 +42,8 @@ shared_context 'fhgfs::storage::config' do
       'tuneFileWriteSize            = 64k',
       'tuneFileWriteSyncSize        = 0m',
       'tuneUsePerUserMsgQueues      = false',
-      'sysMgmtdHost                 = ',
       'runDaemonized                = true',
+      'quotaEnableEnforcement       = false',
     ])
   end
 
@@ -143,15 +146,11 @@ shared_context 'fhgfs::storage::config' do
     end
   end
 
-  context 'when release => "2014.01"' do
-    let(:params) {{ :storage => true, :release => '2014.01' }}
+  context 'when release => "2012.10"' do
+    let(:params) {{ :storage => true, :release => '2012.10' }}
 
     it do
       verify_contents(catalogue, '/etc/fhgfs/fhgfs-storage.conf', [
-        'sysMgmtdHost                 = ',
-        'storeStorageDirectory        = ',
-        'storeAllowFirstRunInit       = true',
-        '# --- Section 1.2: [Advanced Settings] ---',
         'logLevel                     = 3',
         'logNoDate                    = false',
         'logStdFile                   = /var/log/fhgfs-storage.log',
@@ -168,7 +167,8 @@ shared_context 'fhgfs::storage::config' do
         'connBacklogTCP               = 128',
         'connInterfacesFile           = ',
         'connNetFilterFile            = ',
-        'connAuthFile                 = ',
+        'storeStorageDirectory        = ',
+        'storeAllowFirstRunInit       = true',
         'tuneNumWorkers               = 12',
         'tuneBindToNumaZone           = ',
         'tuneWorkerBufSize            = 4m',
@@ -178,8 +178,8 @@ shared_context 'fhgfs::storage::config' do
         'tuneFileWriteSize            = 64k',
         'tuneFileWriteSyncSize        = 0m',
         'tuneUsePerUserMsgQueues      = false',
+        'sysMgmtdHost                 = ',
         'runDaemonized                = true',
-        'quotaEnableEnforcement       = false',
       ])
     end
   end

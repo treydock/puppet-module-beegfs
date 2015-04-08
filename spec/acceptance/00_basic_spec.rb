@@ -4,7 +4,7 @@ describe 'fhgfs facts:' do
   context 'before installing fhgfs' do
     hosts.each do |host|
       describe command('facter --puppet fhgfs_version'), :node => host do
-        it { should return_stdout '' }
+        its(:stdout) { should match /^$/ }
       end
     end
   end

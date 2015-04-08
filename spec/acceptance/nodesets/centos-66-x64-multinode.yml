@@ -4,8 +4,8 @@ HOSTS:
       - agent
       - client
     platform: el-6-x86_64
-    box: centos-65-x64-virtualbox-nocm
-    box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box
+    box: puppetlabs/centos-6.6-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
     hypervisor: vagrant
     ip: 192.168.1.5
   storage:
@@ -13,8 +13,8 @@ HOSTS:
       - agent
       - storage
     platform: el-6-x86_64
-    box: centos-65-x64-virtualbox-nocm
-    box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box
+    box: puppetlabs/centos-6.6-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
     hypervisor: vagrant
     ip: 192.168.1.4
   meta:
@@ -22,8 +22,8 @@ HOSTS:
       - agent
       - meta
     platform: el-6-x86_64
-    box: centos-65-x64-virtualbox-nocm
-    box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box
+    box: puppetlabs/centos-6.6-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
     hypervisor: vagrant
     ip: 192.168.1.3
   mgmt:
@@ -32,8 +32,8 @@ HOSTS:
       - agent
       - mgmt
     platform: el-6-x86_64
-    box: centos-65-x64-virtualbox-nocm
-    box_url: http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box
+    box: puppetlabs/centos-6.6-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
     hypervisor: vagrant
     ip: 192.168.1.2
 CONFIG:

@@ -24,6 +24,7 @@ shared_examples_for 'fhgfs::client::service' do
         'File[/etc/fhgfs/fhgfs-mounts.conf]',
         'File[/etc/fhgfs/fhgfs-client-autobuild.conf]',
         'File[/etc/fhgfs/interfaces.client]',
+        'File[/etc/fhgfs/netfilter.client]',
       ],
     })
   end

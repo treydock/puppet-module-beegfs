@@ -162,6 +162,7 @@ class fhgfs (
         File['/etc/fhgfs/fhgfs-mounts.conf'],
         File['/etc/fhgfs/fhgfs-client-autobuild.conf'],
         File[$client_conn_interfaces_file],
+        File[$client_conn_net_filter_file],
       ]
       $helperd_service_subscribe  = File['/etc/fhgfs/fhgfs-helperd.conf']
     } else {

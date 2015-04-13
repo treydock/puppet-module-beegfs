@@ -115,4 +115,4 @@ If you have Vagrant >= 1.2.0 installed you can run system tests
 
 ## Additional Information
 
-* http://www.fhgfs.com/wiki/FhGFS
+* http://www.beegfs.com/wiki

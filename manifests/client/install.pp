@@ -10,6 +10,11 @@ class fhgfs::client::install {
       $client_notify  = undef
     }
 
+    if $fhgfs::manage_client_dependencies {
+      ensure_packages($fhgfs::client_package_dependencies)
+    }
+    $_package_require = Package[$fhgfs::client_package_dependencies]
+
     package { 'fhgfs-helperd':
       ensure => $fhgfs::version,
       name   => $fhgfs::helperd_package,
@@ -17,9 +22,10 @@ class fhgfs::client::install {
     }
 
     package { 'fhgfs-client':
-      ensure => $fhgfs::version,
-      name   => $fhgfs::client_package,
-      notify => $client_notify,
+      ensure  => $fhgfs::version,
+      name    => $fhgfs::client_package,
+      require => $_package_require,
+      notify  => $client_notify,
     }
   }
 

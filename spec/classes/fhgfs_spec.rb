@@ -100,6 +100,7 @@ describe 'fhgfs' do
     :storage,
     :admon,
     :utils_only,
+    :manage_client_dependencies,
     :client_build_enabled,
     :client_manage_service,
     :client_service_autorestart,

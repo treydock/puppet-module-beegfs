@@ -1,4 +1,6 @@
 shared_examples_for 'fhgfs::client::install' do
+  it { should contain_package('kernel-devel').with_ensure('present') }
+
   it do
     should contain_package('fhgfs-helperd').with({
       :ensure     => 'present',
@@ -11,6 +13,7 @@ shared_examples_for 'fhgfs::client::install' do
     should contain_package('fhgfs-client').with({
       :ensure     => 'present',
       :name       => 'fhgfs-client',
+      :require    => 'Package[kernel-devel]',
       :notify     => 'Service[fhgfs-client]'
     })
   end
@@ -40,5 +43,10 @@ shared_examples_for 'fhgfs::client::install' do
     let(:params) {{ :client_service_autorestart => false }}
     it { should contain_package('fhgfs-helperd').without_notify }
     it { should contain_package('fhgfs-client').without_notify }
+  end
+
+  context 'when manage_client_dependencies => false' do
+    let(:params) {{ :manage_client_dependencies => false }}
+    it { should_not contain_package('kernel-devel') }
   end
 end

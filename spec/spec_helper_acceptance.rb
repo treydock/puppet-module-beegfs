@@ -63,7 +63,6 @@ RSpec.configure do |c|
       end
 
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet('module', 'install', 'treydock-gpg_key'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('resource service iptables ensure=stopped'), { :acceptable_exit_codes => [0,1] }
 

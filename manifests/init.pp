@@ -9,14 +9,15 @@ class fhgfs (
   $utils_only = false,
 
   # packages
-  $release              = '2014.01',
-  $version              = 'present',
-  $repo_descr           = 'UNSET',
-  $repo_baseurl         = 'UNSET',
-  $repo_gpgkey          = 'UNSET',
-  $repo_gpgcheck        = '0',
-  $repo_enabled         = '1',
-  $package_dependencies = $fhgfs::params::package_dependencies,
+  $release                      = '2014.01',
+  $version                      = 'present',
+  $repo_descr                   = undef,
+  $repo_baseurl                 = undef,
+  $repo_gpgkey                  = undef,
+  $repo_gpgcheck                = '0',
+  $repo_enabled                 = '1',
+  $client_package_dependencies  = $fhgfs::params::client_package_dependencies,
+  $manage_client_dependencies   = true,
 
   # common configuration
   $mgmtd_host       = '',
@@ -122,6 +123,7 @@ class fhgfs (
 
   validate_re($repo_gpgcheck, '^(1|0)$')
   validate_re($repo_enabled, '^(1|0)$')
+  validate_bool($manage_client_dependencies)
 
   validate_bool($client_build_enabled)
   validate_bool($client_manage_service)

@@ -1,44 +1,17 @@
 # private class
 class fhgfs::repo {
 
-  $repo = $fhgfs::repo[$fhgfs::release]
-
-  ensure_packages($fhgfs::package_dependencies)
-
-  $repo_descr = $fhgfs::repo_descr ? {
-    'UNSET' => $repo['descr'],
-    default => $fhgfs::repo_descr,
-  }
-  
-  $repo_baseurl = $fhgfs::repo_baseurl ? {
-    'UNSET' => $repo['baseurl'],
-    default => $fhgfs::repo_baseurl,
-  }
-
-  $repo_gpgkey = $fhgfs::repo_gpgkey ? {
-    'UNSET' => $repo['gpgkey'],
-    default => $fhgfs::repo_gpgkey,
-  }
+  $_repo_defaults       = $fhgfs::repo_defaults[$fhgfs::release]
+  $_repo_descr          = pick($fhgfs::repo_descr, $_repo_defaults['descr'])
+  $_repo_baseurl        = pick($fhgfs::repo_baseurl, $_repo_defaults['baseurl'])
+  $_repo_gpgkey         = pick($fhgfs::repo_gpgkey, $_repo_defaults['gpgkey'])
 
   case $::osfamily {
     'RedHat': {
-      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs':
-        ensure => present,
-        source => 'puppet:///modules/fhgfs/RPM-GPG-KEY-fhgfs',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-      }
-
-      gpg_key { 'fhgfs':
-        path   => '/etc/pki/rpm-gpg/RPM-GPG-KEY-fhgfs',
-        before => Yumrepo['fhgfs'],
-      }
-
       yumrepo { 'fhgfs':
-        descr    => $repo_descr,
-        baseurl  => $repo_baseurl,
-        gpgkey   => $repo_gpgkey,
+        descr    => $_repo_descr,
+        baseurl  => $_repo_baseurl,
+        gpgkey   => $_repo_gpgkey,
         gpgcheck => $fhgfs::repo_gpgcheck,
         enabled  => $fhgfs::repo_enabled,
       }

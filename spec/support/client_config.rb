@@ -48,6 +48,26 @@ shared_examples_for 'fhgfs::client::config' do
   end
 
   it do
+    should contain_file('/etc/fhgfs/interfaces.client').with({
+      :ensure => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
+  it do
+    should contain_file('/etc/fhgfs/netfilter.client').with({
+      :ensure => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
+  it do
     should contain_file('/etc/fhgfs/fhgfs-helperd.conf').with({
       :ensure   => 'present',
       :owner    => 'root',
@@ -99,26 +119,6 @@ shared_examples_for 'fhgfs::client::config' do
       'buildArgs=-j8',
       'buildEnabled=true',
     ])
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/interfaces.client').with({
-      :ensure => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
-  end
-
-  it do
-    should contain_file('/etc/fhgfs/netfilter.client').with({
-      :ensure => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
   end
 
   context 'when client_config_overrides defined' do
@@ -219,6 +219,8 @@ shared_examples_for 'fhgfs::client::config' do
   context 'when utils_only => true' do
     let(:params) {{ :utils_only => true }}
     it { should contain_file('/etc/fhgfs/fhgfs-client.conf') }
+    it { should contain_file('/etc/fhgfs/interfaces.client') }
+    it { should contain_file('/etc/fhgfs/netfilter.client') }
     it { should_not contain_file('/etc/fhgfs/fhgfs-helperd.conf') }
     it { should_not contain_file('/etc/fhgfs/fhgfs-mounts.conf') }
     it { should_not contain_file('/etc/fhgfs/fhgfs-client-autobuild.conf') }

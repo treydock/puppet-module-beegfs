@@ -13,9 +13,12 @@ shared_examples_for 'fhgfs::client::install' do
     should contain_package('fhgfs-client').with({
       :ensure     => 'present',
       :name       => 'fhgfs-client',
-      :require    => 'Package[kernel-devel]',
       :notify     => 'Service[fhgfs-client]'
     })
+  end
+
+  it do
+    should contain_package('fhgfs-client').that_requires('Package[kernel-devel]')
   end
 
   it do

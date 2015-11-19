@@ -1,14 +1,14 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs class:' do
+describe 'beegfs class:' do
   context 'with client' do
     node = find_only_one(:client)
 
     it 'should run successfully' do
       pp = <<-EOS
-      class { 'fhgfs':
+      class { 'beegfs':
         mgmtd_host        => '#{mgmt_ip}',
-        release           => '#{RSpec.configuration.fhgfs_release}',
+        release           => '#{RSpec.configuration.beegfs_release}',
       }
       EOS
 
@@ -16,18 +16,18 @@ describe 'fhgfs class:' do
       apply_manifest_on(node, pp, :catch_changes => true)
     end
 
-    describe service('fhgfs-helperd'), :node => node do
+    describe service('beegfs-helperd'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe service('fhgfs-client'), :node => node do
+    describe service('beegfs-client'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe file('/mnt/fhgfs'), :node => node do
-      it { should be_mounted.with(:type => 'fhgfs') }
+    describe file('/mnt/beegfs'), :node => node do
+      it { should be_mounted.with(:type => 'beegfs') }
     end
   end
 end

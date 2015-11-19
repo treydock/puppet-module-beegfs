@@ -1,6 +1,6 @@
-## treydock-fhgfs changelog
+## treydock-beegfs changelog
 
-Release notes for the treydock-fhgfs module.
+Release notes for the treydock-beegfs module.
 
 ------------------------------------------
 

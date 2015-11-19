@@ -1,10 +1,10 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs facts:' do
-  context 'when fhgfs is installed' do
+describe 'beegfs facts:' do
+  context 'when beegfs is installed' do
     hosts.each do |host|
-      describe command('facter --puppet fhgfs_version'), :node => host do
-        its(:stdout) { should match /^#{RSpec.configuration.fhgfs_release}.r[0-9]+$/ }
+      describe command('facter --puppet beegfs_version'), :node => host do
+        its(:stdout) { should match /^#{RSpec.configuration.beegfs_release}.r[0-9]+$/ }
       end
     end
   end

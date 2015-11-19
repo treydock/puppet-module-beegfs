@@ -1,22 +1,22 @@
 require 'spec_helper_acceptance'
 
-describe 'fhgfs class:' do
+describe 'beegfs class:' do
   context 'with meta' do
     node = find_only_one(:meta)
 
     it 'should run successfully' do
       pp = <<-EOS
-      file { '/fhgfs':
+      file { '/beegfs':
         ensure  => directory,
       }->
-      class { 'fhgfs':
+      class { 'beegfs':
         meta                  => true,
         utils_only            => true,
         mgmtd_host            => '#{mgmt_ip}',
-        release               => '#{RSpec.configuration.fhgfs_release}',
+        release               => '#{RSpec.configuration.beegfs_release}',
         meta_service_ensure   => 'running',
         meta_service_enable   => true,
-        meta_store_directory  => '/fhgfs/meta',
+        meta_store_directory  => '/beegfs/meta',
       }
       EOS
 
@@ -24,17 +24,17 @@ describe 'fhgfs class:' do
       apply_manifest_on(node, pp, :catch_changes => true)
     end
 
-    describe service('fhgfs-meta'), :node => node do
+    describe service('beegfs-meta'), :node => node do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe service('fhgfs-helperd'), :node => node do
+    describe service('beegfs-helperd'), :node => node do
       it { should_not be_enabled }
       it { should_not be_running }
     end
 
-    describe service('fhgfs-client'), :node => node do
+    describe service('beegfs-client'), :node => node do
       it { should_not be_enabled }
       it { should_not be_running }
     end

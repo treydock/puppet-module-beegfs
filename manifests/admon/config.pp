@@ -1,15 +1,15 @@
 # private class
-class fhgfs::admon::config {
+class beegfs::admon::config {
 
-  file { '/etc/fhgfs/fhgfs-admon.conf':
+  file { '/etc/beegfs/beegfs-admon.conf':
     ensure  => 'present',
-    content => template("fhgfs/${fhgfs::release}/fhgfs-admon.conf.erb"),
+    content => template("beegfs/${beegfs::release}/beegfs-admon.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::admon_database_file_dir:
+  file { $beegfs::admon_database_file_dir:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',

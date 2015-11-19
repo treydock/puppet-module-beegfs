@@ -1,15 +1,15 @@
 # private class
-class fhgfs::mgmtd::install {
+class beegfs::mgmtd::install {
 
-  if $fhgfs::mgmtd_service_autorestart {
-    $mgmtd_notify = Service['fhgfs-mgmtd']
+  if $beegfs::mgmtd_service_autorestart {
+    $mgmtd_notify = Service['beegfs-mgmtd']
   } else {
     $mgmtd_notify = undef
   }
 
-  package { 'fhgfs-mgmtd':
-    ensure => $fhgfs::version,
-    name   => $fhgfs::mgmtd_package,
+  package { 'beegfs-mgmtd':
+    ensure => $beegfs::version,
+    name   => $beegfs::mgmtd_package,
     notify => $mgmtd_notify,
   }
 

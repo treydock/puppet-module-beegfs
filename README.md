@@ -1,11 +1,11 @@
-# puppet-module-fhgfs
+# puppet-module-beegfs
 
-[![Build Status](https://travis-ci.org/treydock/puppet-module-fhgfs.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-fhgfs)
+[![Build Status](https://travis-ci.org/treydock/puppet-module-beegfs.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-beegfs)
 
 ####Table of Contents
 
 1. [Overview](#overview)
-    * [FhGFS Compatibility](#fhgfs-compatibility)
+    * [BeeGFS Compatibility](#beegfs-compatibility)
 2. [Usage - Configuration options](#usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
@@ -17,16 +17,15 @@
 
 TODO
 
-### FhGFS Compatibility
+### BeeGFS Compatibility
 
-This module is only supported on the following releases of FhGFS:
+This module is only supported on the following releases of BeeGFS:
 
-* 2012.10
-* 2014.01
+* 2015.03
 
 ## Usage
 
-### fhgfs
+### beegfs
 
 TODO
 
@@ -36,49 +35,49 @@ TODO
 
 #### Public classes
 
-* `fhgfs`: Installs and configures fhgfs
+* `beegfs`: Installs and configures beegfs
 
 #### Private classes
 
-* `fhgfs::repo`: Manages the FhGFS package repository resources
-* `fhgfs::client`: Manage FhGFS client
-* `fhgfs::client::install`: Install fhgfs-client packages
-* `fhgfs::client::config`: Configure fhgfs-client
-* `fhgfs::client::service`: Manage fhgfs-client services
-* `fhgfs::mgmtd`: Manage FhGFS management server
-* `fhgfs::mgmtd::install`: Install fhgfs-mgmtd package
-* `fhgfs::mgmtd::config`: Configure fhgfs-mgmtd
-* `fhgfs::mgmtd::service`: Manage fhgfs-mgmtd services
-* `fhgfs::meta`: Manage FhGFS metadata server
-* `fhgfs::meta::install`: Install fhgfs-meta
-* `fhgfs::meta::config`: Configure fhgfs-meta
-* `fhgfs::meta::service`: Manage fhgfs-meta service
-* `fhgfs::storage`: Manage FhGFS storage server
-* `fhgfs::storage::install`: Install fhgfs-storage
-* `fhgfs::storage::config`: Configure fhgfs-storage
-* `fhgfs::storage::service`: Manage fhgfs-storage service
-* `fhgfs::admon`: Manage FhGFS Admon server
-* `fhgfs::admon::install`: Install fhgfs-admon
-* `fhgfs::admon::config`: Configure fhgfs-admon
-* `fhgfs::admon::service`: Manage fhgfs-admon service
-* `fhgfs::defaults`: Set default configuration values for the various FhGFS roles for version release 2012.10 and 2014.01
-* `fhgfs::params`: Set default parameter values based on Fact values
+* `beegfs::repo`: Manages the BeeGFS package repository resources
+* `beegfs::client`: Manage BeeGFS client
+* `beegfs::client::install`: Install beegfs-client packages
+* `beegfs::client::config`: Configure beegfs-client
+* `beegfs::client::service`: Manage beegfs-client services
+* `beegfs::mgmtd`: Manage BeeGFS management server
+* `beegfs::mgmtd::install`: Install beegfs-mgmtd package
+* `beegfs::mgmtd::config`: Configure beegfs-mgmtd
+* `beegfs::mgmtd::service`: Manage beegfs-mgmtd services
+* `beegfs::meta`: Manage BeeGFS metadata server
+* `beegfs::meta::install`: Install beegfs-meta
+* `beegfs::meta::config`: Configure beegfs-meta
+* `beegfs::meta::service`: Manage beegfs-meta service
+* `beegfs::storage`: Manage BeeGFS storage server
+* `beegfs::storage::install`: Install beegfs-storage
+* `beegfs::storage::config`: Configure beegfs-storage
+* `beegfs::storage::service`: Manage beegfs-storage service
+* `beegfs::admon`: Manage BeeGFS Admon server
+* `beegfs::admon::install`: Install beegfs-admon
+* `beegfs::admon::config`: Configure beegfs-admon
+* `beegfs::admon::service`: Manage beegfs-admon service
+* `beegfs::defaults`: Set default configuration values for the various BeeGFS roles for version release 2015.03
+* `beegfs::params`: Set default parameter values based on Fact values
 
 
 ### Parameters
 
-#### fhgfs
+#### beegfs
 
 TODO
 
 ### Facts
 
-#### fhgfs_version
+#### beegfs_version
 
-This Facter fact can be used to determine the installed version of the FhGFS components.
+This Facter fact can be used to determine the installed version of the BeeGFS components.
 
-This fact gets the version by querying the **fhgfs-common** package which is installed by all
-the FhGFS roles.
+This fact gets the version by querying the **beegfs-common** package which is installed by all
+the BeeGFS roles.
 
 ## Limitations
 
@@ -111,7 +110,7 @@ If you have Vagrant >= 1.2.0 installed you can run system tests
 ## TODO
 
 * Refacter the roles to use a shared defined resource to reduce on the amount of duplicate module code
-* Add support for FhGFS Multi-mode
+* Add support for BeeGFS Multi-mode
 
 ## Additional Information
 

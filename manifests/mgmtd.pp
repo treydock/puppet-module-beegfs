@@ -1,16 +1,16 @@
 # private class
-class fhgfs::mgmtd {
+class beegfs::mgmtd {
 
-  include fhgfs::repo
-  include fhgfs::mgmtd::install
-  include fhgfs::mgmtd::config
-  include fhgfs::mgmtd::service
+  include beegfs::repo
+  include beegfs::mgmtd::install
+  include beegfs::mgmtd::config
+  include beegfs::mgmtd::service
   
-  anchor { 'fhgfs::mgmtd::start': }->
-  Class['fhgfs::repo']->
-  Class['fhgfs::mgmtd::install']->
-  Class['fhgfs::mgmtd::config']->
-  Class['fhgfs::mgmtd::service']->
-  anchor { 'fhgfs::mgmtd::end': }
+  anchor { 'beegfs::mgmtd::start': }->
+  Class['beegfs::repo']->
+  Class['beegfs::mgmtd::install']->
+  Class['beegfs::mgmtd::config']->
+  Class['beegfs::mgmtd::service']->
+  anchor { 'beegfs::mgmtd::end': }
 
 }

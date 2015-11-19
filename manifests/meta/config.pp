@@ -1,38 +1,48 @@
 # private class
-class fhgfs::meta::config {
+class beegfs::meta::config {
 
-  $conn_interfaces  = $fhgfs::meta_conn_interfaces
-  $conn_net_filters = $fhgfs::meta_conn_net_filters
+  $conn_interfaces  = $beegfs::meta_conn_interfaces
+  $conn_net_filters = $beegfs::meta_conn_net_filters
 
-  if $fhgfs::meta_store_directory and ! empty($fhgfs::meta_store_directory) {
-    file { 'fhgfs-storeMetaDirectory':
+  if $beegfs::meta_store_directory and ! empty($beegfs::meta_store_directory) {
+    file { 'beegfs-storeMetaDirectory':
       ensure => 'directory',
-      path   => $fhgfs::meta_store_directory,
+      path   => $beegfs::meta_store_directory,
     }
   }
 
-  file { '/etc/fhgfs/fhgfs-meta.conf':
+  file { '/etc/beegfs/beegfs-meta.conf':
     ensure  => 'present',
-    content => template("fhgfs/${fhgfs::release}/fhgfs-meta.conf.erb"),
+    content => template("beegfs/${beegfs::release}/beegfs-meta.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::meta_conn_interfaces_file:
-    ensure  => $fhgfs::meta_conn_interfaces_file_ensure,
-    content => template('fhgfs/interfaces.erb'),
+  file { $beegfs::meta_conn_interfaces_file:
+    ensure  => $beegfs::meta_conn_interfaces_file_ensure,
+    content => template('beegfs/interfaces.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::meta_conn_net_filter_file:
-    ensure  => $fhgfs::meta_conn_net_filter_file_ensure,
-    content => template('fhgfs/netfilter.erb'),
+  file { $beegfs::meta_conn_net_filter_file:
+    ensure  => $beegfs::meta_conn_net_filter_file_ensure,
+    content => template('beegfs/netfilter.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+  }
+
+  if ! defined(File[$beegfs::conn_tcp_only_filter_file]) {
+    file { $beegfs::conn_tcp_only_filter_file:
+      ensure  => $beegfs::_conn_tcp_only_filter_file_ensure,
+      content => inline_template('<%= scope.lookupvar("beegfs::conn_tcp_only_filters").join("\n") %>'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
   }
 
 }

@@ -1,15 +1,15 @@
 # private class
-class fhgfs::storage::install {
+class beegfs::storage::install {
 
-  if $fhgfs::storage_service_autorestart {
-    $storage_notify = Service['fhgfs-storage']
+  if $beegfs::storage_service_autorestart {
+    $storage_notify = Service['beegfs-storage']
   } else {
     $storage_notify = undef
   }
 
-  package { 'fhgfs-storage':
-    ensure => $fhgfs::version,
-    name   => $fhgfs::storage_package,
+  package { 'beegfs-storage':
+    ensure => $beegfs::version,
+    name   => $beegfs::storage_package,
     notify => $storage_notify,
   }
 

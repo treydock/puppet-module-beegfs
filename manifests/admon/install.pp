@@ -1,15 +1,15 @@
 # private class
-class fhgfs::admon::install {
+class beegfs::admon::install {
 
-  if $fhgfs::admon_service_autorestart {
-    $admon_notify = Service['fhgfs-admon']
+  if $beegfs::admon_service_autorestart {
+    $admon_notify = Service['beegfs-admon']
   } else {
     $admon_notify = undef
   }
 
-  package { 'fhgfs-admon':
-    ensure => $fhgfs::version,
-    name   => $fhgfs::admon_package,
+  package { 'beegfs-admon':
+    ensure => $beegfs::version,
+    name   => $beegfs::admon_package,
     notify => $admon_notify,
   }
 

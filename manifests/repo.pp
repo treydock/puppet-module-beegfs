@@ -1,19 +1,19 @@
 # private class
-class fhgfs::repo {
+class beegfs::repo {
 
-  $_repo_defaults       = $fhgfs::repo_defaults[$fhgfs::release]
-  $_repo_descr          = pick($fhgfs::repo_descr, $_repo_defaults['descr'])
-  $_repo_baseurl        = pick($fhgfs::repo_baseurl, $_repo_defaults['baseurl'])
-  $_repo_gpgkey         = pick($fhgfs::repo_gpgkey, $_repo_defaults['gpgkey'])
+  $_repo_defaults       = $beegfs::repo_defaults[$beegfs::release]
+  $_repo_descr          = pick($beegfs::repo_descr, $_repo_defaults['descr'])
+  $_repo_baseurl        = pick($beegfs::repo_baseurl, $_repo_defaults['baseurl'])
+  $_repo_gpgkey         = pick($beegfs::repo_gpgkey, $_repo_defaults['gpgkey'])
 
   case $::osfamily {
     'RedHat': {
-      yumrepo { 'fhgfs':
+      yumrepo { 'beegfs':
         descr    => $_repo_descr,
         baseurl  => $_repo_baseurl,
         gpgkey   => $_repo_gpgkey,
-        gpgcheck => $fhgfs::repo_gpgcheck,
-        enabled  => $fhgfs::repo_enabled,
+        gpgcheck => $beegfs::repo_gpgcheck,
+        enabled  => $beegfs::repo_enabled,
       }
     }
 

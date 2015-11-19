@@ -1,16 +1,16 @@
 # private class
-class fhgfs::storage {
+class beegfs::storage {
 
-  include fhgfs::repo
-  include fhgfs::storage::install
-  include fhgfs::storage::config
-  include fhgfs::storage::service
+  include beegfs::repo
+  include beegfs::storage::install
+  include beegfs::storage::config
+  include beegfs::storage::service
   
-  anchor { 'fhgfs::storage::start': }->
-  Class['fhgfs::repo']->
-  Class['fhgfs::storage::install']->
-  Class['fhgfs::storage::config']->
-  Class['fhgfs::storage::service']->
-  anchor { 'fhgfs::storage::end': }
+  anchor { 'beegfs::storage::start': }->
+  Class['beegfs::repo']->
+  Class['beegfs::storage::install']->
+  Class['beegfs::storage::config']->
+  Class['beegfs::storage::service']->
+  anchor { 'beegfs::storage::end': }
 
 }

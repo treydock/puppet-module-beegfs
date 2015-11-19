@@ -1,14 +1,14 @@
 # private class
-class fhgfs::admon::service {
+class beegfs::admon::service {
 
-  if $fhgfs::admon_manage_service {
-    service { 'fhgfs-admon':
-      ensure     => $fhgfs::admon_service_ensure,
-      enable     => $fhgfs::admon_service_enable,
-      name       => $fhgfs::admon_service_name,
+  if $beegfs::admon_manage_service {
+    service { 'beegfs-admon':
+      ensure     => $beegfs::admon_service_ensure,
+      enable     => $beegfs::admon_service_enable,
+      name       => $beegfs::admon_service_name,
       hasstatus  => true,
       hasrestart => true,
-      subscribe  => $fhgfs::admon_service_subscribe,
+      subscribe  => $beegfs::admon_service_subscribe,
     }
   }
 

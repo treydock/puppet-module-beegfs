@@ -1,53 +1,63 @@
 # private class
-class fhgfs::client::config {
+class beegfs::client::config {
 
-  $conn_interfaces  = $fhgfs::client_conn_interfaces
-  $conn_net_filters = $fhgfs::client_conn_net_filters
+  $conn_interfaces  = $beegfs::client_conn_interfaces
+  $conn_net_filters = $beegfs::client_conn_net_filters
 
-  file { '/etc/fhgfs/fhgfs-client.conf':
+  file { '/etc/beegfs/beegfs-client.conf':
     ensure  => 'present',
-    content => template("fhgfs/${fhgfs::release}/fhgfs-client.conf.erb"),
+    content => template("beegfs/${beegfs::release}/beegfs-client.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::client_conn_interfaces_file:
-    ensure  => $fhgfs::client_conn_interfaces_file_ensure,
-    content => template('fhgfs/interfaces.erb'),
+  file { $beegfs::client_conn_interfaces_file:
+    ensure  => $beegfs::client_conn_interfaces_file_ensure,
+    content => template('beegfs/interfaces.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::client_conn_net_filter_file:
-    ensure  => $fhgfs::client_conn_net_filter_file_ensure,
-    content => template('fhgfs/netfilter.erb'),
+  file { $beegfs::client_conn_net_filter_file:
+    ensure  => $beegfs::client_conn_net_filter_file_ensure,
+    content => template('beegfs/netfilter.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  if ! $fhgfs::utils_only {
-    file { '/etc/fhgfs/fhgfs-helperd.conf':
+  if ! defined(File[$beegfs::conn_tcp_only_filter_file]) {
+    file { $beegfs::conn_tcp_only_filter_file:
+      ensure  => $beegfs::_conn_tcp_only_filter_file_ensure,
+      content => inline_template('<%= scope.lookupvar("beegfs::conn_tcp_only_filters").join("\n") %>'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+  }
+
+  if ! $beegfs::utils_only {
+    file { '/etc/beegfs/beegfs-helperd.conf':
       ensure  => 'present',
-      content => template("fhgfs/${fhgfs::release}/fhgfs-helperd.conf.erb"),
+      content => template("beegfs/${beegfs::release}/beegfs-helperd.conf.erb"),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
     }
 
-    file { '/etc/fhgfs/fhgfs-mounts.conf':
+    file { '/etc/beegfs/beegfs-mounts.conf':
       ensure  => 'present',
-      content => template("fhgfs/${fhgfs::release}/fhgfs-mounts.conf.erb"),
+      content => template("beegfs/${beegfs::release}/beegfs-mounts.conf.erb"),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
     }
 
-    file { '/etc/fhgfs/fhgfs-client-autobuild.conf':
+    file { '/etc/beegfs/beegfs-client-autobuild.conf':
       ensure  => 'present',
-      content => template("fhgfs/${fhgfs::release}/fhgfs-client-autobuild.conf.erb"),
+      content => template("beegfs/${beegfs::release}/beegfs-client-autobuild.conf.erb"),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',

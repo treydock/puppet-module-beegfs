@@ -4,4 +4,4 @@ fixtures:
       repo: git://github.com/puppetlabs/puppetlabs-stdlib.git
       ref: 4.3.1
   symlinks:
-    fhgfs: "#{source_dir}"
+    beegfs: "#{source_dir}"

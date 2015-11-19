@@ -1,16 +1,16 @@
 # private class
-class fhgfs::meta {
+class beegfs::meta {
 
-  include fhgfs::repo
-  include fhgfs::meta::install
-  include fhgfs::meta::config
-  include fhgfs::meta::service
+  include beegfs::repo
+  include beegfs::meta::install
+  include beegfs::meta::config
+  include beegfs::meta::service
   
-  anchor { 'fhgfs::meta::start': }->
-  Class['fhgfs::repo']->
-  Class['fhgfs::meta::install']->
-  Class['fhgfs::meta::config']->
-  Class['fhgfs::meta::service']->
-  anchor { 'fhgfs::meta::end': }
+  anchor { 'beegfs::meta::start': }->
+  Class['beegfs::repo']->
+  Class['beegfs::meta::install']->
+  Class['beegfs::meta::config']->
+  Class['beegfs::meta::service']->
+  anchor { 'beegfs::meta::end': }
 
 }

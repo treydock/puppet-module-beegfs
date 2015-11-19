@@ -1,14 +1,14 @@
 # private class
-class fhgfs::mgmtd::service {
+class beegfs::mgmtd::service {
 
-  if $fhgfs::mgmtd_manage_service {
-    service { 'fhgfs-mgmtd':
-      ensure     => $fhgfs::mgmtd_service_ensure,
-      enable     => $fhgfs::mgmtd_service_enable,
-      name       => $fhgfs::mgmtd_service_name,
+  if $beegfs::mgmtd_manage_service {
+    service { 'beegfs-mgmtd':
+      ensure     => $beegfs::mgmtd_service_ensure,
+      enable     => $beegfs::mgmtd_service_enable,
+      name       => $beegfs::mgmtd_service_name,
       hasstatus  => true,
       hasrestart => true,
-      subscribe  => $fhgfs::mgmtd_service_subscribe,
+      subscribe  => $beegfs::mgmtd_service_subscribe,
     }
   }
 

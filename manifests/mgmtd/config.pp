@@ -1,35 +1,35 @@
 # private class
-class fhgfs::mgmtd::config {
+class beegfs::mgmtd::config {
 
-  $conn_interfaces  = $fhgfs::mgmtd_conn_interfaces
-  $conn_net_filters = $fhgfs::mgmtd_conn_net_filters
+  $conn_interfaces  = $beegfs::mgmtd_conn_interfaces
+  $conn_net_filters = $beegfs::mgmtd_conn_net_filters
 
-  if $fhgfs::mgmtd_store_directory and ! empty($fhgfs::mgmtd_store_directory) {
-    file { 'fhgfs-storeMgmtdDirectory':
+  if $beegfs::mgmtd_store_directory and ! empty($beegfs::mgmtd_store_directory) {
+    file { 'beegfs-storeMgmtdDirectory':
       ensure => 'directory',
-      path   => $fhgfs::mgmtd_store_directory,
+      path   => $beegfs::mgmtd_store_directory,
     }
   }
 
-  file { '/etc/fhgfs/fhgfs-mgmtd.conf':
+  file { '/etc/beegfs/beegfs-mgmtd.conf':
     ensure  => 'present',
-    content => template("fhgfs/${fhgfs::release}/fhgfs-mgmtd.conf.erb"),
+    content => template("beegfs/${beegfs::release}/beegfs-mgmtd.conf.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::mgmtd_conn_interfaces_file:
-    ensure  => $fhgfs::mgmtd_conn_interfaces_file_ensure,
-    content => template('fhgfs/interfaces.erb'),
+  file { $beegfs::mgmtd_conn_interfaces_file:
+    ensure  => $beegfs::mgmtd_conn_interfaces_file_ensure,
+    content => template('beegfs/interfaces.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
   }
 
-  file { $fhgfs::mgmtd_conn_net_filter_file:
-    ensure  => $fhgfs::mgmtd_conn_net_filter_file_ensure,
-    content => template('fhgfs/netfilter.erb'),
+  file { $beegfs::mgmtd_conn_net_filter_file:
+    ensure  => $beegfs::mgmtd_conn_net_filter_file_ensure,
+    content => template('beegfs/netfilter.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

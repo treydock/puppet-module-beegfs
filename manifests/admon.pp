@@ -1,16 +1,16 @@
 # private class
-class fhgfs::admon {
+class beegfs::admon {
 
-  include fhgfs::repo
-  include fhgfs::admon::install
-  include fhgfs::admon::config
-  include fhgfs::admon::service
+  include beegfs::repo
+  include beegfs::admon::install
+  include beegfs::admon::config
+  include beegfs::admon::service
   
-  anchor { 'fhgfs::admon::start': }->
-  Class['fhgfs::repo']->
-  Class['fhgfs::admon::install']->
-  Class['fhgfs::admon::config']->
-  Class['fhgfs::admon::service']->
-  anchor { 'fhgfs::admon::end': }
+  anchor { 'beegfs::admon::start': }->
+  Class['beegfs::repo']->
+  Class['beegfs::admon::install']->
+  Class['beegfs::admon::config']->
+  Class['beegfs::admon::service']->
+  anchor { 'beegfs::admon::end': }
 
 }

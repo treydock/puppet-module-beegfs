@@ -21,8 +21,8 @@ RSpec.configure do |c|
   c.formatter = :documentation
 
   # Local settings based on environment variables
-  c.add_setting :fhgfs_release
-  c.fhgfs_release = ENV['BEAKER_fhgfs_release'] || '2014.01'
+  c.add_setting :beegfs_release
+  c.beegfs_release = ENV['BEAKER_beegfs_release'] || '2015.03'
 
   # Configure all nodes in nodeset
   c.before :suite do
@@ -54,7 +54,7 @@ RSpec.configure do |c|
     EOF
 
     # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'fhgfs')
+    puppet_module_install(:source => proj_root, :module_name => 'beegfs')
 
     hosts.each do |host|
       # Only modify /etc/hosts if not running under docker

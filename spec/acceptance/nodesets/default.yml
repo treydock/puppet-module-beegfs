@@ -1,5 +1,5 @@
 HOSTS:
-  centos-65-x64:
+  centos-6-x64:
     roles:
       - master
       - agent

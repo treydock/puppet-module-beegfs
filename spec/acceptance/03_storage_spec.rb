@@ -39,6 +39,12 @@ describe 'beegfs class:' do
       it { should_not be_running }
     end
 
+    describe file('/etc/beegfs/beegfs-storage.conf'), :node => node do
+      it { should be_file }
+      its(:content) { should match /^sysMgmtdHost\s+= #{mgmt_ip}$/ }
+      its(:content) { should match /^storeMgmtdDirectory\s+= \/beegfs\/mgmtd$/ }
+    end
+
     describe port(8003), :node => node do
       it { should be_listening }
     end

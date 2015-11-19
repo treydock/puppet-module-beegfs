@@ -26,6 +26,16 @@ describe 'beegfs class:' do
       it { should be_running }
     end
 
+    describe file('/etc/beegfs/beegfs-client.conf'), :node => node do
+      it { should be_file }
+      its(:content) { should match /^sysMgmtdHost\s+= #{mgmt_ip}$/ }
+    end
+
+    describe file('/etc/beegfs/beegfs-mounts.conf'), :node => node do
+      it { should be_file }
+      its(:content) { should match /^\/mnt\/beegfs \/etc\/beegfs\/beegfs-client.conf$/ }
+    end
+
     describe file('/mnt/beegfs'), :node => node do
       it { should be_mounted.with(:type => 'beegfs') }
     end

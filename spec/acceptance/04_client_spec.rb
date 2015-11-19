@@ -5,16 +5,24 @@ describe 'beegfs class:' do
     node = find_only_one(:client)
 
     it 'should run successfully' do
+      if node['hypervisor'] =~ /docker/
+        manage_client_dependencies = 'false'
+        client_package_dependencies = '[]'
+      else
+        manage_client_dependencies = 'true'
+        client_package_dependencies = 'undef'
+      end
       pp = <<-EOS
       class { 'beegfs':
         mgmtd_host                  => '#{mgmt_ip}',
         release                     => '#{RSpec.configuration.beegfs_release}',
-        manage_client_dependencies  => #{!'docker'.include?('docker')}
+        manage_client_dependencies  => #{manage_client_dependencies},
+        client_package_dependencies => #{client_package_dependencies},
       }
       EOS
 
       # Docker based tests fail to start client service as kernel module must be compiled
-      if host['hypervisor'] =~ /docker/
+      if node['hypervisor'] =~ /docker/
         apply_manifest_on(node, pp, :catch_failures => false)
       else
         apply_manifest_on(node, pp, :catch_failures => true)
@@ -29,7 +37,7 @@ describe 'beegfs class:' do
 
     describe service('beegfs-client'), :node => node do
       it { should be_enabled }
-      if ! host['hypervisor'] =~ /docker/
+      if ! node['hypervisor'] =~ /docker/
         it { should be_running }
       end
     end
@@ -44,7 +52,7 @@ describe 'beegfs class:' do
       its(:content) { should match /^\/mnt\/beegfs \/etc\/beegfs\/beegfs-client.conf$/ }
     end
 
-    if ! host['hypervisor'] =~ /docker/
+    if ! node['hypervisor'] =~ /docker/
       describe file('/mnt/beegfs'), :node => node do
         it { should be_mounted.with(:type => 'beegfs') }
       end

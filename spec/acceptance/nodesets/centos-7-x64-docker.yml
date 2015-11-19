@@ -4,7 +4,7 @@ HOSTS:
       - master
     platform: el-7-x86_64
     hypervisor: docker
-    image: centos:7
+    image: milcom/centos7-systemd
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'

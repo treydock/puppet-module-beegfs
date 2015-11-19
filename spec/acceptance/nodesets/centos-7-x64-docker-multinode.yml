@@ -1,0 +1,57 @@
+HOSTS:
+  mgmt:
+    roles:
+      - master
+      - agent
+      - mgmt
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: milcom/centos7-systemd
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget'
+    ip: 192.168.1.2
+  meta:
+    roles:
+      - agent
+      - meta
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: milcom/centos7-systemd
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget'
+    ip: 192.168.1.3
+  storage:
+    roles:
+      - agent
+      - storage
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: milcom/centos7-systemd
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget'
+    ip: 192.168.1.4
+  client:
+    roles:
+      - agent
+      - client
+    platform: el-76-x86_64
+    hypervisor: docker
+    image: milcom/centos7-systemd
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget'
+    ip: 192.168.1.5
+CONFIG:
+  log_level: debug
+  type: foss

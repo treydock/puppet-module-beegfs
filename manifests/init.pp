@@ -169,10 +169,12 @@ class beegfs (
     if $client_service_autorestart {
       $client_service_subscribe   = [
         File['/etc/beegfs/beegfs-client.conf'],
+        #Augeas['beegfs-client.conf'],
         File['/etc/beegfs/beegfs-mounts.conf'],
-        File['/etc/beegfs/beegfs-client-autobuild.conf'],
         File[$client_conn_interfaces_file],
         File[$client_conn_net_filter_file],
+        File_line['beegfs-client-autobuild buildArgs'],
+        File_line['beegfs-client-autobuild buildEnabled']
       ]
       $helperd_service_subscribe  = File['/etc/beegfs/beegfs-helperd.conf']
     } else {

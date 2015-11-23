@@ -1,5 +1,6 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
+require 'lib/spec_helpers'
 
 dir = File.expand_path(File.dirname(__FILE__))
 

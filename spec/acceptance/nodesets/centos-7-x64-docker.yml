@@ -2,6 +2,11 @@ HOSTS:
   centos-7-x64-docker:
     roles:
       - master
+      - agent
+      - client
+      - storage
+      - meta
+      - mgmt
     platform: el-7-x86_64
     hypervisor: docker
     image: milcom/centos7-systemd

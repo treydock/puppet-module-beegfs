@@ -12,6 +12,13 @@ class beegfs::client::config {
     mode    => '0644',
   }
 
+  #augeas { 'beegfs-client.conf':
+  #  context => '/files/etc/beegfs/beegfs-client.conf',
+  #  changes => template('beegfs/client-augeas.erb'),
+  #  lens    => 'BeeGFS_config.lns',
+  #  incl    => '/etc/beegfs/beegfs-client.conf',
+  #}
+
   file { $beegfs::client_conn_interfaces_file:
     ensure  => $beegfs::client_conn_interfaces_file_ensure,
     content => template('beegfs/interfaces.erb'),
@@ -56,11 +63,26 @@ class beegfs::client::config {
     }
 
     file { '/etc/beegfs/beegfs-client-autobuild.conf':
+      ensure => 'present',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+
+    file_line { 'beegfs-client-autobuild buildArgs':
       ensure  => 'present',
-      content => template("beegfs/${beegfs::release}/beegfs-client-autobuild.conf.erb"),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
+      path    => '/etc/beegfs/beegfs-client-autobuild.conf',
+      line    => "buildArgs=${beegfs::client_build_args}",
+      match   => '^buildArgs=.*$',
+      require => File['/etc/beegfs/beegfs-client-autobuild.conf'],
+    }
+
+    file_line { 'beegfs-client-autobuild buildEnabled':
+      ensure  => 'present',
+      path    => '/etc/beegfs/beegfs-client-autobuild.conf',
+      line    => "buildEnabled=${beegfs::client_build_enabled}",
+      match   => '^buildEnabled=.*$',
+      require => File['/etc/beegfs/beegfs-client-autobuild.conf'],
     }
   }
 

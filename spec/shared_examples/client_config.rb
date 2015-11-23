@@ -1,4 +1,55 @@
 shared_examples_for 'beegfs::client::config' do
+=begin
+  it do
+    should contain_augeas('beegfs-client.conf').with({
+      :context  => '/files/etc/beegfs/beegfs-client.conf',
+      :lens     => 'BeeGFS_config.lns',
+      :incl     => '/etc/beegfs/beegfs-client.conf',
+    })
+  end
+
+  it do
+    verify_augeas_changes(catalogue, 'beegfs-client.conf', [
+      "set connAuthFile ''",
+      "set connClientPortUDP '8004'",
+      "set connCommRetrySecs '600'",
+      "set connFallbackExpirationSecs '900'",
+      "set connHelperdPortTCP '8006'",
+      "set connInterfacesFile ''",
+      "set connMaxInternodeNum '12'",
+      "set connMgmtdPortTCP '8008'",
+      "set connMgmtdPortUDP '8008'",
+      "set connNetFilterFile ''",
+      "set connPortShift '0'",
+      "set connRDMABufNum '128'",
+      "set connRDMABufSize '8192'",
+      "set connRDMATypeOfService '0'",
+      "set connTcpOnlyFilterFile ''",
+      "set connUseRDMA 'true'",
+      "set logClientID 'false'",
+      "set logHelperdIP ''",
+      "set logLevel '3'",
+      "set logType 'helperd'",
+      "set quotaEnabled 'false'",
+      "set sysCreateHardlinksAsSymlinks 'false'",
+      "set sysMgmtdHost ''",
+      "set sysMountSanityCheckMS '11000'",
+      "set sysSessionCheckOnClose 'false'",
+      "set sysSyncOnClose 'false'",
+      "set sysTargetOfflineTimeoutSecs '900'",
+      "set sysUpdateTargetStatesSecs '60'",
+      "set sysXAttrsEnabled 'false'",
+      "set tuneFileCacheType 'buffered'",
+      "set tuneNumWorkers '0'",
+      "set tunePreferredMetaFile ''",
+      "set tunePreferredStorageFile ''",
+      "set tuneRemoteFSync 'true'",
+      "set tuneUseGlobalAppendLocks 'false'",
+      "set tuneUseGlobalFileLocks 'false'",
+    ])
+  end
+=end
+
   it do
     should contain_file('/etc/beegfs/beegfs-client.conf').with({
       :ensure   => 'present',
@@ -178,10 +229,23 @@ shared_examples_for 'beegfs::client::config' do
   end
 
   it do
-    verify_contents(catalogue, '/etc/beegfs/beegfs-client-autobuild.conf', [
-      'buildArgs=-j8',
-      'buildEnabled=true',
-    ])
+    should contain_file_line('beegfs-client-autobuild buildArgs').with({
+      :ensure   => 'present',
+      :path     => '/etc/beegfs/beegfs-client-autobuild.conf',
+      :line     => 'buildArgs=-j8',
+      :match    => '^buildArgs=.*$',
+      :require  => 'File[/etc/beegfs/beegfs-client-autobuild.conf]',
+    })
+  end
+
+  it do
+    should contain_file_line('beegfs-client-autobuild buildEnabled').with({
+      :ensure   => 'present',
+      :path     => '/etc/beegfs/beegfs-client-autobuild.conf',
+      :line     => 'buildEnabled=true',
+      :match    => '^buildEnabled=.*$',
+      :require  => 'File[/etc/beegfs/beegfs-client-autobuild.conf]',
+    })
   end
 
   context 'when client_config_overrides defined' do

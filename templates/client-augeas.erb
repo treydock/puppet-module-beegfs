@@ -1,0 +1,5 @@
+<% config = scope.lookupvar('beegfs::client_configs') -%>
+<% config.keys.sort.each do |key| -%>
+rm <%= key %>
+set <%= key %> '<%= config[key] %>'
+<% end -%>

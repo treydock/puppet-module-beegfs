@@ -25,6 +25,7 @@ shared_examples_for 'beegfs::client::service' do
         'File[/etc/beegfs/beegfs-mounts.conf]',
         'File[/etc/beegfs/interfaces.client]',
         'File[/etc/beegfs/netfilter.client]',
+        'File[/etc/beegfs/tcp-only-filter]',
         'File_line[beegfs-client-autobuild buildArgs]',
         'File_line[beegfs-client-autobuild buildEnabled]',
       ],

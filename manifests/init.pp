@@ -173,6 +173,7 @@ class beegfs (
         File['/etc/beegfs/beegfs-mounts.conf'],
         File[$client_conn_interfaces_file],
         File[$client_conn_net_filter_file],
+        File[$conn_tcp_only_filter_file],
         File_line['beegfs-client-autobuild buildArgs'],
         File_line['beegfs-client-autobuild buildEnabled']
       ]
@@ -229,7 +230,11 @@ class beegfs (
 
   if $mgmtd {
     if $mgmtd_service_autorestart {
-      $mgmtd_service_subscribe = [File['/etc/beegfs/beegfs-mgmtd.conf'], File[$mgmtd_conn_interfaces_file]]
+      $mgmtd_service_subscribe = [
+        File['/etc/beegfs/beegfs-mgmtd.conf'],
+        File[$mgmtd_conn_interfaces_file],
+        File[$mgmtd_conn_net_filter_file],
+      ]
     } else {
       $mgmtd_service_subscribe = undef
     }
@@ -272,7 +277,12 @@ class beegfs (
 
   if $meta {
     if $meta_service_autorestart {
-      $meta_service_subscribe = [File['/etc/beegfs/beegfs-meta.conf'], File[$meta_conn_interfaces_file]]
+      $meta_service_subscribe = [
+        File['/etc/beegfs/beegfs-meta.conf'],
+        File[$meta_conn_interfaces_file],
+        File[$meta_conn_net_filter_file],
+        File[$conn_tcp_only_filter_file],
+      ]
     } else {
       $meta_service_subscribe = undef
     }
@@ -317,7 +327,12 @@ class beegfs (
 
   if $storage {
     if $storage_service_autorestart {
-      $storage_service_subscribe = [File['/etc/beegfs/beegfs-storage.conf'], File[$storage_conn_interfaces_file]]
+      $storage_service_subscribe = [
+        File['/etc/beegfs/beegfs-storage.conf'],
+        File[$storage_conn_interfaces_file],
+        File[$storage_conn_net_filter_file],
+        File[$conn_tcp_only_filter_file],
+      ]
     } else {
       $storage_service_subscribe = undef
     }

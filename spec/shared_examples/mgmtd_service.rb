@@ -22,7 +22,10 @@ shared_examples_for 'beegfs::mgmtd::service' do
 
   context 'with mgmtd_service_autorestart => true' do
     let(:params) {{ :mgmtd => true, :mgmtd_service_autorestart => true }}
-    it { should contain_service('beegfs-mgmtd').with_subscribe(['File[/etc/beegfs/beegfs-mgmtd.conf]', 'File[/etc/beegfs/interfaces.mgmtd]']) }
+    it { should contain_service('beegfs-mgmtd').with_subscribe([
+      'File[/etc/beegfs/beegfs-mgmtd.conf]',
+      'File[/etc/beegfs/interfaces.mgmtd]',
+      'File[/etc/beegfs/netfilter.mgmtd]']) }
   end
 
   context 'with mgmtd_manage_service => false' do

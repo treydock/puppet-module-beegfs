@@ -22,7 +22,11 @@ shared_context 'beegfs::meta::service' do
 
   context 'with meta_service_autorestart => true' do
     let(:params) {{ :meta => true, :meta_service_autorestart => true }}
-    it { should contain_service('beegfs-meta').with_subscribe(['File[/etc/beegfs/beegfs-meta.conf]', 'File[/etc/beegfs/interfaces.meta]']) }
+    it { should contain_service('beegfs-meta').with_subscribe([
+      'File[/etc/beegfs/beegfs-meta.conf]',
+      'File[/etc/beegfs/interfaces.meta]',
+      'File[/etc/beegfs/netfilter.meta]',
+      'File[/etc/beegfs/tcp-only-filter]']) }
   end
 
   context 'with meta_manage_service => false' do

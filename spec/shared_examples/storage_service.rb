@@ -22,7 +22,11 @@ shared_context 'beegfs::storage::service' do
 
   context 'with storage_service_autorestart => true' do
     let(:params) {{ :storage => true, :storage_service_autorestart => true }}
-    it { should contain_service('beegfs-storage').with_subscribe(['File[/etc/beegfs/beegfs-storage.conf]', 'File[/etc/beegfs/interfaces.storage]']) }
+    it { should contain_service('beegfs-storage').with_subscribe([
+      'File[/etc/beegfs/beegfs-storage.conf]',
+      'File[/etc/beegfs/interfaces.storage]',
+      'File[/etc/beegfs/netfilter.storage]',
+      'File[/etc/beegfs/tcp-only-filter]']) }
   end
 
   context 'with storage_manage_service => false' do

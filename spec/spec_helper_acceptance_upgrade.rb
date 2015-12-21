@@ -29,62 +29,11 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'beegfs')
 
     hosts.each do |host|
-      puppet_pp = <<-EOF
-      ini_setting { 'puppet.conf/main/server':
-        ensure  => 'present',
-        section => 'main',
-        path    => '/etc/puppet/puppet.conf',
-        setting => 'server',
-        value   => 'puppet.local',
-      }
-      ini_setting { 'puppet.conf/main/certname':
-        ensure  => 'present',
-        section => 'main',
-        path    => '/etc/puppet/puppet.conf',
-        setting => 'certname',
-        value   => '#{host.name}',
-      }
-      EOF
-
-      # Only modify /etc/hosts if not running under docker
-      #unless host['hypervisor'] =~ /docker/
-      if host.name == 'mgmt'
-        host.exec(Beaker::Command.new("echo '127.0.0.1\tpuppet.local' >> /etc/hosts"))
-      else
-        host.exec(Beaker::Command.new("echo '#{mgmt_ip}\tpuppet.local' >> /etc/hosts"))
-      end
-        #end
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
       on host, 'yum -y install git'
       on host, 'git clone https://github.com/treydock/puppet-module-fhgfs /etc/puppet/modules/fhgfs'
       on host, puppet('resource service iptables ensure=stopped'), { :acceptable_exit_codes => [0,1] }
-
-      apply_manifest_on(host, puppet_pp, :catch_failures => true)
-    end
-
-    puppet_master_pp = <<-EOF
-    ini_setting { 'puppet.conf/master/certname':
-      ensure  => 'present',
-      section => 'master',
-      path    => '/etc/puppet/puppet.conf',
-      setting => 'certname',
-      value   => 'puppet.local',
-    }
-    ini_setting { 'puppet.conf/master/autosign':
-      ensure  => 'present',
-      section => 'master',
-      path    => '/etc/puppet/puppet.conf',
-      setting => 'autosign',
-      value   => true,
-    }
-    EOF
-    apply_manifest_on(master, puppet_master_pp, :catch_failures => true)
-    apply_manifest_on(master, "service { 'puppetmaster': ensure => running }", :catch_failures => true)
-    sleep(10)
-
-    hosts.each do |host|
-      on host, puppet('agent -t'), :acceptable_exit_codes => [0,1,2]
     end
   end
 end

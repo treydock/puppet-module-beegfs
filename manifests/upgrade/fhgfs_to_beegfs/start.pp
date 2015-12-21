@@ -47,7 +47,6 @@ class beegfs::upgrade::fhgfs_to_beegfs::start {
   package { 'fhgfs-utils': ensure => 'absent' }->
   package { 'fhgfs-opentk-lib': ensure => 'absent' }->
   package { 'fhgfs-common': ensure => 'absent' }->
-  yumrepo { 'fhgfs': ensure => 'absent' }->
   file { [ '/etc/fhgfs', '/opt/fhgfs' ]:
     ensure => 'absent',
     force  => true,

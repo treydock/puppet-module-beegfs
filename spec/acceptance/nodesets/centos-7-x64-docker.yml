@@ -14,7 +14,7 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget'
+      - 'yum install -y tar wget iproute'
 CONFIG:
   log_level: debug
   type: foss

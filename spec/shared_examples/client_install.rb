@@ -48,6 +48,12 @@ shared_examples_for 'beegfs::client::install' do
     it { should contain_package('beegfs-client').without_notify }
   end
 
+  context 'when client_manage_service => false' do
+    let(:params) {{ :client_manage_service => false }}
+    it { should contain_package('beegfs-helperd').without_notify }
+    it { should contain_package('beegfs-client').without_notify }
+  end
+
   context 'when manage_client_dependencies => false' do
     let(:params) {{ :manage_client_dependencies => false }}
     it { should_not contain_package('kernel-devel') }

@@ -1,3 +1,4 @@
+# private class
 class beegfs::upgrade::fhgfs_to_beegfs (
   $migrate_script_path = undef,
 ) {

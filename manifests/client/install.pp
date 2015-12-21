@@ -2,7 +2,7 @@
 class beegfs::client::install {
 
   if ! $beegfs::utils_only {
-    if $beegfs::client_service_autorestart {
+    if $beegfs::client_service_autorestart and $beegfs::client_manage_service {
       $helperd_notify = Service['beegfs-helperd']
       $client_notify  = Service['beegfs-client']
     } else {

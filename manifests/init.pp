@@ -110,6 +110,9 @@ class beegfs (
   $admon_service_ensure       = 'running',
   $admon_service_enable       = true,
   $admon_service_autorestart  = false,
+
+  # Upgrade specific
+  $perform_fhgfs_upgrade      = false,
 ) inherits beegfs::params {
 
   validate_bool($client)
@@ -152,8 +155,14 @@ class beegfs (
   validate_hash($storage_config_overrides)
   validate_hash($admon_config_overrides)
 
+  validate_bool($perform_fhgfs_upgrade)
+
   anchor { 'beegfs::start': }
   anchor { 'beegfs::end': }
+
+  if $perform_fhgfs_upgrade {
+    include beegfs::upgrade::fhgfs_to_beegfs
+  }
 
   if empty($conn_tcp_only_filters) {
     $_conn_tcp_only_filter_file_value   = ''

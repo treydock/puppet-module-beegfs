@@ -1,4 +1,13 @@
 shared_context 'beegfs::meta::config' do
+  it do
+    should contain_file('/etc/beegfs').with({
+      :ensure => 'directory',
+      :owner  => 'root',
+      :group  => 'root',
+      :mode   => '0755',
+    })
+  end
+
   it { should_not contain_file('beegfs-storeMetaDirectory') }
 
   it do

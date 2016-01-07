@@ -4,6 +4,15 @@ class beegfs::client::config {
   $conn_interfaces  = $beegfs::client_conn_interfaces
   $conn_net_filters = $beegfs::client_conn_net_filters
 
+  if ! defined(File['/etc/beegfs']) {
+    file { '/etc/beegfs':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+  }
+
   file { '/etc/beegfs/beegfs-client.conf':
     ensure  => 'present',
     content => template("beegfs/${beegfs::release}/beegfs-client.conf.erb"),

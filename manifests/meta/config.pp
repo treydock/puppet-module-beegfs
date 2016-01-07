@@ -4,6 +4,15 @@ class beegfs::meta::config {
   $conn_interfaces  = $beegfs::meta_conn_interfaces
   $conn_net_filters = $beegfs::meta_conn_net_filters
 
+  if ! defined(File['/etc/beegfs']) {
+    file { '/etc/beegfs':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+  }
+
   if $beegfs::meta_store_directory and ! empty($beegfs::meta_store_directory) {
     file { 'beegfs-storeMetaDirectory':
       ensure => 'directory',

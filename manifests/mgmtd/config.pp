@@ -4,6 +4,15 @@ class beegfs::mgmtd::config {
   $conn_interfaces  = $beegfs::mgmtd_conn_interfaces
   $conn_net_filters = $beegfs::mgmtd_conn_net_filters
 
+  if ! defined(File['/etc/beegfs']) {
+    file { '/etc/beegfs':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+  }
+
   if $beegfs::mgmtd_store_directory and ! empty($beegfs::mgmtd_store_directory) {
     file { 'beegfs-storeMgmtdDirectory':
       ensure => 'directory',

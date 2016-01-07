@@ -1,5 +1,14 @@
 shared_context 'beegfs::admon::config' do
   it do
+    should contain_file('/etc/beegfs').with({
+      :ensure => 'directory',
+      :owner  => 'root',
+      :group  => 'root',
+      :mode   => '0755',
+    })
+  end
+
+  it do
     should contain_file('/etc/beegfs/beegfs-admon.conf').with({
       :ensure   => 'present',
       :owner    => 'root',

@@ -1,6 +1,15 @@
 # private class
 class beegfs::admon::config {
 
+  if ! defined(File['/etc/beegfs']) {
+    file { '/etc/beegfs':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+  }
+
   file { '/etc/beegfs/beegfs-admon.conf':
     ensure  => 'present',
     content => template("beegfs/${beegfs::release}/beegfs-admon.conf.erb"),

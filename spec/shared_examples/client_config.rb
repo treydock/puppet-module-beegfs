@@ -1,4 +1,13 @@
 shared_examples_for 'beegfs::client::config' do
+  it do
+    should contain_file('/etc/beegfs').with({
+      :ensure => 'directory',
+      :owner  => 'root',
+      :group  => 'root',
+      :mode   => '0755',
+    })
+  end
+
 =begin
   it do
     should contain_augeas('beegfs-client.conf').with({

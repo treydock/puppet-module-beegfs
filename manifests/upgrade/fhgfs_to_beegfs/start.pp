@@ -27,7 +27,7 @@ class beegfs::upgrade::fhgfs_to_beegfs::start {
   exec { 'run beegfs-migrate-fhgfs-config.py':
     path      => '/usr/bin:/bin:/usr/sbin:/sbin',
     command   => "python ${_migrate_script_path}",
-    unless    => 'test -d /etc/beegfs',
+    onlyif    => 'test -d /etc/fhgfs',
     logoutput => true,
   }->
   service { 'fhgfs-admon': ensure => 'stopped', enable => false }->

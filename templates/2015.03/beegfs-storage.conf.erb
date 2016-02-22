@@ -146,6 +146,14 @@ setting_str_length  = longest_key.size + 1
 # daemon.
 # Default: 0 (Max: 255)
 
+# [connTcpOnlyFilterFile]
+# The path to a text file that specifies IP address ranges to which no RDMA connection should be
+# established. This is useful e.g. for environments where all hosts support RDMA, but some hosts
+# cannot connect via RDMA to some other hosts.
+# Example: "192.168.10.0/24" in the first line, "192.168.20.0/24" in the second
+#    line.
+# Values: This setting is optional.
+# Default: <none>
 
 #
 # --- Section 4.2: [Logging] ---

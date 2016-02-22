@@ -1,4 +1,4 @@
-# This is a config file for Fraunhofer parallel file system client helper 
+# This is a config file for BeeGFS client helper 
 # daemons.
 # http://www.beegfs.com
 
@@ -37,18 +37,38 @@ config_keys.each do |key| -%>
 
 
 #
-# --- Section 3.1: [Logging] ---
+# --- Section 3: [Settings Documentation] ---
+#
+
+#
+# --- Section 3.1: [Connections & Communication] ---
+#
+
+# [connAuthFile]
+# The path to a file that contains a shared secret for connection based
+# authentication. Only peers that use the same shared secret will be able to
+# connect.
+# Default: <none>
+
+# [connHelperdPortTCP]
+# The TCP port of the helper daemon.
+# Default: 8006
+
+# [connPortShift]
+# Shifts all following UDP and TCP ports according to the specified value.
+# Intended to make port changes easier in case you do not want to configure
+# each port individually.  
+# Default: 0
+
+
+#
+# --- Section 3.2: [Logging] ---
 #
 
 # [logNoDate]
 # Defines whether "date & time" (=false) or the current "time only" (=true)
 # should be logged.
 # Default: false 
-
-# [logStdFile]
-# The path and filename of the log file for standard log messages. If no name
-# is specified, the messages will be written to the console.
-# Default: /var/log/beegfs-client.log
 
 # [logNumLines]
 # The maximum number of lines per log file.
@@ -59,30 +79,22 @@ config_keys.each do |key| -%>
 # is rewritten (log rotation).
 # Default: 5
 
-
-#
-# --- Section 3.2: [Connections & Communication] ---
-#
-
-# [connPortShift]
-# Shifts all following UDP and TCP ports according to the specified value.
-# Intended to make port changes easier in case you do not want to configure
-# each port individually.  
-# Default: 0
-
-# [connHelperdPortTCP]
-# The TCP port of the helper daemon.
-# Default: 8006
-
-# [connAuthFile]
-# The path to a file that contains a shared secret for connection based
-# authentication. Only peers that use the same shared secret will be able to
-# connect.
-# Default: <none>
+# [logStdFile]
+# The path and filename of the log file for standard log messages. If no name
+# is specified, the messages will be written to the console.
+# Default: /var/log/beegfs-client.log
 
 
 #
-# --- Section 3.3: [Tuning] ---
+# --- Section 3.3: [Startup] ---
+#
+
+# [runDaemonized]
+# Detach the process from its parent (and from stdin/-out/-err).
+# Default: true
+
+#
+# --- Section 3.4: [Tuning] ---
 #
 
 # [tuneNumWorkers]
@@ -90,11 +102,3 @@ config_keys.each do |key| -%>
 # of your machine is the recommended choice.
 # Default: 2
 
-
-#
-# --- Section 3.4: [Startup] ---
-#
-
-# [runDaemonized]
-# Detach the process from its parent (and from stdin/-out/-err).
-# Default: true

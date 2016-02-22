@@ -135,7 +135,7 @@ shared_examples_for 'beegfs::client::config' do
       'connNetFilterFile             = ',
       'connTcpOnlyFilterFile         = ',
       'connUseRDMA                   = true',
-      'connRDMABufNum                = 128',
+      'connRDMABufNum                = 70',
       'connRDMABufSize               = 8192',
       'connRDMATypeOfService         = 0',
       'logClientID                   = false',

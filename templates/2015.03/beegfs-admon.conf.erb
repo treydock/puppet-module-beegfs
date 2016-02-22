@@ -118,6 +118,17 @@ setting_str_length  = longest_key.size + 3
 # The maximum number of simultaneous connections to the same node.
 # Default: 3
 
+# [connInterfacesFile]
+# The path to a text file that specifies the names of the interfaces, which
+# may be used for communication by other nodes. One interface per line. The
+# line number also defines the priority of an interface.
+# Example: "ib0" in the first line, "eth0" in the second line.
+# Values: This setting is optional. If unspecified, all available interfaces
+#    will be published and priorities will be assigned automatically.
+# Note: This has no influence on outgoing connections. The information is sent
+#    to other hosts to inform them about possible communication paths.
+# Default: <none>
+
 # [connNetFilterFile]
 # The path to a text file that specifies allowed IP subnets, which may be used
 # for outgoing communication. One subnet per line in classless notation (IP
@@ -128,6 +139,14 @@ setting_str_length  = longest_key.size + 3
 #    for outgoing communication.
 # Default: <none>
 
+# [connTcpOnlyFilterFile]
+# The path to a text file that specifies IP address ranges to which no RDMA connection should be 
+# established. This is useful e.g. for environments where all hosts support RDMA, but some hosts
+# cannot connect via RDMA to some other hosts. 
+# Example: "192.168.10.0/24" in the first line, "192.168.20.0/24" in the second
+#    line.
+# Values: This setting is optional.
+# Default: <none>
 
 #
 # --- Section 4.3: [Logging] ---

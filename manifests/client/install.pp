@@ -15,6 +15,9 @@ class beegfs::client::install {
     }
     $_package_require = Package[$beegfs::client_package_dependencies]
 
+    include ::gcc
+    Class['::gcc'] -> Package['beegfs-client']
+
     package { 'beegfs-helperd':
       ensure => $beegfs::version,
       name   => $beegfs::helperd_package,

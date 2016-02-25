@@ -1,6 +1,8 @@
 shared_examples_for 'beegfs::client::install' do
   it { should contain_package('kernel-devel').with_ensure('present') }
 
+  it { should contain_class('gcc').that_comes_before('Package[beegfs-client]') }
+
   it do
     should contain_package('beegfs-helperd').with({
       :ensure     => 'present',
@@ -30,6 +32,7 @@ shared_examples_for 'beegfs::client::install' do
 
   context 'when utils_only => true' do
     let(:params) {{ :utils_only => true }}
+    it { should_not contain_class('gcc') }
     it { should_not contain_package('beegfs-helperd') }
     it { should_not contain_package('beegfs-client') }
     it { should contain_package('beegfs-utils') }

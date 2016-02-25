@@ -55,6 +55,7 @@ RSpec.configure do |c|
       end
         #end
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-gcc'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('resource service iptables ensure=stopped'), { :acceptable_exit_codes => [0,1] }
 

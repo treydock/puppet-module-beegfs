@@ -30,6 +30,7 @@ RSpec.configure do |c|
 
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-gcc'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
       on host, 'yum -y install git'
       on host, 'git clone https://github.com/treydock/puppet-module-fhgfs /etc/puppet/modules/fhgfs'

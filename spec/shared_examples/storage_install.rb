@@ -7,9 +7,9 @@ shared_context 'beegfs::storage::install' do
     })
   end
 
-  context "when version => '2015.03.r9'" do
-    let(:params) {{ :storage => true, :version => '2015.03.r9' }}
-    it { should contain_package('beegfs-storage').with_ensure('2015.03.r9') }
+  context "when version => '7.1.3'" do
+    let(:params) {{ :storage => true, :version => '7.1.3' }}
+    it { should contain_package('beegfs-storage').with_ensure('7.1.3') }
   end
 
   context 'when storage_service_autorestat => true' do

@@ -7,9 +7,9 @@ shared_examples_for 'beegfs::mgmtd::install' do
     })
   end
 
-  context "when version => '2015.03.r9'" do
-    let(:params) {{ :mgmtd => true, :version => '2015.03.r9' }}
-    it { should contain_package('beegfs-mgmtd').with_ensure('2015.03.r9') }
+  context "when version => '7.1.3'" do
+    let(:params) {{ :mgmtd => true, :version => '7.1.3' }}
+    it { should contain_package('beegfs-mgmtd').with_ensure('7.1.3') }
   end
 
   context 'when mgmtd_service_autorestat => true' do

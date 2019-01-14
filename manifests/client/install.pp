@@ -12,11 +12,10 @@ class beegfs::client::install {
 
     if $beegfs::manage_client_dependencies {
       ensure_packages($beegfs::client_package_dependencies)
+      $_package_require = Package[$beegfs::client_package_dependencies]
+    } else {
+      $_package_require = undef
     }
-    $_package_require = Package[$beegfs::client_package_dependencies]
-
-    include ::gcc
-    Class['::gcc'] -> Package['beegfs-client']
 
     package { 'beegfs-helperd':
       ensure => $beegfs::version,
@@ -34,7 +33,7 @@ class beegfs::client::install {
 
   package { 'beegfs-utils':
     ensure => $beegfs::version,
-    name   => $beegfs::client_utils_package,
+    name   => $beegfs::utils_package,
   }
 
 }

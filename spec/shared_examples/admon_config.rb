@@ -18,7 +18,7 @@ shared_context 'beegfs::admon::config' do
   end
 
   it do
-    verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', [
+    expected = [
       '# --- Section 1.1: [Basic Settings] ---',
       'sysMgmtdHost                 = ',
       '# --- Section 1.2: [Advanced Settings] ---',
@@ -33,13 +33,18 @@ shared_context 'beegfs::admon::config' do
       'connAuthFile                 = ',
       'connFallbackExpirationSecs   = 900',
       'connMaxInternodeNum          = 3',
+      'connInterfacesFile           = ',
       'connNetFilterFile            = ',
-      'logLevel                     = 2',
+      'connTcpOnlyFilterFile        = ',
+      'logType                      = logfile',
+      'logLevel                     = 3',
       'logNoDate                    = false',
       'logNumLines                  = 50000',
       'logNumRotatedFiles           = 2',
       'logStdFile                   = /var/log/beegfs-admon.log',
       'mailEnabled                  = false',
+      'mailSmtpSendType             = socket',
+      'mailSendmailPath             = sendmail',
       'mailCheckIntervalTimeSec     = 30',
       'mailMinDownTimeSec           = 10',
       'mailRecipient                = ',
@@ -48,7 +53,40 @@ shared_context 'beegfs::admon::config' do
       'mailSmtpServer               = ',
       'runDaemonized                = true',
       'tuneNumWorkers               = 4',
-    ])
+    ]
+    content = catalogue.resource('file', '/etc/beegfs/beegfs-admon.conf').send(:parameters)[:content]
+    pp (expected - (content.split(/\n/).reject { |line| line =~ /(^#|^$)/ } & expected))
+    verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', expected)
+  end
+
+  it do
+    should contain_file('/etc/beegfs/interfaces.admon').with({
+      :ensure   => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
+  it do
+    should contain_file('/etc/beegfs/netfilter.admon').with({
+      :ensure   => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
+  it do
+    should contain_file('/etc/beegfs/tcp-only-filter').with({
+      :ensure => 'absent',
+      :content  => /^$/,
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
   end
 
   it do
@@ -77,6 +115,58 @@ shared_context 'beegfs::admon::config' do
       verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', [
         'connPortShift                = 1000',
       ])
+    end
+  end
+
+  context 'when admon_conn_interfaces => ["eth0"]' do
+    let(:params) {{ :admon => true, :admon_conn_interfaces => ["eth0"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', [
+        'connInterfacesFile           = /etc/beegfs/interfaces.admon',
+      ])
+    end
+
+    it { should contain_file('/etc/beegfs/interfaces.admon').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/beegfs/interfaces.admon', ['eth0'])
+    end
+  end
+
+  context 'when admon_conn_net_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :admon => true, :admon_conn_net_filters => ["192.168.1.0/24"] }}
+
+    it do
+      verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', [
+        'connNetFilterFile            = /etc/beegfs/netfilter.admon',
+      ])
+    end
+
+    it { should contain_file('/etc/beegfs/netfilter.admon').with_ensure('present') }
+
+    it do
+      verify_contents(catalogue, '/etc/beegfs/netfilter.admon', ['192.168.1.0/24'])
+    end
+  end
+
+  context 'when conn_tcp_only_filters => ["192.168.1.0/24"]' do
+    let(:params) {{ :admon => true, :conn_tcp_only_filters => ['192.168.1.0/24', '10.0.0.0/8'] }}
+
+    it do
+      verify_contents(catalogue, '/etc/beegfs/beegfs-admon.conf', [
+        'connTcpOnlyFilterFile        = /etc/beegfs/tcp-only-filter',
+      ])
+    end
+
+    it do
+      should contain_file('/etc/beegfs/tcp-only-filter').with({
+        :ensure   => 'present',
+        :content  => "192.168.1.0/24\n10.0.0.0/8",
+        :owner    => 'root',
+        :group    => 'root',
+        :mode     => '0644',
+      })
     end
   end
 

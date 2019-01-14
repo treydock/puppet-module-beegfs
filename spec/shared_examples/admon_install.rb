@@ -7,9 +7,9 @@ shared_context 'beegfs::admon::install' do
     })
   end
 
-  context "when version => '2015.03.r9'" do
-    let(:params) {{ :admon => true, :version => '2015.03.r9' }}
-    it { should contain_package('beegfs-admon').with_ensure('2015.03.r9') }
+  context "when version => '7.1.3'" do
+    let(:params) {{ :admon => true, :version => '7.1.3' }}
+    it { should contain_package('beegfs-admon').with_ensure('7.1.3') }
   end
 
   context 'when admon_service_autorestat => true' do

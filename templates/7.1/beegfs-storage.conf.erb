@@ -30,6 +30,7 @@ setting_str_length  = longest_key.size + 1
 #
 
 <% config_keys['advanced'].each do |key| -%>
+<%- next unless configs.key?(key) -%>
 <%= key.ljust(setting_str_length) %>= <%= configs[key] %>
 <% end -%>
 
@@ -99,6 +100,11 @@ setting_str_length  = longest_key.size + 1
 #    to other hosts to inform them about possible communication paths.
 # Default: <none>
 
+# [connInterfacesList]
+# Comma-separated list of interface names. Performs the same function as
+# connInterfacesFile.
+# Default: <none>
+
 # [connMaxInternodeNum]
 # The maximum number of simultaneous connections to the same node.
 # Default: 12
@@ -129,9 +135,21 @@ setting_str_length  = longest_key.size + 1
 
 # [connUseRDMA]
 # Enables the use of Remote Direct Memory Access (RDMA) for Infiniband.
-# For this setting to be effective, OFED ibverbs support has to be enabled at
-# compile time of the beegfs_opentk library.
+# This setting only has effect if libbeegfs-ib is installed.
 # Default: true
+
+# [connRDMABufNum], [connRDMABufSize]
+# Infiniband RDMA buffer settings.
+# connRDMABufSize is the maximum size of a buffer (in bytes) that will be sent
+# over the network; connRDMABufNum is the number of available buffers that can
+# be in flight for a single connection. These client settings are also applied
+# on the server side for each connection.
+# Note: RAM usage per connection is connRDMABufSize x connRDMABufNum x 2. Keep
+#    resulting RAM usage (x connMaxInternodeNum x number_of_clients) on the
+#    server in mind when increasing these values.
+# Note: The client needs to allocate physically contiguous pages for
+# connRDMABufSize, so this setting shouldn't be higher than a few kbytes.
+# Default: 8192, 70
 
 # [connRDMATypeOfService]
 # Infiniband provides the option to set a type of service for an application.
@@ -140,24 +158,42 @@ setting_str_length  = longest_key.size + 1
 # In openSM the service type will be mapped to the parameter qos-class, which
 # can be handled in your QoS configuration.
 # See
-# www.openfabrics.org/downloads/OFED/ofed-1.4/OFED-1.4-docs/QoS_management_in_OpenSM.txt
+#    www.openfabrics.org/downloads/OFED/ofed-1.4/OFED-1.4-docs/
+#    QoS_management_in_OpenSM.txt
 # for more information on how to configure openSM for QoS.
 # This parameter sets the type of service for all outgoing connections of this 
 # daemon.
 # Default: 0 (Max: 255)
 
 # [connTcpOnlyFilterFile]
-# The path to a text file that specifies IP address ranges to which no RDMA connection should be
-# established. This is useful e.g. for environments where all hosts support RDMA, but some hosts
-# cannot connect via RDMA to some other hosts.
+# The path to a text file that specifies IP address ranges to which no RDMA 
+# connection should be established. This is useful e.g. for environments where 
+# all hosts support RDMA, but some hosts cannot connect via RDMA to some other 
+# hosts. 
 # Example: "192.168.10.0/24" in the first line, "192.168.20.0/24" in the second
 #    line.
 # Values: This setting is optional.
 # Default: <none>
 
+# [connFallbackExpirationSecs]
+# The time in seconds after which a connection to a fallback interface expires.
+# When a fallback connection expires, the system will try to establish a new
+# connection to the other hosts  primary interface (falling back to another
+# interface again if necessary).
+# Note: The priority of node interfaces can be configured using the
+#    "connInterfacesFile" parameter.
+# Default: 900
+
+
 #
 # --- Section 4.2: [Logging] ---
 #
+
+# [logType]
+# Defines the logger type. This can either be "syslog" to send log messages to
+# the general system logger or "logfile". If set to logfile logs will be written 
+# to logStdFile. 
+# Default: logfile
 
 # [logLevel]
 # Defines the amount of output messages. The higher this level, the more
@@ -180,21 +216,10 @@ setting_str_length  = longest_key.size + 1
 # Default: 5
 
 # [logStdFile]
-# The path and filename of the log file for standard log messages. If no name
-# is specified, the messages will be written to the console.
+# The path and filename of the log file for standard log messages. 
+# The parameter will be considered only if logType value is not equal to syslog. 
+# If no name is specified, the messages will be written to the console.
 # Default: /var/log/beegfs_storage.log
-
-
-#
-# --- Section 4.3: [Quota Settings] ---
-#
-
-# [quotaEnableEnforcement]
-# Enable enforcement of user and group quota limits by denying writes and
-# creation of new chunkfiles when a limit is exceeded.
-# Note: If this option is true, performance might be slightly decreased due to
-#    extra information tracking.
-# Default: false
 
 
 #
@@ -233,12 +258,6 @@ setting_str_length  = longest_key.size + 1
 # Values: time in seconds
 # Default: 180
 
-# [sysUpdateTargetStatesSecs]
-# Interval in which the states of the storage targets on other storage servers
-# are fetched from the management server.
-# Values: time in seconds
-# Default: 30
-
 
 #
 # --- Section 4.6: [Tuning] ---
@@ -265,7 +284,7 @@ setting_str_length  = longest_key.size + 1
 # the underlying local file system in a single operation.
 # Note: Setting these values higher than the file chunk size or
 #    tuneWorkerBufSize has no effect.
-# Default: tuneFileReadSize=32k, tuneFileWriteSize=64k
+# Default: tuneFileReadSize=128k, tuneFileWriteSize=128k
 
 # [tuneFileWriteSyncSize]
 # The number of sequentially written bytes (per file) after which the kernel
@@ -324,8 +343,8 @@ setting_str_length  = longest_key.size + 1
 
 # [tuneUsePerUserMsgQueues]
 # If set to true, per-user queues will be used to decide which of the pending
-# requests  is handled by the next available worker thread. If set to false,
-# a single queue will be used and incoming requests will be processed in
+# requests is handled by the next available worker thread. If set to false, a
+# single queue will be used and incoming requests will be processed in
 # first-come, first-served order.
 # Per-user queues are intended to improve fairness in multi-user environments.
 # Default: false
@@ -337,3 +356,65 @@ setting_str_length  = longest_key.size + 1
 #    tuneFileReadSize and tuneFileWriteSize.
 # Default: 4m
 
+
+#
+# --- Section 4.7: [Quota settings] ---
+#
+
+# [quotaEnableEnforcement]
+# Enables enforcement of user and group quota limits by periodically checking
+# if the limits are exceeded.
+# Note: This uses quota information provided by the underlying local file
+#    systems of the storage targets.
+# Note: Set quota limits with "beegfs-ctl --setquota".
+# Note: If this option is true, performance might be slightly decreased due to
+#    extra information tracking.
+# Note: Must be set to the same value in meta servers and mgmtd to be
+# effective.
+# Default: false
+
+
+#
+# --- Section 5: [Expert options] ---
+#
+
+# [tuneProcessFDLimit]
+# Sets the maximum number of files the server can open. If the process rlimit
+# is already larger than this number the limit will not be decreased.
+# Default: 50000
+
+# [tuneWorkerNumaAffinity]
+# Distributes worker threads equally among NUMA nodes on the system when set.
+# Default: false
+
+# [tuneListenerNumaAffinity]
+# Distributes listener threads equally among NUMA nodes on the system when set.
+# Default: false
+
+# [tuneListenerPrioShift]
+# Applies a niceness offset to listener threads. Negative values will decrease
+# niceness (increse priority), positive values will increase niceness (decrease
+# priority).
+# Default: -1
+
+# [tuneDirCacheLimit]
+# Number of recently used chunk directory structures to keep in memory.
+# Increasing this value may reduce memory allocations.
+# Default: 1024
+
+# [tuneEarlyStat]
+# Compute file size and storage block usage of a chunk before close() is set.
+# Some filesystems may report block usage greater than required to hold all
+# file data if stat() is called before close().
+# Default: false
+
+# [quotaDisableZfsSupport]
+# Disable quota support for ZFS if quota is enabled.
+# ZFS quota requires the libzfs library. Errors while loading the library are
+# reported if quota is enabled and the library is not installed (or the wrong
+# version is installed)
+# Default: false
+
+# [pidFile]
+# Creates a PID file for the daemon when set. Set by init scripts.
+# Default: <none>

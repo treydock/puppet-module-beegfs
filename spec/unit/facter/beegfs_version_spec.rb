@@ -4,16 +4,17 @@ describe 'beegfs_version fact' do
   
   before :each do
     Facter.clear
-    Facter.fact(:osfamily).stubs(:value).returns("RedHat")
+    allow(Facter.fact(:kernel)).to receive(:value).and_return('Linux')
+    allow(Facter.fact(:osfamily)).to receive(:value).and_return('RedHat')
   end
 
-  it "should return 2015.03.r1" do
-    Facter::Util::Resolution.stubs(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' beegfs-common").returns("beegfs-common-2015.03.r1")
-    Facter.fact(:beegfs_version).value.should == "2015.03.r1"
+  it "should return beegfs-common version" do
+    expect(Facter::Core::Execution).to receive(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' beegfs-common").and_return("beegfs-common-7.1.2")
+    expect(Facter.fact(:beegfs_version).value).to eq('7.1.2')
   end
 
   it "should handle package not installed" do
-    Facter::Util::Resolution.stubs(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' beegfs-common").returns("package beegfs-common is not installed\n")
-    Facter.fact(:beegfs_version).value.should == nil
+    expect(Facter::Core::Execution).to receive(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' beegfs-common").and_return("package beegfs-common is not installed\n")
+    expect(Facter.fact(:beegfs_version).value).to be_nil
   end
 end

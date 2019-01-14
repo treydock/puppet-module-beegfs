@@ -20,7 +20,7 @@ shared_examples_for 'beegfs::mgmtd::config' do
   end
 
   it do
-    verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
+    expected = [
       '# --- Section 1.1: [Basic Settings] ---',
       'storeMgmtdDirectory                    = ',
       'storeAllowFirstRunInit                 = true',
@@ -34,18 +34,21 @@ shared_examples_for 'beegfs::mgmtd::config' do
       'connMgmtdPortUDP                       = 8008',
       'connNetFilterFile                      = ',
       'connPortShift                          = 0',
+      'logType                                = logfile',
       'logLevel                               = 2',
       'logNoDate                              = false',
       'logNumLines                            = 50000',
       'logNumRotatedFiles                     = 5',
       'logStdFile                             = /var/log/beegfs-mgmtd.log',
+      'quotaQueryGIDFile                      = ',
       'quotaQueryGIDRange                     = ',
+      'quotaQueryUIDFile                      = ',
       'quotaQueryUIDRange                     = ',
       'quotaQueryType                         = system',
+      'quotaQueryWithSystemUsersGroups        = false',
       'quotaUpdateIntervalMin                 = 10',
       'runDaemonized                          = true',
       'sysTargetOfflineTimeoutSecs            = 180',
-      'sysUpdateTargetStatesSecs              = 30',
       'tuneClientAutoRemoveMins               = 30',
       'tuneNumWorkers                         = 4',
       'tuneMetaDynamicPools                   = true',
@@ -60,7 +63,10 @@ shared_examples_for 'beegfs::mgmtd::config' do
       'tuneStorageSpaceEmergencyLimit         = 20G',
       '# --- Section 1.3: [Enterprise Features] ---',
       'quotaEnableEnforcement                 = false',
-    ])
+    ]
+    content = catalogue.resource('file', '/etc/beegfs/beegfs-mgmtd.conf').send(:parameters)[:content]
+    pp (expected - (content.split(/\n/).reject { |line| line =~ /(^#|^$)/ } & expected))
+    verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', expected)
   end
 
   it do

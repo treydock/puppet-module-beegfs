@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/treydock/puppet-module-beegfs.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-beegfs)
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
     * [BeeGFS Compatibility](#beegfs-compatibility)
@@ -21,7 +21,7 @@ TODO
 
 This module is only supported on the following releases of BeeGFS:
 
-* 2015.03
+* 7.1.x
 
 ## Usage
 
@@ -40,6 +40,7 @@ TODO
 #### Private classes
 
 * `beegfs::repo`: Manages the BeeGFS package repository resources
+* `beegfs::install`: Install packages common to several roles
 * `beegfs::client`: Manage BeeGFS client
 * `beegfs::client::install`: Install beegfs-client packages
 * `beegfs::client::config`: Configure beegfs-client
@@ -84,7 +85,7 @@ the BeeGFS roles.
 This module has been tested on:
 
 * CentOS 6 x86_64
-* Scientific Linux 6 x86_64
+* CentOS 7 x86_64
 
 ## Development
 

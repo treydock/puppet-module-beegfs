@@ -7,7 +7,8 @@ describe 'beegfs class:' do
     it 'should run successfully' do
       pp = <<-EOS
       file { '/beegfs':
-        ensure  => directory,
+        ensure                  => directory,
+        selinux_ignore_defaults => true,
       }->
       class { 'beegfs':
         meta                  => true,

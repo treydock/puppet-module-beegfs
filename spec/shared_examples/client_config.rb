@@ -132,12 +132,13 @@ shared_examples_for 'beegfs::client::config' do
       'connFallbackExpirationSecs    = 900',
       'connInterfacesFile            = ',
       'connMaxInternodeNum           = 12',
+      'connMaxConcurrentAttempts     = 0',
       'connNetFilterFile             = ',
-      'connTcpOnlyFilterFile         = ',
       'connUseRDMA                   = true',
       'connRDMABufNum                = 70',
       'connRDMABufSize               = 8192',
       'connRDMATypeOfService         = 0',
+      'connTcpOnlyFilterFile         = ',
       'logClientID                   = false',
       'logHelperdIP                  = ',
       'logLevel                      = 3',
@@ -148,15 +149,15 @@ shared_examples_for 'beegfs::client::config' do
       'sysSessionCheckOnClose        = false',
       'sysSyncOnClose                = false',
       'sysTargetOfflineTimeoutSecs   = 900',
-      'sysUpdateTargetStatesSecs     = 60',
+      'sysUpdateTargetStatesSecs     = 30',
       'sysXAttrsEnabled              = false',
       'tuneFileCacheType             = buffered',
-      'tuneNumWorkers                = 0',
       'tunePreferredMetaFile         = ',
       'tunePreferredStorageFile      = ',
       'tuneRemoteFSync               = true',
       'tuneUseGlobalAppendLocks      = false',
       'tuneUseGlobalFileLocks        = false',
+      'sysACLsEnabled                = false',
     ])
   end
 
@@ -261,14 +262,14 @@ shared_examples_for 'beegfs::client::config' do
     let(:params) do
       {
         :client_config_overrides => {
-          'tuneNumWorkers'  => '8',
+          'quotaEnabled'  => true,
         }
       }
     end
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-client.conf', [
-        'tuneNumWorkers                = 8',
+        'quotaEnabled                  = true',
       ])
     end
   end

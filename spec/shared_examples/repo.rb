@@ -3,12 +3,17 @@ shared_examples_for 'beegfs::repo' do
 
   it do
     should contain_yumrepo('beegfs').with({
-      'descr'     => "BeeGFS 2015.03 (RHEL6)",
-      'baseurl'   => "http://www.beegfs.com/release/beegfs_2015.03/dists/rhel6",
-      'gpgkey'    => 'http://www.beegfs.com/release/beegfs_2015.03/gpg/RPM-GPG-KEY-beegfs',
+      'descr'     => "BeeGFS 7.1.x (RHEL7)",
+      'baseurl'   => "https://www.beegfs.io/release/beegfs_7_1/dists/rhel7",
+      'gpgkey'    => 'https://www.beegfs.io/release/beegfs_7_1/gpg/RPM-GPG-KEY-beegfs',
       'gpgcheck'  => '0',
       'enabled'   => '1',
     })
+  end
+
+  context "with customer login" do
+    let(:params) {{ :customer_login => 'test:secret' }}
+    it { should contain_yumrepo('beegfs').with_baseurl('https://test:secret@www.beegfs.io/login/release/beegfs_7_1/dists/rhel7') }
   end
 
   context "with custom baseurl" do

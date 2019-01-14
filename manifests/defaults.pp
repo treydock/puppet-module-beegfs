@@ -2,7 +2,7 @@
 class beegfs::defaults {
 
   $mgmtd_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'storeMgmtdDirectory' => '',
       'storeAllowFirstRunInit' => 'true',
       'sysAllowNewServers' => 'true',
@@ -14,18 +14,21 @@ class beegfs::defaults {
       'connMgmtdPortUDP' => '8008',
       'connNetFilterFile' => '',
       'connPortShift' => '0',
+      'logType' => 'logfile',
       'logLevel' => '2',
       'logNoDate' => 'false',
       'logNumLines' => '50000',
       'logNumRotatedFiles' => '5',
       'logStdFile' => '/var/log/beegfs-mgmtd.log',
+      'quotaQueryGIDFile' => '',
       'quotaQueryGIDRange' => '',
+      'quotaQueryUIDFile' => '',
       'quotaQueryUIDRange' => '',
       'quotaQueryType' => 'system',
+      'quotaQueryWithSystemUsersGroups' => 'false',
       'quotaUpdateIntervalMin' => '10',
       'runDaemonized' => 'true',
       'sysTargetOfflineTimeoutSecs' => '180',
-      'sysUpdateTargetStatesSecs' => '30',
       'tuneClientAutoRemoveMins' => '30',
       'tuneNumWorkers' => '4',
       'tuneMetaDynamicPools' => 'true',
@@ -43,7 +46,7 @@ class beegfs::defaults {
   }
 
   $mgmtd_config_keys = {
-    '2015.03' => {
+    '7.1' => {
       'basic'     => [
         'storeMgmtdDirectory',
         'storeAllowFirstRunInit',
@@ -58,18 +61,21 @@ class beegfs::defaults {
         'connMgmtdPortUDP',
         'connNetFilterFile',
         'connPortShift',
+        'logType',
         'logLevel',
         'logNoDate',
         'logNumLines',
         'logNumRotatedFiles',
         'logStdFile',
+        'quotaQueryGIDFile',
         'quotaQueryGIDRange',
+        'quotaQueryUIDFile',
         'quotaQueryUIDRange',
         'quotaQueryType',
+        'quotaQueryWithSystemUsersGroups',
         'quotaUpdateIntervalMin',
         'runDaemonized',
         'sysTargetOfflineTimeoutSecs',
-        'sysUpdateTargetStatesSecs',
         'tuneClientAutoRemoveMins',
         'tuneNumWorkers',
         'tuneMetaDynamicPools',
@@ -82,6 +88,9 @@ class beegfs::defaults {
         'tuneStorageInodesEmergencyLimit',
         'tuneStorageSpaceLowLimit',
         'tuneStorageSpaceEmergencyLimit',
+        # Expert
+        'tuneProcessFDLimit',
+        'pidFile',
       ],
       'enterprise' => [
         'quotaEnableEnforcement',
@@ -90,7 +99,7 @@ class beegfs::defaults {
   }
 
   $meta_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'sysMgmtdHost' => '',
       'storeMetaDirectory' => '',
       'storeAllowFirstRunInit' => 'true',
@@ -105,9 +114,10 @@ class beegfs::defaults {
       'connMgmtdPortUDP' => '8008',
       'connPortShift' => '0',
       'connNetFilterFile' => '',
-      'connTcpOnlyFilterFile' => '',
       'connUseRDMA' => 'true',
       'connRDMATypeOfService' => '0',
+      'connTcpOnlyFilterFile' => '',
+      'logType' => 'logfile',
       'logLevel' => '3',
       'logNoDate' => 'false',
       'logNumLines' => '50000',
@@ -118,7 +128,8 @@ class beegfs::defaults {
       'storeClientACLs' => 'false',
       'storeUseExtendedAttribs' => 'true',
       'sysTargetAttachmentFile' => '',
-      'sysUpdateTargetStatesSecs' => '30',
+      'sysTargetOfflineTimeoutSecs' => '180',
+      'sysAllowUserSetPattern' => 'false',
       'tuneBindToNumaZone' => '',
       'tuneNumStreamListeners' => '1',
       'tuneNumWorkers' => '0',
@@ -129,7 +140,7 @@ class beegfs::defaults {
   }
 
   $meta_config_keys = {
-    '2015.03' => {
+    '7.1' => {
       'basic'     => [
         'sysMgmtdHost',
         'storeMetaDirectory',
@@ -147,9 +158,10 @@ class beegfs::defaults {
         'connMgmtdPortUDP',
         'connPortShift',
         'connNetFilterFile',
-        'connTcpOnlyFilterFile',
         'connUseRDMA',
         'connRDMATypeOfService',
+        'connTcpOnlyFilterFile',
+        'logType',
         'logLevel',
         'logNoDate',
         'logNumLines',
@@ -160,19 +172,38 @@ class beegfs::defaults {
         'storeClientACLs',
         'storeUseExtendedAttribs',
         'sysTargetAttachmentFile',
-        'sysUpdateTargetStatesSecs',
+        'sysTargetOfflineTimeoutSecs',
+        'sysAllowUserSetPattern',
         'tuneBindToNumaZone',
         'tuneNumStreamListeners',
         'tuneNumWorkers',
         'tuneTargetChooser',
         'tuneUseAggressiveStreamPoll',
         'tuneUsePerUserMsgQueues',
+        # Expert
+        'storeSelfHealEmptyFiles',
+        'tuneNumCommSlaves',
+        'tuneCommSlaveBufSize',
+        'tuneDefaultChunkSize',
+        'tuneDefaultNumStripeTargets',
+        'tuneProcessFDLimit',
+        'tuneWorkerNumaAffinity',
+        'tuneListenerNumaAffinity',
+        'tuneListenerPrioShift',
+        'tuneDirMetadataCacheLimit',
+        'tuneLockGrantWaitMS',
+        'tuneLockGrantNumRetries',
+        'tuneRotateMirrorTargets',
+        'tuneEarlyUnlinkResponse',
+        'tuneMirrorTimestamps',
+        'quotaEarlyChownResponse',
+        'pidFile',
       ],
     }
   }
 
   $storage_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'sysMgmtdHost' => '',
       'storeStorageDirectory' => '',
       'storeAllowFirstRunInit' => 'true',
@@ -186,9 +217,10 @@ class beegfs::defaults {
       'connStoragePortUDP' => '8003',
       'connPortShift' => '0',
       'connNetFilterFile' => '',
-      'connTcpOnlyFilterFile' => '',
       'connUseRDMA' => 'true',
       'connRDMATypeOfService' => '0',
+      'connTcpOnlyFilterFile' => '',
+      'logType' => 'logfile',
       'logLevel' => '3',
       'logNoDate' => 'false',
       'logNumLines' => '50000',
@@ -198,7 +230,6 @@ class beegfs::defaults {
       'runDaemonized' => 'true',
       'sysResyncSafetyThresholdMins' => '10',
       'sysTargetOfflineTimeoutSecs' => '180',
-      'sysUpdateTargetStatesSecs' => '30',
       'tuneBindToNumaZone' => '',
       'tuneFileReadAheadSize' => '0m',
       'tuneFileReadAheadTriggerSize' => '4m',
@@ -217,7 +248,7 @@ class beegfs::defaults {
   }
 
   $storage_config_keys = {
-    '2015.03' => {
+    '7.1' => {
       'basic'     => [
         'sysMgmtdHost',
         'storeStorageDirectory',
@@ -234,9 +265,10 @@ class beegfs::defaults {
         'connStoragePortUDP',
         'connPortShift',
         'connNetFilterFile',
-        'connTcpOnlyFilterFile',
         'connUseRDMA',
         'connRDMATypeOfService',
+        'connTcpOnlyFilterFile',
+        'logType',
         'logLevel',
         'logNoDate',
         'logNumLines',
@@ -246,7 +278,6 @@ class beegfs::defaults {
         'runDaemonized',
         'sysResyncSafetyThresholdMins',
         'sysTargetOfflineTimeoutSecs',
-        'sysUpdateTargetStatesSecs',
         'tuneBindToNumaZone',
         'tuneFileReadAheadSize',
         'tuneFileReadAheadTriggerSize',
@@ -261,13 +292,21 @@ class beegfs::defaults {
         'tuneUsePerTargetWorkers',
         'tuneUsePerUserMsgQueues',
         'tuneWorkerBufSize',
-
+        # Expert
+        'tuneProcessFDLimit',
+        'tuneWorkerNumaAffinity',
+        'tuneListenerNumaAffinity',
+        'tuneListenerPrioShift',
+        'tuneDirCacheLimit',
+        'tuneEarlyStat',
+        'quotaDisableZfsSupport',
+        'pidFile',
       ],
     }
   }
 
   $admon_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'sysMgmtdHost' => '',
       'clearDatabase' => 'false',
       'httpPort' => '8000',
@@ -280,13 +319,18 @@ class beegfs::defaults {
       'connAuthFile' => '',
       'connFallbackExpirationSecs' => '900',
       'connMaxInternodeNum' => '3',
+      'connInterfacesFile' => '',
       'connNetFilterFile' => '',
-      'logLevel' => '2',
+      'connTcpOnlyFilterFile' => '',
+      'logType' => 'logfile',
+      'logLevel' => '3',
       'logNoDate' => 'false',
       'logNumLines' => '50000',
       'logNumRotatedFiles' => '2',
       'logStdFile' => '/var/log/beegfs-admon.log',
       'mailEnabled' => 'false',
+      'mailSmtpSendType' => 'socket',
+      'mailSendmailPath' => 'sendmail',
       'mailCheckIntervalTimeSec' => '30',
       'mailMinDownTimeSec' => '10',
       'mailRecipient' => '',
@@ -299,7 +343,7 @@ class beegfs::defaults {
   }
 
   $admon_config_keys = {
-    '2015.03' => {
+    '7.1' => {
       'basic'     => [
         'sysMgmtdHost',
       ],
@@ -315,13 +359,18 @@ class beegfs::defaults {
         'connAuthFile',
         'connFallbackExpirationSecs',
         'connMaxInternodeNum',
+        'connInterfacesFile',
         'connNetFilterFile',
+        'connTcpOnlyFilterFile',
+        'logType',
         'logLevel',
         'logNoDate',
         'logNumLines',
         'logNumRotatedFiles',
         'logStdFile',
         'mailEnabled',
+        'mailSmtpSendType',
+        'mailSendmailPath',
         'mailCheckIntervalTimeSec',
         'mailMinDownTimeSec',
         'mailRecipient',
@@ -335,7 +384,7 @@ class beegfs::defaults {
   }
 
   $helperd_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'connAuthFile' => '',
       'connHelperdPortTCP' => '8006',
       'connPortShift' => '0',
@@ -349,7 +398,7 @@ class beegfs::defaults {
   }
 
   $helperd_config_keys = {
-    '2015.03' => [
+    '7.1' => [
       'connAuthFile',
       'connHelperdPortTCP',
       'connPortShift',
@@ -359,11 +408,13 @@ class beegfs::defaults {
       'logStdFile',
       'runDaemonized',
       'tuneNumWorkers',
+      # Expert
+      'pidFile',
     ]
   }
 
   $client_default_configs = {
-    '2015.03' => {
+    '7.1' => {
       'sysMgmtdHost' => '',
       'connAuthFile' => '',
       'connClientPortUDP' => '8004',
@@ -375,12 +426,13 @@ class beegfs::defaults {
       'connFallbackExpirationSecs' => '900',
       'connInterfacesFile' => '',
       'connMaxInternodeNum' => '12',
+      'connMaxConcurrentAttempts' => '0',
       'connNetFilterFile' => '',
-      'connTcpOnlyFilterFile' => '',
       'connUseRDMA' => 'true',
       'connRDMABufNum' => '70',
       'connRDMABufSize' => '8192',
       'connRDMATypeOfService' => '0',
+      'connTcpOnlyFilterFile' => '',
       'logClientID' => 'false',
       'logHelperdIP' => '',
       'logLevel' => '3',
@@ -391,20 +443,20 @@ class beegfs::defaults {
       'sysSessionCheckOnClose' => 'false',
       'sysSyncOnClose' => 'false',
       'sysTargetOfflineTimeoutSecs' => '900',
-      'sysUpdateTargetStatesSecs' => '60',
+      'sysUpdateTargetStatesSecs' => '30',
       'sysXAttrsEnabled' => 'false',
       'tuneFileCacheType' => 'buffered',
-      'tuneNumWorkers' => '0',
       'tunePreferredMetaFile' => '',
       'tunePreferredStorageFile' => '',
       'tuneRemoteFSync' => 'true',
       'tuneUseGlobalAppendLocks' => 'false',
       'tuneUseGlobalFileLocks' => 'false',
+      'sysACLsEnabled' => 'false',
     },
   }
 
   $client_config_keys = {
-    '2015.03' => {
+    '7.1' => {
       'basic'     => [
         'sysMgmtdHost',
       ],
@@ -419,12 +471,13 @@ class beegfs::defaults {
         'connFallbackExpirationSecs',
         'connInterfacesFile',
         'connMaxInternodeNum',
+        'connMaxConcurrentAttempts',
         'connNetFilterFile',
-        'connTcpOnlyFilterFile',
         'connUseRDMA',
         'connRDMABufNum',
         'connRDMABufSize',
         'connRDMATypeOfService',
+        'connTcpOnlyFilterFile',
         'logClientID',
         'logHelperdIP',
         'logLevel',
@@ -438,12 +491,31 @@ class beegfs::defaults {
         'sysUpdateTargetStatesSecs',
         'sysXAttrsEnabled',
         'tuneFileCacheType',
-        'tuneNumWorkers',
         'tunePreferredMetaFile',
         'tunePreferredStorageFile',
         'tuneRemoteFSync',
         'tuneUseGlobalAppendLocks',
         'tuneUseGlobalFileLocks',
+        # Expert
+        'connUnmountRetries',
+        'tuneFileCacheBufSize',
+        'tuneFileCacheBufNum',
+        'tunePageCacheValidityMS',
+        'tuneDirSubentryCacheValidityMS',
+        'tuneFileSubentryCacheValidityMS',
+        'tunePathBufSize',
+        'tunePathBufNum',
+        'tuneMsgBufSize',
+        'tuneMsgBufNum',
+        'tuneRefreshOnGetAttr',
+        'tuneInodeBlockBits',
+        'tuneEarlyCloseResponse',
+        'tuneUseBufferedAppend',
+        'tuneStatFsCacheSecs',
+        'sysInodeIDStyle',
+      ],
+      'enterprise' => [
+        'sysACLsEnabled',
       ],
     }
   }

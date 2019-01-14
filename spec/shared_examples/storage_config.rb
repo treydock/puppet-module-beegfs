@@ -20,7 +20,7 @@ shared_context 'beegfs::storage::config' do
   end
 
   it do
-    verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
+    expected = [
       '# --- Section 1.1: [Basic Settings] ---',
       'sysMgmtdHost                 = ',
       'storeStorageDirectory        = ',
@@ -36,9 +36,10 @@ shared_context 'beegfs::storage::config' do
       'connStoragePortUDP           = 8003',
       'connPortShift                = 0',
       'connNetFilterFile            = ',
-      'connTcpOnlyFilterFile        = ',
       'connUseRDMA                  = true',
       'connRDMATypeOfService        = 0',
+      'connTcpOnlyFilterFile        = ',
+      'logType                      = logfile',
       'logLevel                     = 3',
       'logNoDate                    = false',
       'logNumLines                  = 50000',
@@ -48,7 +49,6 @@ shared_context 'beegfs::storage::config' do
       'runDaemonized                = true',
       'sysResyncSafetyThresholdMins = 10',
       'sysTargetOfflineTimeoutSecs  = 180',
-      'sysUpdateTargetStatesSecs    = 30',
       'tuneBindToNumaZone           = ',
       'tuneFileReadAheadSize        = 0m',
       'tuneFileReadAheadTriggerSize = 4m',
@@ -63,7 +63,10 @@ shared_context 'beegfs::storage::config' do
       'tuneUsePerTargetWorkers      = true',
       'tuneUsePerUserMsgQueues      = false',
       'tuneWorkerBufSize            = 4m',
-    ])
+    ]
+    content = catalogue.resource('file', '/etc/beegfs/beegfs-storage.conf').send(:parameters)[:content]
+    pp (expected - (content.split(/\n/).reject { |line| line =~ /(^#|^$)/ } & expected))
+    verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', expected)
   end
 
   it do

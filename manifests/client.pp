@@ -1,16 +1,16 @@
 # private class
 class beegfs::client {
 
-  include beegfs::repo
-  include beegfs::client::install
-  include beegfs::client::config
-  include beegfs::client::service
-  
-  anchor { 'beegfs::client::start': }->
-  Class['beegfs::repo']->
-  Class['beegfs::client::install']->
-  Class['beegfs::client::config']->
-  Class['beegfs::client::service']->
-  anchor { 'beegfs::client::end': }
+  contain beegfs::repo
+  contain beegfs::install
+  contain beegfs::client::install
+  contain beegfs::client::config
+  contain beegfs::client::service
+
+  Class['beegfs::repo']
+  -> Class['beegfs::install']
+  -> Class['beegfs::client::install']
+  -> Class['beegfs::client::config']
+  -> Class['beegfs::client::service']
 
 }

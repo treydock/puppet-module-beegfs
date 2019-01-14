@@ -22,7 +22,12 @@ shared_context 'beegfs::admon::service' do
 
   context 'with admon_service_autorestart => true' do
     let(:params) {{ :admon => true, :admon_service_autorestart => true }}
-    it { should contain_service('beegfs-admon').with_subscribe('File[/etc/beegfs/beegfs-admon.conf]') }
+    it { should contain_service('beegfs-admon').with_subscribe([
+      'File[/etc/beegfs/beegfs-admon.conf]',
+      'File[/etc/beegfs/interfaces.admon]',
+      'File[/etc/beegfs/netfilter.admon]',
+      'File[/etc/beegfs/tcp-only-filter]'])
+    }
   end
 
   context 'with admon_manage_service => false' do

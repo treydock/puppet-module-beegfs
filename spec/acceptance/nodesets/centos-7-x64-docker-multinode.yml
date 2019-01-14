@@ -1,57 +1,61 @@
 HOSTS:
   mgmt:
     roles:
-      - master
+      - default
       - agent
       - mgmt
     platform: el-7-x86_64
     hypervisor: docker
-    image: milcom/centos7-systemd
+    image: centos:7
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget iproute'
     ip: 192.168.1.2
+    docker_container_name: 'beegfs-mgmt-el7'
   meta:
     roles:
       - agent
       - meta
     platform: el-7-x86_64
     hypervisor: docker
-    image: milcom/centos7-systemd
+    image: centos:7
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget iproute'
     ip: 192.168.1.3
+    docker_container_name: 'beegfs-meta-el7'
   storage:
     roles:
       - agent
       - storage
     platform: el-7-x86_64
     hypervisor: docker
-    image: milcom/centos7-systemd
+    image: centos:7
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget iproute'
     ip: 192.168.1.4
+    docker_container_name: 'beegfs-storage-el7'
   client:
     roles:
       - agent
       - client
-    platform: el-76-x86_64
+    platform: el-7-x86_64
     hypervisor: docker
-    image: milcom/centos7-systemd
+    image: centos:7
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget iproute'
     ip: 192.168.1.5
+    docker_container_name: 'beegfs-client-el7'
 CONFIG:
   log_level: debug
   type: foss

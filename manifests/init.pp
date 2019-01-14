@@ -1,167 +1,129 @@
 # == Class: beegfs
 class beegfs (
   # which subcomponents should be managed
-  $client     = true,
-  $mgmtd      = false,
-  $meta       = false,
-  $storage    = false,
-  $admon      = false,
-  $utils_only = false,
+  Boolean $client     = true,
+  Boolean $mgmtd      = false,
+  Boolean $meta       = false,
+  Boolean $storage    = false,
+  Boolean $admon      = false,
+  Boolean $utils_only = false,
+
+  Optional[String] $customer_login = undef,
 
   # packages
-  $release                      = '2015.03',
-  $version                      = 'present',
-  $repo_descr                   = undef,
-  $repo_baseurl                 = undef,
-  $repo_gpgkey                  = undef,
-  $repo_gpgcheck                = '0',
-  $repo_enabled                 = '1',
-  $client_package_dependencies  = $beegfs::params::client_package_dependencies,
-  $manage_client_dependencies   = true,
+  String $release                       = '7.1',
+  String $version                       = 'present',
+  Optional[String] $repo_descr          = undef,
+  Optional[String] $repo_baseurl        = undef,
+  Optional[String] $repo_gpgkey         = undef,
+  Enum['0','1'] $repo_gpgcheck          = '0',
+  Enum['0','1'] $repo_enabled           = '1',
+  Array $client_package_dependencies    = $beegfs::params::client_package_dependencies,
+  Boolean $manage_client_dependencies   = true,
 
   # common configuration
-  $mgmtd_host       = '',
-  $conn_port_shift  = '0',
+  String $mgmtd_host       = '',
+  Integer $conn_port_shift  = 0,
 
   # interfaces
-  $client_conn_interfaces       = [],
-  $client_conn_interfaces_file  = $beegfs::params::conn_interfaces_file['client'],
-  $mgmtd_conn_interfaces        = [],
-  $mgmtd_conn_interfaces_file   = $beegfs::params::conn_interfaces_file['mgmtd'],
-  $meta_conn_interfaces         = [],
-  $meta_conn_interfaces_file    = $beegfs::params::conn_interfaces_file['meta'],
-  $storage_conn_interfaces      = [],
-  $storage_conn_interfaces_file = $beegfs::params::conn_interfaces_file['storage'],
+  Array $client_conn_interfaces       = [],
+  Stdlib::Absolutepath $client_conn_interfaces_file  = $beegfs::params::conn_interfaces_file['client'],
+  Array $mgmtd_conn_interfaces        = [],
+  Stdlib::Absolutepath $mgmtd_conn_interfaces_file   = $beegfs::params::conn_interfaces_file['mgmtd'],
+  Array $meta_conn_interfaces         = [],
+  Stdlib::Absolutepath $meta_conn_interfaces_file    = $beegfs::params::conn_interfaces_file['meta'],
+  Array $storage_conn_interfaces      = [],
+  Stdlib::Absolutepath $storage_conn_interfaces_file = $beegfs::params::conn_interfaces_file['storage'],
+  Array $admon_conn_interfaces        = [],
+  Stdlib::Absolutepath $admon_conn_interfaces_file   = $beegfs::params::conn_interfaces_file['admon'],
 
   # net filters
-  $client_conn_net_filters      = [],
-  $client_conn_net_filter_file  = $beegfs::params::conn_net_filter_file['client'],
-  $mgmtd_conn_net_filters       = [],
-  $mgmtd_conn_net_filter_file   = $beegfs::params::conn_net_filter_file['mgmtd'],
-  $meta_conn_net_filters        = [],
-  $meta_conn_net_filter_file    = $beegfs::params::conn_net_filter_file['meta'],
-  $storage_conn_net_filters     = [],
-  $storage_conn_net_filter_file = $beegfs::params::conn_net_filter_file['storage'],
-  $conn_tcp_only_filters        = [],
-  $conn_tcp_only_filter_file    = $beegfs::params::conn_tcp_only_filter_file,
+  Array $client_conn_net_filters      = [],
+  Stdlib::Absolutepath $client_conn_net_filter_file  = $beegfs::params::conn_net_filter_file['client'],
+  Array $mgmtd_conn_net_filters       = [],
+  Stdlib::Absolutepath $mgmtd_conn_net_filter_file   = $beegfs::params::conn_net_filter_file['mgmtd'],
+  Array $meta_conn_net_filters        = [],
+  Stdlib::Absolutepath $meta_conn_net_filter_file    = $beegfs::params::conn_net_filter_file['meta'],
+  Array $storage_conn_net_filters     = [],
+  Stdlib::Absolutepath $storage_conn_net_filter_file = $beegfs::params::conn_net_filter_file['storage'],
+  Array $admon_conn_net_filters       = [],
+  Stdlib::Absolutepath $admon_conn_net_filter_file   = $beegfs::params::conn_net_filter_file['admon'],
+  Array $conn_tcp_only_filters        = [],
+  Stdlib::Absolutepath $conn_tcp_only_filter_file    = $beegfs::params::conn_tcp_only_filter_file,
+
+  # RDMA specific
+  String $ib_package = $beegfs::params::ib_package,
+  Boolean $with_rdma = $beegfs::params::with_rdma,
 
   # client specific - config
-  $client_mount_path          = '/mnt/beegfs',
-  $client_build_args          = $beegfs::params::client_build_args,
-  $client_build_enabled       = true,
-  $client_config_overrides    = {},
-  $helperd_config_overrides   = {},
+  Stdlib::Absolutepath $client_mount_path = '/mnt/beegfs',
+  String $client_build_args = $beegfs::params::client_build_args,
+  Boolean $client_build_enabled = true,
+  Hash $client_config_overrides = {},
+  Hash $helperd_config_overrides   = {},
   # client specific - packages
-  $client_package             = $beegfs::params::client_package,
-  $helperd_package            = $beegfs::params::helperd_package,
-  $utils_package              = $beegfs::params::utils_package,
+  String $client_package             = $beegfs::params::client_package,
+  String $helperd_package            = $beegfs::params::helperd_package,
+  String $utils_package              = $beegfs::params::utils_package,
   # client specific - services
-  $client_manage_service      = true,
-  $client_service_name        = $beegfs::params::client_service_name,
-  $helperd_service_name       = $beegfs::params::helperd_service_name,
-  $client_service_ensure      = 'running',
-  $client_service_enable      = true,
-  $client_service_autorestart = true,
+  Boolean $client_manage_service      = true,
+  String $client_service_name        = $beegfs::params::client_service_name,
+  String $helperd_service_name       = $beegfs::params::helperd_service_name,
+  String $client_service_ensure      = 'running',
+  Boolean $client_service_enable      = true,
+  Boolean $client_service_autorestart = true,
 
   # mgmtd specific - config
   $mgmtd_store_directory      = '',
-  $mgmtd_config_overrides     = {},
+  Hash $mgmtd_config_overrides     = {},
   # mgmtd specific - packages
-  $mgmtd_package              = $beegfs::params::mgmtd_package,
+  String $mgmtd_package              = $beegfs::params::mgmtd_package,
   # mgmtd specific - service
-  $mgmtd_manage_service       = true,
-  $mgmtd_service_name         = $beegfs::params::mgmtd_service_name,
-  $mgmtd_service_ensure       = 'running',
-  $mgmtd_service_enable       = true,
-  $mgmtd_service_autorestart  = false,
+  Boolean $mgmtd_manage_service       = true,
+  String $mgmtd_service_name         = $beegfs::params::mgmtd_service_name,
+  String $mgmtd_service_ensure       = 'running',
+  Boolean $mgmtd_service_enable       = true,
+  Boolean $mgmtd_service_autorestart  = false,
 
   # meta specific - config
   $meta_store_directory     = '',
-  $meta_config_overrides    = {},
+  Hash $meta_config_overrides    = {},
   # meta specific - packages
-  $meta_package             = $beegfs::params::meta_package,
+  String $meta_package             = $beegfs::params::meta_package,
   # meta specific - service
-  $meta_manage_service      = true,
-  $meta_service_name        = $beegfs::params::meta_service_name,
-  $meta_service_ensure      = 'running',
-  $meta_service_enable      = true,
-  $meta_service_autorestart = false,
+  Boolean $meta_manage_service      = true,
+  String $meta_service_name        = $beegfs::params::meta_service_name,
+  String $meta_service_ensure      = 'running',
+  Boolean $meta_service_enable      = true,
+  Boolean $meta_service_autorestart = false,
 
   # storage specific - config
   $storage_store_directory      = '',
-  $storage_config_overrides     = {},
+  Hash $storage_config_overrides     = {},
   # storage specific - packages
-  $storage_package              = $beegfs::params::storage_package,
+  String $storage_package              = $beegfs::params::storage_package,
   # storage specific - service
-  $storage_manage_service       = true,
-  $storage_service_name         = $beegfs::params::storage_service_name,
-  $storage_service_ensure       = 'running',
-  $storage_service_enable       = true,
-  $storage_service_autorestart  = false,
+  Boolean $storage_manage_service       = true,
+  String $storage_service_name         = $beegfs::params::storage_service_name,
+  String $storage_service_ensure       = 'running',
+  Boolean $storage_service_enable       = true,
+  Boolean $storage_service_autorestart  = false,
 
   # admon specific - config
-  $admon_database_file_dir    = '/var/lib/beegfs',
-  $admon_config_overrides     = {},
+  Stdlib::Absolutepath $admon_database_file_dir    = '/var/lib/beegfs',
+  Hash $admon_config_overrides     = {},
   # admon specific - packages
-  $admon_package              = $beegfs::params::admon_package,
+  String $admon_package              = $beegfs::params::admon_package,
   # admon specific - service
-  $admon_manage_service       = true,
-  $admon_service_name         = $beegfs::params::admon_service_name,
-  $admon_service_ensure       = 'running',
-  $admon_service_enable       = true,
-  $admon_service_autorestart  = false,
-
-  # Upgrade specific
-  $perform_fhgfs_upgrade      = false,
+  Boolean $admon_manage_service       = true,
+  String $admon_service_name         = $beegfs::params::admon_service_name,
+  String $admon_service_ensure       = 'running',
+  Boolean $admon_service_enable       = true,
+  Boolean $admon_service_autorestart  = false,
 ) inherits beegfs::params {
 
-  validate_bool($client)
-  validate_bool($mgmtd)
-  validate_bool($meta)
-  validate_bool($storage)
-  validate_bool($admon)
-  validate_bool($utils_only)
-
-  if ! member(['2015.03'], $release) {
-    fail("${module_name}: Only release 2015.03 is supported, ${release} given.")
-  }
-
-  validate_re($repo_gpgcheck, '^(1|0)$')
-  validate_re($repo_enabled, '^(1|0)$')
-  validate_bool($manage_client_dependencies)
-
-  validate_bool($client_build_enabled)
-  validate_bool($client_manage_service)
-  validate_bool($client_service_autorestart)
-  validate_bool($mgmtd_manage_service)
-  validate_bool($mgmtd_service_autorestart)
-  validate_bool($meta_manage_service)
-  validate_bool($meta_service_autorestart)
-  validate_bool($storage_manage_service)
-  validate_bool($storage_service_autorestart)
-  validate_bool($admon_manage_service)
-  validate_bool($admon_service_autorestart)
-
-  validate_array($client_conn_interfaces)
-  validate_array($mgmtd_conn_interfaces)
-  validate_array($meta_conn_interfaces)
-  validate_array($storage_conn_interfaces)
-  validate_array($client_conn_net_filters, $mgmtd_conn_net_filters, $meta_conn_net_filters, $storage_conn_net_filters)
-
-  validate_hash($client_config_overrides)
-  validate_hash($helperd_config_overrides)
-  validate_hash($mgmtd_config_overrides)
-  validate_hash($meta_config_overrides)
-  validate_hash($storage_config_overrides)
-  validate_hash($admon_config_overrides)
-
-  validate_bool($perform_fhgfs_upgrade)
-
-  anchor { 'beegfs::start': }
-  anchor { 'beegfs::end': }
-
-  if $perform_fhgfs_upgrade {
-    include beegfs::upgrade::fhgfs_to_beegfs
+  if ! $release in ['7.1'] {
+    fail("${module_name}: Only release 7.1 is supported, ${release} given.")
   }
 
   if empty($conn_tcp_only_filters) {
@@ -172,11 +134,17 @@ class beegfs (
     $_conn_tcp_only_filter_file_ensure  = 'present'
   }
 
+  if $with_rdma {
+    $ib_subscribe = Package['libbeegfs-ib']
+  } else {
+    $ib_subscribe = undef
+  }
+
   ## beegfs-client ##
 
   if $client or $utils_only {
     if $client_service_autorestart {
-      $client_service_subscribe   = [
+      $client_service_subscribe   = delete_undef_values([
         File['/etc/beegfs/beegfs-client.conf'],
         #Augeas['beegfs-client.conf'],
         File['/etc/beegfs/beegfs-mounts.conf'],
@@ -184,8 +152,9 @@ class beegfs (
         File[$client_conn_net_filter_file],
         File[$conn_tcp_only_filter_file],
         File_line['beegfs-client-autobuild buildArgs'],
-        File_line['beegfs-client-autobuild buildEnabled']
-      ]
+        File_line['beegfs-client-autobuild buildEnabled'],
+        $ib_subscribe,
+      ])
       $helperd_service_subscribe  = File['/etc/beegfs/beegfs-helperd.conf']
     } else {
       $client_service_subscribe   = undef
@@ -228,22 +197,19 @@ class beegfs (
     $client_configs         = merge($client_default_configs, $client_config_overrides)
     $client_config_keys     = $beegfs::params::client_config_keys[$release]
 
-    include beegfs::client
-
-    Anchor['beegfs::start']->
-    Class['beegfs::client']->
-    Anchor['beegfs::end']
+    contain beegfs::client
   }
 
   ## beegfs-mgmtd ##
 
   if $mgmtd {
     if $mgmtd_service_autorestart {
-      $mgmtd_service_subscribe = [
+      $mgmtd_service_subscribe = delete_undef_values([
         File['/etc/beegfs/beegfs-mgmtd.conf'],
         File[$mgmtd_conn_interfaces_file],
         File[$mgmtd_conn_net_filter_file],
-      ]
+        $ib_subscribe,
+      ])
     } else {
       $mgmtd_service_subscribe = undef
     }
@@ -275,23 +241,20 @@ class beegfs (
     $mgmtd_configs          = merge($mgmtd_default_configs, $mgmtd_config_overrides)
     $mgmtd_config_keys      = $beegfs::params::mgmtd_config_keys[$release]
 
-    include beegfs::mgmtd
-
-    Anchor['beegfs::start']->
-    Class['beegfs::mgmtd']->
-    Anchor['beegfs::end']
+    contain beegfs::mgmtd
   }
 
   ## beegfs-meta ##
 
   if $meta {
     if $meta_service_autorestart {
-      $meta_service_subscribe = [
+      $meta_service_subscribe = delete_undef_values([
         File['/etc/beegfs/beegfs-meta.conf'],
         File[$meta_conn_interfaces_file],
         File[$meta_conn_net_filter_file],
         File[$conn_tcp_only_filter_file],
-      ]
+        $ib_subscribe,
+      ])
     } else {
       $meta_service_subscribe = undef
     }
@@ -325,23 +288,20 @@ class beegfs (
     $meta_configs          = merge($meta_default_configs, $meta_config_overrides)
     $meta_config_keys      = $beegfs::params::meta_config_keys[$release]
 
-    include beegfs::meta
-
-    Anchor['beegfs::start']->
-    Class['beegfs::meta']->
-    Anchor['beegfs::end']
+    contain beegfs::meta
   }
 
   ## beegfs-storage ##
 
   if $storage {
     if $storage_service_autorestart {
-      $storage_service_subscribe = [
+      $storage_service_subscribe = delete_undef_values([
         File['/etc/beegfs/beegfs-storage.conf'],
         File[$storage_conn_interfaces_file],
         File[$storage_conn_net_filter_file],
         File[$conn_tcp_only_filter_file],
-      ]
+        $ib_subscribe
+      ])
     } else {
       $storage_service_subscribe = undef
     }
@@ -375,37 +335,53 @@ class beegfs (
     $storage_configs          = merge($storage_default_configs, $storage_config_overrides)
     $storage_config_keys      = $beegfs::params::storage_config_keys[$release]
 
-    include beegfs::storage
-
-    Anchor['beegfs::start']->
-    Class['beegfs::storage']->
-    Anchor['beegfs::end']
+    contain beegfs::storage
   }
 
   ## beegfs-admon ##
 
   if $admon {
     if $admon_service_autorestart {
-      $admon_service_subscribe = File['/etc/beegfs/beegfs-admon.conf']
+      $admon_service_subscribe = [
+        File['/etc/beegfs/beegfs-admon.conf'],
+        File[$admon_conn_interfaces_file],
+        File[$admon_conn_net_filter_file],
+        File[$conn_tcp_only_filter_file],
+      ]
     } else {
       $admon_service_subscribe = undef
     }
 
+    if empty($admon_conn_interfaces) {
+      $admon_conn_interfaces_file_value   = ''
+      $admon_conn_interfaces_file_ensure  = 'absent'
+    } else {
+      $admon_conn_interfaces_file_value   = $admon_conn_interfaces_file
+      $admon_conn_interfaces_file_ensure  = 'present'
+    }
+
+    if empty($admon_conn_net_filters) {
+      $admon_conn_net_filter_file_value   = ''
+      $admon_conn_net_filter_file_ensure  = 'absent'
+    } else {
+      $admon_conn_net_filter_file_value   = $admon_conn_net_filter_file
+      $admon_conn_net_filter_file_ensure  = 'present'
+    }
+
     $admon_local_configs = {
-      'connPortShift' => $conn_port_shift,
-      'sysMgmtdHost'  => $mgmtd_host,
-      'databaseFile'  => "${admon_database_file_dir}/beegfs-admon.db",
+      'connPortShift'         => $conn_port_shift,
+      'connInterfacesFile'    => $admon_conn_interfaces_file_value,
+      'connNetFilterFile'     => $admon_conn_net_filter_file_value,
+      'connTcpOnlyFilterFile' => $_conn_tcp_only_filter_file_value,
+      'sysMgmtdHost'          => $mgmtd_host,
+      'databaseFile'          => "${admon_database_file_dir}/beegfs-admon.db",
     }
 
     $admon_default_configs  = merge($beegfs::params::admon_default_configs[$release], $admon_local_configs)
     $admon_configs          = merge($admon_default_configs, $admon_config_overrides)
     $admon_config_keys      = $beegfs::params::admon_config_keys[$release]
 
-    include beegfs::admon
-
-    Anchor['beegfs::start']->
-    Class['beegfs::admon']->
-    Anchor['beegfs::end']
+    contain beegfs::admon
   }
 
 }

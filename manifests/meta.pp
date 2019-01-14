@@ -1,16 +1,16 @@
 # private class
 class beegfs::meta {
 
-  include beegfs::repo
-  include beegfs::meta::install
-  include beegfs::meta::config
-  include beegfs::meta::service
-  
-  anchor { 'beegfs::meta::start': }->
-  Class['beegfs::repo']->
-  Class['beegfs::meta::install']->
-  Class['beegfs::meta::config']->
-  Class['beegfs::meta::service']->
-  anchor { 'beegfs::meta::end': }
+  contain beegfs::repo
+  contain beegfs::install
+  contain beegfs::meta::install
+  contain beegfs::meta::config
+  contain beegfs::meta::service
+
+  Class['beegfs::repo']
+  -> Class['beegfs::install']
+  -> Class['beegfs::meta::install']
+  -> Class['beegfs::meta::config']
+  -> Class['beegfs::meta::service']
 
 }

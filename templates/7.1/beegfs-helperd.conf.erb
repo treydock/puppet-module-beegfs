@@ -1,4 +1,4 @@
-# This is a config file for BeeGFS client helper 
+# This is a config file for BeeGFS client helper
 # daemons.
 # http://www.beegfs.com
 
@@ -11,7 +11,7 @@
 
 
 #
-# --- Section 1: [Settings] --- 
+# --- Section 1: [Settings] ---
 #
 
 <%
@@ -21,6 +21,7 @@ longest_key         = configs.keys.group_by(&:size).max.last.first
 setting_str_length  = longest_key.size + 1
 
 config_keys.each do |key| -%>
+<%- next unless configs.key?(key) %>
 <%= key.ljust(setting_str_length) %>= <%= configs[key] %>
 <% end -%>
 
@@ -57,7 +58,7 @@ config_keys.each do |key| -%>
 # [connPortShift]
 # Shifts all following UDP and TCP ports according to the specified value.
 # Intended to make port changes easier in case you do not want to configure
-# each port individually.  
+# each port individually.
 # Default: 0
 
 
@@ -68,7 +69,7 @@ config_keys.each do |key| -%>
 # [logNoDate]
 # Defines whether "date & time" (=false) or the current "time only" (=true)
 # should be logged.
-# Default: false 
+# Default: false
 
 # [logNumLines]
 # The maximum number of lines per log file.
@@ -102,3 +103,11 @@ config_keys.each do |key| -%>
 # of your machine is the recommended choice.
 # Default: 2
 
+
+#
+# --- Section 5: [Expert options] ---
+#
+
+# [pidFile]
+# Creates a PID file for the daemon when set. Set by init scripts.
+# Default: <none>

@@ -40,7 +40,7 @@ setting_str_length  = longest_key.size + 3
 
 # Use the command line argument "cfgFile=/etc/anotherconfig.conf" to
 # specify a different config file for beegfs_admon.
-# All other options in this file can also be used as command line 
+# All other options in this file can also be used as command line
 # arguments, overriding the corresponding config file values.
 
 
@@ -96,7 +96,7 @@ setting_str_length  = longest_key.size + 3
 # [connPortShift]
 # Shifts all following UDP and TCP ports according to the specified value.
 # Intended to make port configuration easier in case you do not want to
-# configure each port individually.  
+# configure each port individually.
 # Default: 0
 
 # [connAuthFile]
@@ -111,7 +111,7 @@ setting_str_length  = longest_key.size + 3
 # connection to the other hosts  primary interface (falling back to another
 # interface again if necessary).
 # Note: The priority of node interfaces can be configured using the
-#    "connInterfacesFile" parameter. 
+#    "connInterfacesFile" parameter.
 # Default: 900
 
 # [connMaxInternodeNum]
@@ -135,14 +135,15 @@ setting_str_length  = longest_key.size + 3
 # address and number of significant bits).
 # Example: "192.168.10.0/24" in the first line, "192.168.20.0/24" in the second
 #    line.
-# Values: This setting is optional. If unspecified, all addresses are allowed 
+# Values: This setting is optional. If unspecified, all addresses are allowed
 #    for outgoing communication.
 # Default: <none>
 
 # [connTcpOnlyFilterFile]
-# The path to a text file that specifies IP address ranges to which no RDMA connection should be 
-# established. This is useful e.g. for environments where all hosts support RDMA, but some hosts
-# cannot connect via RDMA to some other hosts. 
+# The path to a text file that specifies IP address ranges to which no RDMA 
+# connection should be established. This is useful e.g. for environments where
+# all hosts support RDMA, but some hosts cannot connect via RDMA to some other
+# hosts.
 # Example: "192.168.10.0/24" in the first line, "192.168.20.0/24" in the second
 #    line.
 # Values: This setting is optional.
@@ -151,6 +152,12 @@ setting_str_length  = longest_key.size + 3
 #
 # --- Section 4.3: [Logging] ---
 #
+
+# [logType]
+# Defines the logger type. This can either be "syslog" to send log messages to
+# the general system logger or "logfile". If set to logfile logs will be written 
+# to logStdFile.
+# Default: logfile
 
 # [logLevel]
 # Defines the amount of output messages. The higher this level, the more
@@ -173,8 +180,9 @@ setting_str_length  = longest_key.size + 3
 # Default: 2
 
 # [logStdFile]
-# The path and filename of the log file for standard log messages. If no name
-# is specified, the messages will be written to the console.
+# The path and filename of the log file for standard log messages. 
+# The parameter will be considered only if logType value is not equal to 
+# syslog. If no name is specified, the messages will be written to the console.
 # Default: /var/log/beegfs-admon.log
 
 
@@ -183,17 +191,36 @@ setting_str_length  = longest_key.size + 3
 #
 
 # [mailEnabled]
-# Enables the email notification. The configurations from this file will override the configurations
-# from the admon GUI.
+# Enables the email notification. The configurations from this file will 
+# override the configurations from the admon GUI.
 # Default: false
+
+# [mailSmtpSendType]
+# How to send the email to an smtp server.
+# Values:
+#   * socket: use a socket to send the mails to an SMTP server without user 
+#             authentication.
+#   * sendmail: use the installed and configured sendmail program to send mails. 
+#               The sendmail binary should be accessible by the default binary 
+#               search path of the system.
+# Note: Use sendmail if a encrypted connection to the SMTP server and/or user 
+#       authentication is required.
+# Default: socket
+
+# [mailSendmailPath]
+# The path to the sendmail binary. This configuration is only required when 
+# mailSmtpSendType is set to sendmail.
+# Note: If the binary is accessible by the default binary search path of the 
+# system the default configuration works.
+# Default: sendmail
 
 # [mailCheckIntervalTimeSec]
 # Amount of time to check for new events which must be notified in seconds.
 # Default: 30
 
 # [mailMinDownTimeSec]
-# Minimum amount of time between a event and the email notification in seconds. The minimal downtime
-# of a node before it must be notified.
+# Minimum amount of time between a event and the email notification in seconds. 
+# The minimal downtime of a node before it must be notified.
 # Default: 10
 
 # [mailRecipient]
@@ -201,7 +228,8 @@ setting_str_length  = longest_key.size + 3
 # Default: <none>
 
 # [mailResendMailTimeMin]
-# Amount of time after which an already sent email is resent as reminder in minutes.
+# Amount of time after which an already sent email is resent as reminder in 
+# minutes.
 # Default: 60
 
 # [mailSender]

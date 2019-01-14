@@ -1,7 +1,5 @@
 shared_examples_for 'beegfs::client::install' do
-  it { should contain_package('kernel-devel').with_ensure('present') }
-
-  it { should contain_class('gcc').that_comes_before('Package[beegfs-client]') }
+  it { should contain_package('kernel-devel-4.0.0').with_ensure('present') }
 
   it do
     should contain_package('beegfs-helperd').with({
@@ -20,7 +18,7 @@ shared_examples_for 'beegfs::client::install' do
   end
 
   it do
-    should contain_package('beegfs-client').that_requires('Package[kernel-devel]')
+    should contain_package('beegfs-client').that_requires('Package[kernel-devel-4.0.0]')
   end
 
   it do
@@ -32,17 +30,16 @@ shared_examples_for 'beegfs::client::install' do
 
   context 'when utils_only => true' do
     let(:params) {{ :utils_only => true }}
-    it { should_not contain_class('gcc') }
     it { should_not contain_package('beegfs-helperd') }
     it { should_not contain_package('beegfs-client') }
     it { should contain_package('beegfs-utils') }
   end
 
-  context "when version => '2015.03.r9'" do
-    let(:params) {{ :version => '2015.03.r9' }}
-    it { should contain_package('beegfs-helperd').with_ensure('2015.03.r9') }
-    it { should contain_package('beegfs-client').with_ensure('2015.03.r9') }
-    it { should contain_package('beegfs-utils').with_ensure('2015.03.r9') }
+  context "when version => '7.1.3'" do
+    let(:params) {{ :version => '7.1.3' }}
+    it { should contain_package('beegfs-helperd').with_ensure('7.1.3') }
+    it { should contain_package('beegfs-client').with_ensure('7.1.3') }
+    it { should contain_package('beegfs-utils').with_ensure('7.1.3') }
   end
 
   context 'when client_service_autorestart => false' do
@@ -59,6 +56,6 @@ shared_examples_for 'beegfs::client::install' do
 
   context 'when manage_client_dependencies => false' do
     let(:params) {{ :manage_client_dependencies => false }}
-    it { should_not contain_package('kernel-devel') }
+    it { should_not contain_package('kernel-devel-4.0.0') }
   end
 end

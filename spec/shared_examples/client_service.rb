@@ -80,4 +80,28 @@ shared_examples_for 'beegfs::client::service' do
     it { should_not contain_service('beegfs-helperd') }
     it { should_not contain_service('beegfs-client') }
   end
+
+  context 'with_rmda => true' do
+    let(:params) {{ :with_rdma => true }}
+    it do
+      should contain_service('beegfs-client').only_with({
+        :ensure       => 'running',
+        :enable       => 'true',
+        :name         => 'beegfs-client',
+        :hasstatus    => 'true',
+        :hasrestart   => 'true',
+        :subscribe    => [
+          'File[/etc/beegfs/beegfs-client.conf]',
+          #'Augeas[beegfs-client.conf]',
+          'File[/etc/beegfs/beegfs-mounts.conf]',
+          'File[/etc/beegfs/interfaces.client]',
+          'File[/etc/beegfs/netfilter.client]',
+          'File[/etc/beegfs/tcp-only-filter]',
+          'File_line[beegfs-client-autobuild buildArgs]',
+          'File_line[beegfs-client-autobuild buildEnabled]',
+          'Package[libbeegfs-ib]',
+        ],
+      })
+    end
+  end
 end

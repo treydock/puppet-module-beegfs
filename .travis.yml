@@ -1,4 +1,5 @@
 ---
+dist: xenial
 language: ruby
 sudo: false
 bundler_args: --without system_tests
@@ -16,24 +17,28 @@ matrix:
       services: docker
       env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet5
       bundler_args:
+      before_script: tests/travis-add-beegfs.sh
       script: bundle exec rake beaker
     - rvm: 2.5.1
       sudo: required
       services: docker
       env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet6
       bundler_args:
+      before_script: tests/travis-add-beegfs.sh
       script: bundle exec rake beaker
     - rvm: 2.4.4
       sudo: required
       services: docker
       env: BEAKER_set="centos-6-x64-docker" BEAKER_PUPPET_COLLECTION=puppet5
       bundler_args:
+      before_script: tests/travis-add-beegfs.sh
       script: bundle exec rake beaker
     - rvm: 2.5.1
       sudo: required
       services: docker
       env: BEAKER_set="centos-6-x64-docker" BEAKER_PUPPET_COLLECTION=puppet6
       bundler_args:
+      before_script: tests/travis-add-beegfs.sh
       script: bundle exec rake beaker
 
 notifications:

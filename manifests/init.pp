@@ -152,8 +152,8 @@ class beegfs (
         File[$client_conn_interfaces_file],
         File[$client_conn_net_filter_file],
         File[$conn_tcp_only_filter_file],
-        File_line['beegfs-client-autobuild buildArgs'],
-        File_line['beegfs-client-autobuild buildEnabled'],
+        Shellvar['beegfs-client-autobuild buildArgs'],
+        Shellvar['beegfs-client-autobuild buildEnabled'],
         $ib_subscribe,
       ])
       $helperd_service_subscribe  = File['/etc/beegfs/beegfs-helperd.conf']

@@ -246,22 +246,20 @@ shared_examples_for 'beegfs::client::config' do
   end
 
   it do
-    should contain_file_line('beegfs-client-autobuild buildArgs').with({
+    should contain_shellvar('beegfs-client-autobuild buildArgs').with({
       :ensure   => 'present',
-      :path     => '/etc/beegfs/beegfs-client-autobuild.conf',
-      :line     => 'buildArgs=-j8',
-      :match    => '^buildArgs=.*$',
-      :require  => 'File[/etc/beegfs/beegfs-client-autobuild.conf]',
+      :target   => '/etc/beegfs/beegfs-client-autobuild.conf',
+      :variable => 'buildArgs',
+      :value    => '-j8',
     })
   end
 
   it do
-    should contain_file_line('beegfs-client-autobuild buildEnabled').with({
+    should contain_shellvar('beegfs-client-autobuild buildEnabled').with({
       :ensure   => 'present',
-      :path     => '/etc/beegfs/beegfs-client-autobuild.conf',
-      :line     => 'buildEnabled=true',
-      :match    => '^buildEnabled=.*$',
-      :require  => 'File[/etc/beegfs/beegfs-client-autobuild.conf]',
+      :target   => '/etc/beegfs/beegfs-client-autobuild.conf',
+      :variable => 'buildEnabled',
+      :value    => 'true',
     })
   end
 

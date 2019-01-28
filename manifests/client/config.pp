@@ -85,18 +85,20 @@ class beegfs::client::config {
       mode   => '0644',
     }
 
-    shellvar { 'beegfs-client-autobuild buildArgs':
-      ensure   => 'present',
-      target   => '/etc/beegfs/beegfs-client-autobuild.conf',
-      variable => 'buildArgs',
-      value    => $beegfs::client_build_args,
+    file_line { 'beegfs-client-autobuild buildArgs':
+      ensure  => 'present',
+      path    => '/etc/beegfs/beegfs-client-autobuild.conf',
+      line    => "buildArgs=${beegfs::client_build_args}",
+      match   => '^buildArgs=.*$',
+      require => File['/etc/beegfs/beegfs-client-autobuild.conf'],
     }
 
-    shellvar { 'beegfs-client-autobuild buildEnabled':
-      ensure   => 'present',
-      target   => '/etc/beegfs/beegfs-client-autobuild.conf',
-      variable => 'buildEnabled',
-      value    => $beegfs::client_build_enabled,
+    file_line { 'beegfs-client-autobuild buildEnabled':
+      ensure  => 'present',
+      path    => '/etc/beegfs/beegfs-client-autobuild.conf',
+      line    => "buildEnabled=${beegfs::client_build_enabled}",
+      match   => '^buildEnabled=.*$',
+      require => File['/etc/beegfs/beegfs-client-autobuild.conf'],
     }
   }
 

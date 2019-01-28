@@ -9,8 +9,7 @@
   "project_page": "https://github.com/treydock/puppet-module-beegfs",
   "tags": [ "hpc", "storage", "filesystem" ],
   "dependencies": [
-      { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <6.0.0" },
-      { "name": "herculesteam/augeasproviders_shellvar", "version_requirement": ">= 2.0.0 <4.0.0" }
+      { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <6.0.0" }
   ],
   "operatingsystem_support": [
     {

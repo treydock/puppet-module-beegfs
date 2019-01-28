@@ -215,6 +215,13 @@ shared_examples_for 'beegfs::client::config' do
   end
 
   it do
+    should contain_exec('mkdir -p /mnt/beegfs').with({
+      :path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      :creates => '/mnt/beegfs',
+    })
+  end
+
+  it do
     should contain_file('/etc/beegfs/beegfs-mounts.conf').with({
       :ensure   => 'present',
       :owner    => 'root',

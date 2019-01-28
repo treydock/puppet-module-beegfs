@@ -57,6 +57,7 @@ class beegfs (
 
   # client specific - config
   Stdlib::Absolutepath $client_mount_path = '/mnt/beegfs',
+  Boolean $manage_client_mount_path = true,
   String $client_build_args = $beegfs::params::client_build_args,
   Boolean $client_build_enabled = true,
   Hash $client_config_overrides = {},

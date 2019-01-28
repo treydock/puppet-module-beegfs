@@ -63,6 +63,13 @@ class beegfs::client::config {
       mode    => '0644',
     }
 
+    if $beegfs::manage_client_mount_path {
+      exec { "mkdir -p ${beegfs::client_mount_path}":
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        creates => $beegfs::client_mount_path,
+      }
+    }
+
     file { '/etc/beegfs/beegfs-mounts.conf':
       ensure  => 'present',
       content => template("beegfs/${beegfs::release}/beegfs-mounts.conf.erb"),

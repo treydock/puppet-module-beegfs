@@ -21,7 +21,7 @@ longest_key         = configs.keys.group_by(&:size).max.last.first
 setting_str_length  = longest_key.size + 1
 
 config_keys.each do |key| -%>
-<%- next unless configs.key?(key) %>
+<%- next unless configs.key?(key) -%>
 <%= key.ljust(setting_str_length) %>= <%= configs[key] %>
 <% end -%>
 

@@ -1,22 +1,18 @@
 shared_context 'beegfs::storage::config' do
   it do
-    should contain_file('/etc/beegfs').with({
-      :ensure => 'directory',
-      :owner  => 'root',
-      :group  => 'root',
-      :mode   => '0755',
-    })
+    is_expected.to contain_file('/etc/beegfs').with(ensure: 'directory',
+                                                    owner: 'root',
+                                                    group: 'root',
+                                                    mode: '0755')
   end
 
-  it { should_not contain_file('beegfs-storeStorageDirectory') }
+  it { is_expected.not_to contain_file('beegfs-storeStorageDirectory') }
 
   it do
-    should contain_file('/etc/beegfs/beegfs-storage.conf').with({
-      :ensure   => 'present',
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/beegfs-storage.conf').with(ensure: 'present',
+                                                                        owner: 'root',
+                                                                        group: 'root',
+                                                                        mode: '0644')
   end
 
   it do
@@ -65,70 +61,64 @@ shared_context 'beegfs::storage::config' do
       'tuneWorkerBufSize            = 4m',
     ]
     content = catalogue.resource('file', '/etc/beegfs/beegfs-storage.conf').send(:parameters)[:content]
-    pp (expected - (content.split(/\n/).reject { |line| line =~ /(^#|^$)/ } & expected))
+    pp(expected - (content.split(%r{\n}).reject { |line| line =~ %r{(^#|^$)} } & expected))
     verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', expected)
   end
 
   it do
-    should contain_file('/etc/beegfs/interfaces.storage').with({
-      :ensure   => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/interfaces.storage').with(ensure: 'absent',
+                                                                       content: %r{^$},
+                                                                       owner: 'root',
+                                                                       group: 'root',
+                                                                       mode: '0644')
   end
 
   it do
-    should contain_file('/etc/beegfs/netfilter.storage').with({
-      :ensure   => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/netfilter.storage').with(ensure: 'absent',
+                                                                      content: %r{^$},
+                                                                      owner: 'root',
+                                                                      group: 'root',
+                                                                      mode: '0644')
   end
 
   it do
-    should contain_file('/etc/beegfs/tcp-only-filter').with({
-      :ensure => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/tcp-only-filter').with(ensure: 'absent',
+                                                                    content: %r{^$},
+                                                                    owner: 'root',
+                                                                    group: 'root',
+                                                                    mode: '0644')
   end
 
   context 'when storage_config_overrides defined' do
-    let(:params) {{ :storage => true, :storage_config_overrides => {'tuneNumWorkers'  => '24'} }}
+    let(:params) { { storage: true, storage_config_overrides: { 'tuneNumWorkers' => '24' } } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'tuneNumWorkers               = 24',
-      ])
+                        'tuneNumWorkers               = 24',
+                      ])
     end
   end
 
   context 'when conn_port_shift => 1000' do
-    let(:params) {{ :storage => true, :conn_port_shift => 1000 }}
+    let(:params) { { storage: true, conn_port_shift: 1000 } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'connPortShift                = 1000',
-      ])
+                        'connPortShift                = 1000',
+                      ])
     end
   end
 
   context 'when storage_conn_interfaces => ["eth0"]' do
-    let(:params) {{ :storage => true, :storage_conn_interfaces => ["eth0"] }}
+    let(:params) { { storage: true, storage_conn_interfaces: ['eth0'] } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'connInterfacesFile           = /etc/beegfs/interfaces.storage',
-      ])
+                        'connInterfacesFile           = /etc/beegfs/interfaces.storage',
+                      ])
     end
 
-    it { should contain_file('/etc/beegfs/interfaces.storage').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/beegfs/interfaces.storage').with_ensure('present') }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/interfaces.storage', ['eth0'])
@@ -136,15 +126,15 @@ shared_context 'beegfs::storage::config' do
   end
 
   context 'when storage_conn_net_filters => ["192.168.1.0/24"]' do
-    let(:params) {{ :storage => true, :storage_conn_net_filters => ["192.168.1.0/24"] }}
+    let(:params) { { storage: true, storage_conn_net_filters: ['192.168.1.0/24'] } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'connNetFilterFile            = /etc/beegfs/netfilter.storage',
-      ])
+                        'connNetFilterFile            = /etc/beegfs/netfilter.storage',
+                      ])
     end
 
-    it { should contain_file('/etc/beegfs/netfilter.storage').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/beegfs/netfilter.storage').with_ensure('present') }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/netfilter.storage', ['192.168.1.0/24'])
@@ -152,49 +142,45 @@ shared_context 'beegfs::storage::config' do
   end
 
   context 'when conn_tcp_only_filters => ["192.168.1.0/24"]' do
-    let(:params) {{ :storage => true, :conn_tcp_only_filters => ['192.168.1.0/24', '10.0.0.0/8'] }}
+    let(:params) { { storage: true, conn_tcp_only_filters: ['192.168.1.0/24', '10.0.0.0/8'] } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'connTcpOnlyFilterFile        = /etc/beegfs/tcp-only-filter',
-      ])
+                        'connTcpOnlyFilterFile        = /etc/beegfs/tcp-only-filter',
+                      ])
     end
 
     it do
-      should contain_file('/etc/beegfs/tcp-only-filter').with({
-        :ensure   => 'present',
-        :content  => "192.168.1.0/24\n10.0.0.0/8",
-        :owner    => 'root',
-        :group    => 'root',
-        :mode     => '0644',
-      })
+      is_expected.to contain_file('/etc/beegfs/tcp-only-filter').with(ensure: 'present',
+                                                                      content: "192.168.1.0/24\n10.0.0.0/8",
+                                                                      owner: 'root',
+                                                                      group: 'root',
+                                                                      mode: '0644')
     end
   end
 
   context 'when storage_store_directory => "/beegfs/storage"' do
-    let(:params) {{ :storage => true, :storage_store_directory => "/beegfs/storage" }}
+    let(:params) { { storage: true, storage_store_directory: '/beegfs/storage' } }
 
     it do
-      should contain_file('beegfs-storeStorageDirectory').with({
-        :ensure => 'directory',
-        :path   => '/beegfs/storage',
-      })
+      is_expected.to contain_file('beegfs-storeStorageDirectory').with(ensure: 'directory',
+                                                                       path: '/beegfs/storage')
     end
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'storeStorageDirectory        = /beegfs/storage',
-      ])
+                        'storeStorageDirectory        = /beegfs/storage',
+                      ])
     end
   end
 
   context 'when mgmtd_host => "mgmtd.foo"' do
-    let(:params) {{ :storage => true, :mgmtd_host => 'mgmtd.foo' }}
+    let(:params) { { storage: true, mgmtd_host: 'mgmtd.foo' } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-storage.conf', [
-        'sysMgmtdHost                 = mgmtd.foo',
-      ])
+                        'sysMgmtdHost                 = mgmtd.foo',
+                      ])
     end
   end
 end

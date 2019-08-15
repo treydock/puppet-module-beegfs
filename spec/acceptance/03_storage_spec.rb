@@ -4,7 +4,7 @@ describe 'beegfs class:' do
   context 'with storage' do
     node = find_only_one(:storage)
 
-    it 'should run successfully' do
+    it 'runs successfully' do
       pp = <<-EOS
       file { '/beegfs':
         ensure                  => directory,
@@ -21,33 +21,33 @@ describe 'beegfs class:' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
-      apply_manifest_on(node, pp, :catch_changes => true)
+      apply_manifest_on(node, pp, catch_failures: true)
+      apply_manifest_on(node, pp, catch_changes: true)
     end
 
-    describe service('beegfs-storage'), :node => node do
-      it { should be_enabled }
-      it { should be_running }
+    describe service('beegfs-storage'), node: node do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
     end
 
-    describe service('beegfs-helperd'), :node => node do
-      it { should_not be_enabled }
-      it { should_not be_running }
+    describe service('beegfs-helperd'), node: node do
+      it { is_expected.not_to be_enabled }
+      it { is_expected.not_to be_running }
     end
 
-    describe service('beegfs-client'), :node => node do
-      it { should_not be_enabled }
-      it { should_not be_running }
+    describe service('beegfs-client'), node: node do
+      it { is_expected.not_to be_enabled }
+      it { is_expected.not_to be_running }
     end
 
-    describe file('/etc/beegfs/beegfs-storage.conf'), :node => node do
-      it { should be_file }
-      its(:content) { should match /^sysMgmtdHost\s+= #{mgmt_ip}$/ }
-      its(:content) { should match /^storeStorageDirectory\s+= \/beegfs\/storage$/ }
+    describe file('/etc/beegfs/beegfs-storage.conf'), node: node do
+      it { is_expected.to be_file }
+      its(:content) { is_expected.to match %r{^sysMgmtdHost\s+= #{mgmt_ip}$} }
+      its(:content) { is_expected.to match %r{^storeStorageDirectory\s+= /beegfs/storage$} }
     end
 
-    describe port(8003), :node => node do
-      it { should be_listening }
+    describe port(8003), node: node do
+      it { is_expected.to be_listening }
     end
   end
 end

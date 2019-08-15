@@ -1,22 +1,18 @@
 shared_examples_for 'beegfs::mgmtd::config' do
   it do
-    should contain_file('/etc/beegfs').with({
-      :ensure => 'directory',
-      :owner  => 'root',
-      :group  => 'root',
-      :mode   => '0755',
-    })
+    is_expected.to contain_file('/etc/beegfs').with(ensure: 'directory',
+                                                    owner: 'root',
+                                                    group: 'root',
+                                                    mode: '0755')
   end
 
-  it { should_not contain_file('beegfs-storeMgmtdDirectory') }
+  it { is_expected.not_to contain_file('beegfs-storeMgmtdDirectory') }
 
   it do
-    should contain_file('/etc/beegfs/beegfs-mgmtd.conf').with({
-      :ensure   => 'present',
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/beegfs-mgmtd.conf').with(ensure: 'present',
+                                                                      owner: 'root',
+                                                                      group: 'root',
+                                                                      mode: '0644')
   end
 
   it do
@@ -65,60 +61,56 @@ shared_examples_for 'beegfs::mgmtd::config' do
       'quotaEnableEnforcement                 = false',
     ]
     content = catalogue.resource('file', '/etc/beegfs/beegfs-mgmtd.conf').send(:parameters)[:content]
-    pp (expected - (content.split(/\n/).reject { |line| line =~ /(^#|^$)/ } & expected))
+    pp(expected - (content.split(%r{\n}).reject { |line| line =~ %r{(^#|^$)} } & expected))
     verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', expected)
   end
 
   it do
-    should contain_file('/etc/beegfs/interfaces.mgmtd').with({
-      :ensure   => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/interfaces.mgmtd').with(ensure: 'absent',
+                                                                     content: %r{^$},
+                                                                     owner: 'root',
+                                                                     group: 'root',
+                                                                     mode: '0644')
   end
 
   it do
-    should contain_file('/etc/beegfs/netfilter.mgmtd').with({
-      :ensure   => 'absent',
-      :content  => /^$/,
-      :owner    => 'root',
-      :group    => 'root',
-      :mode     => '0644',
-    })
+    is_expected.to contain_file('/etc/beegfs/netfilter.mgmtd').with(ensure: 'absent',
+                                                                    content: %r{^$},
+                                                                    owner: 'root',
+                                                                    group: 'root',
+                                                                    mode: '0644')
   end
 
   context 'when mgmtd_config_overrides defined' do
-    let(:params) {{ :mgmtd => true, :mgmtd_config_overrides => {'tuneNumWorkers'  => '8'} }}
+    let(:params) { { mgmtd: true, mgmtd_config_overrides: { 'tuneNumWorkers' => '8' } } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
-        'tuneNumWorkers                         = 8',
-      ])
+                        'tuneNumWorkers                         = 8',
+                      ])
     end
   end
 
   context 'when conn_port_shift => 1000' do
-    let(:params) {{ :mgmtd => true, :conn_port_shift => 1000 }}
+    let(:params) { { mgmtd: true, conn_port_shift: 1000 } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
-        'connPortShift                          = 1000',
-      ])
+                        'connPortShift                          = 1000',
+                      ])
     end
   end
 
   context 'when mgmtd_conn_interfaces => ["eth0"]' do
-    let(:params) {{ :mgmtd => true, :mgmtd_conn_interfaces => ["eth0"] }}
+    let(:params) { { mgmtd: true, mgmtd_conn_interfaces: ['eth0'] } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
-        'connInterfacesFile                     = /etc/beegfs/interfaces.mgmtd',
-      ])
+                        'connInterfacesFile                     = /etc/beegfs/interfaces.mgmtd',
+                      ])
     end
 
-    it { should contain_file('/etc/beegfs/interfaces.mgmtd').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/beegfs/interfaces.mgmtd').with_ensure('present') }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/interfaces.mgmtd', ['eth0'])
@@ -126,15 +118,15 @@ shared_examples_for 'beegfs::mgmtd::config' do
   end
 
   context 'when mgmtd_conn_net_filters => ["192.168.1.0/24"]' do
-    let(:params) {{ :mgmtd => true, :mgmtd_conn_net_filters => ["192.168.1.0/24"] }}
+    let(:params) { { mgmtd: true, mgmtd_conn_net_filters: ['192.168.1.0/24'] } }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
-        'connNetFilterFile                      = /etc/beegfs/netfilter.mgmtd',
-      ])
+                        'connNetFilterFile                      = /etc/beegfs/netfilter.mgmtd',
+                      ])
     end
 
-    it { should contain_file('/etc/beegfs/netfilter.mgmtd').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/beegfs/netfilter.mgmtd').with_ensure('present') }
 
     it do
       verify_contents(catalogue, '/etc/beegfs/netfilter.mgmtd', ['192.168.1.0/24'])
@@ -142,19 +134,17 @@ shared_examples_for 'beegfs::mgmtd::config' do
   end
 
   context 'when mgmtd_store_directory => "/beegfs/mgmtd"' do
-    let(:params) {{ :mgmtd => true, :mgmtd_store_directory => "/beegfs/mgmtd" }}
+    let(:params) { { mgmtd: true, mgmtd_store_directory: '/beegfs/mgmtd' } }
 
     it do
-      should contain_file('beegfs-storeMgmtdDirectory').with({
-        :ensure => 'directory',
-        :path   => '/beegfs/mgmtd',
-      })
+      is_expected.to contain_file('beegfs-storeMgmtdDirectory').with(ensure: 'directory',
+                                                                     path: '/beegfs/mgmtd')
     end
 
     it do
       verify_contents(catalogue, '/etc/beegfs/beegfs-mgmtd.conf', [
-        'storeMgmtdDirectory                    = /beegfs/mgmtd',
-      ])
+                        'storeMgmtdDirectory                    = /beegfs/mgmtd',
+                      ])
     end
   end
 end

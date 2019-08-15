@@ -1,5 +1,5 @@
 HOSTS:
-  centos-7-x64-docker:
+  centos-7:
     roles:
       - master
       - agent

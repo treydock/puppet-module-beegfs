@@ -5,28 +5,49 @@
   "summary": "BeeGFS Puppet module",
   "license": "Apache-2.0",
   "source": "git://github.com/treydock/puppet-module-beegfs.git",
-  "issues_url": "https://github.com/treydock/puppet-module-beegfs/issues",
   "project_page": "https://github.com/treydock/puppet-module-beegfs",
-  "tags": [ "hpc", "storage", "filesystem" ],
+  "issues_url": "https://github.com/treydock/puppet-module-beegfs/issues",
   "dependencies": [
-      { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <6.0.0" }
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 <6.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     },
     {
       "operatingsystem": "Scientific",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
     }
   ],
   "requirements": [
-    { "name": "puppet", "version_requirement": ">= 5.0.0 < 7.0.0" }
-  ]
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.0.0 < 7.0.0"
+    }
+  ],
+  "tags": [
+    "hpc",
+    "storage",
+    "filesystem"
+  ],
+  "pdk-version": "1.10.0",
+  "template-url": "https://github.com/treydock/pdk-templates.git#master",
+  "template-ref": "heads/master-0-g68ecb62"
 }
-

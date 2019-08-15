@@ -3,28 +3,18 @@ require 'beaker-puppet'
 require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
 
-def mgmt_ip
-  find_only_one(:mgmt).ip
-end
+dir = File.expand_path(File.dirname(__FILE__))
+Dir["#{dir}/acceptance/shared_examples/**/*.rb"].sort.each { |f| require f }
+require 'spec_helper_acceptance_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_acceptance_local.rb'))
 
 run_puppet_install_helper
-install_module_dependencies
-install_module
-collection = ENV['BEAKER_PUPPET_COLLECTION'] || 'puppet5'
-if collection == 'puppet6'
-  on hosts, puppet('module', 'install', 'puppetlabs-yumrepo_core', '--version', '">= 1.0.1 < 2.0.0"'), { :acceptable_exit_codes => [0,1] }
-end
+install_module_on(hosts)
+install_module_dependencies_on(hosts)
 
 RSpec.configure do |c|
   # Readable test descriptions
   c.formatter = :documentation
-
-  # Local settings based on environment variables
-  c.add_setting :beegfs_release
-  c.beegfs_release = ENV['BEAKER_beegfs_release'] || '7.1'
 end
 
-on hosts, 'puppet config set --section main show_diff true'
-fact_path = File.join(File.dirname(__FILE__), '..', 'lib')
-scp_to(hosts, fact_path, '/opt/puppetlabs/puppet/cache/lib')
-on hosts, puppet('resource service iptables ensure=stopped'), { :acceptable_exit_codes => [0,1] }
+require 'spec_helper_acceptance_setup' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_acceptance_setup.rb'))
+# 'spec_overrides' from sync.yml will appear below this line

@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::client {
 
   contain beegfs::repo

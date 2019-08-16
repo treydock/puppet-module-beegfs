@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::repo {
 
   $_repo_defaults       = $beegfs::repo_defaults[$beegfs::release]

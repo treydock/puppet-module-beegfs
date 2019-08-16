@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::meta::config {
 
   $conn_interfaces  = $beegfs::meta_conn_interfaces

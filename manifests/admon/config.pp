@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::admon::config {
 
   $conn_interfaces  = $beegfs::admon_conn_interfaces

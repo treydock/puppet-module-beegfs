@@ -1,5 +1,5 @@
 HOSTS:
-  centos-6-x64-docker:
+  centos-6:
     roles:
       - master
       - agent

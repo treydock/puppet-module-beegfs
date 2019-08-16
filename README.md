@@ -15,7 +15,7 @@
 
 ## Overview
 
-TODO
+This module manages [BeeGFS](https://www.beegfs.io) servers and clients.
 
 ### BeeGFS Compatibility
 
@@ -31,45 +31,7 @@ TODO
 
 ## Reference
 
-### Classes
-
-#### Public classes
-
-* `beegfs`: Installs and configures beegfs
-
-#### Private classes
-
-* `beegfs::repo`: Manages the BeeGFS package repository resources
-* `beegfs::install`: Install packages common to several roles
-* `beegfs::client`: Manage BeeGFS client
-* `beegfs::client::install`: Install beegfs-client packages
-* `beegfs::client::config`: Configure beegfs-client
-* `beegfs::client::service`: Manage beegfs-client services
-* `beegfs::mgmtd`: Manage BeeGFS management server
-* `beegfs::mgmtd::install`: Install beegfs-mgmtd package
-* `beegfs::mgmtd::config`: Configure beegfs-mgmtd
-* `beegfs::mgmtd::service`: Manage beegfs-mgmtd services
-* `beegfs::meta`: Manage BeeGFS metadata server
-* `beegfs::meta::install`: Install beegfs-meta
-* `beegfs::meta::config`: Configure beegfs-meta
-* `beegfs::meta::service`: Manage beegfs-meta service
-* `beegfs::storage`: Manage BeeGFS storage server
-* `beegfs::storage::install`: Install beegfs-storage
-* `beegfs::storage::config`: Configure beegfs-storage
-* `beegfs::storage::service`: Manage beegfs-storage service
-* `beegfs::admon`: Manage BeeGFS Admon server
-* `beegfs::admon::install`: Install beegfs-admon
-* `beegfs::admon::config`: Configure beegfs-admon
-* `beegfs::admon::service`: Manage beegfs-admon service
-* `beegfs::defaults`: Set default configuration values for the various BeeGFS roles for version release 2015.03
-* `beegfs::params`: Set default parameter values based on Fact values
-
-
-### Parameters
-
-#### beegfs
-
-TODO
+[http://treydock.github.io/puppet-module-beegfs/](http://treydock.github.io/puppet-module-beegfs/)
 
 ### Facts
 

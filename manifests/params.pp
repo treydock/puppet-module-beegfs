@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::params inherits beegfs::defaults {
 
   if $facts['has_infiniband'] or $facts['has_mellanox_infiniband'] {

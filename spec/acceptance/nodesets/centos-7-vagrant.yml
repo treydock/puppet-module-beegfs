@@ -1,14 +1,14 @@
 HOSTS:
-  centos-6-x64:
+  centos-7-vagrant:
     roles:
       - default
       - agent
-      - client
-      - storage
-      - meta
       - mgmt
-    platform: el-6-x86_64
-    box: centos/6
+      - meta
+      - storage
+      - client
+    platform: el-7-x86_64
+    box: centos/7
     hypervisor: vagrant
 CONFIG:
   log_level: debug

@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::admon::install {
 
   if $beegfs::admon_service_autorestart {

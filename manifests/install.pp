@@ -1,4 +1,4 @@
-#
+# @api private
 class beegfs::install {
 
   if $beegfs::with_rdma {

@@ -1,4 +1,98 @@
-# == Class: beegfs
+# @summary Manage BeeGFS
+#
+# @example
+#
+#
+# which subcomponents should be managed
+# @param client
+# @param mgmtd
+# @param meta
+# @param storage
+# @param admon
+# @param utils_only
+# @param customer_login
+# @param release
+# @param version
+# @param repo_descr 
+# @param repo_baseurl
+# @param repo_gpgkey
+# @param repo_gpgcheck
+# @param repo_enabled
+# @param client_package_dependencies
+# @param manage_client_dependencies
+# @param mgmtd_host
+# @param conn_port_shift
+# @param client_conn_interfaces
+# @param client_conn_interfaces_file
+# @param mgmtd_conn_interfaces
+# @param mgmtd_conn_interfaces_file
+# @param meta_conn_interfaces
+# @param meta_conn_interfaces_file
+# @param storage_conn_interfaces
+# @param storage_conn_interfaces_file
+# @param admon_conn_interfaces
+# @param admon_conn_interfaces_file
+# @param client_conn_net_filters
+# @param client_conn_net_filter_file
+# @param mgmtd_conn_net_filters
+# @param mgmtd_conn_net_filter_file
+# @param meta_conn_net_filters
+# @param meta_conn_net_filter_file
+# @param storage_conn_net_filters
+# @param storage_conn_net_filter_file
+# @param admon_conn_net_filters
+# @param admon_conn_net_filter_file
+# @param conn_tcp_only_filters
+# @param conn_tcp_only_filter_file
+# @param ib_package
+# @param with_rdma
+# @param client_mount_path
+# @param manage_client_mount_path
+# @param client_build_args
+# @param client_build_enabled
+# @param client_config_overrides
+# @param helperd_config_overrides
+# @param client_package
+# @param helperd_package
+# @param utils_package
+# @param client_manage_service
+# @param client_service_name
+# @param helperd_service_name
+# @param client_service_ensure
+# @param client_service_enable
+# @param client_service_autorestart
+# @param mgmtd_store_directory
+# @param mgmtd_config_overrides
+# @param mgmtd_package
+# @param mgmtd_manage_service
+# @param mgmtd_service_name
+# @param mgmtd_service_ensure
+# @param mgmtd_service_enable
+# @param mgmtd_service_autorestart
+# @param meta_store_directory
+# @param meta_config_overrides
+# @param meta_package
+# @param meta_manage_service
+# @param meta_service_name
+# @param meta_service_ensure
+# @param meta_service_enable
+# @param meta_service_autorestart
+# @param storage_store_directory
+# @param storage_config_overrides
+# @param storage_package
+# @param storage_manage_service
+# @param storage_service_name
+# @param storage_service_ensure
+# @param storage_service_enable
+# @param storage_service_autorestart
+# @param admon_database_file_dir
+# @param admon_config_overrides
+# @param admon_package
+# @param admon_manage_service
+# @param admon_service_name
+# @param admon_service_ensure
+# @param admon_service_enable
+# @param admon_service_autorestart
 class beegfs (
   # which subcomponents should be managed
   Boolean $client     = true,

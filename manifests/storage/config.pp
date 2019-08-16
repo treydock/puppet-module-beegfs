@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::storage::config {
 
   $conn_interfaces  = $beegfs::storage_conn_interfaces

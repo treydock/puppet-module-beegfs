@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::client::install {
 
   if ! $beegfs::utils_only {

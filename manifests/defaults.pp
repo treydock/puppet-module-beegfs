@@ -1,6 +1,7 @@
-# private class
+# @api private
 class beegfs::defaults {
 
+  # lint:ignore:quoted_booleans
   $mgmtd_default_configs = {
     '7.1' => {
       'storeMgmtdDirectory' => '',
@@ -519,4 +520,5 @@ class beegfs::defaults {
       ],
     }
   }
+  # lint:endignore
 }

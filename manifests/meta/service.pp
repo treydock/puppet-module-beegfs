@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::meta::service {
 
   if $beegfs::meta_manage_service {

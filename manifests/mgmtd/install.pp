@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::mgmtd::install {
 
   if $beegfs::mgmtd_service_autorestart {

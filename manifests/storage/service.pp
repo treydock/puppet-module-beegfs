@@ -1,4 +1,4 @@
-# private class
+# @api private
 class beegfs::storage::service {
 
   if $beegfs::storage_manage_service {

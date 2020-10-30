@@ -92,7 +92,7 @@ describe 'beegfs' do
     let(:facts) { { osfamily: 'Foo' } }
 
     it 'raises an error' do
-      expect { is_expected.to compile }.to raise_error(%r{Unsupported osfamily})
+      is_expected.to compile.and_raise_error(%r{Unsupported osfamily})
     end
   end
 end

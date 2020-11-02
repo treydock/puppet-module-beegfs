@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: beegfs::defaults
+  
+    &mdash; Documentation by YARD 0.9.25
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "puppet_classes::beegfs::defaults";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (b)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">beegfs::defaults</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: beegfs::defaults</h1>
+<div class="box_info">
+  
+  
+  <dl>
+    <dt>Inherited by:</dt>
+    <dd>
+      
+      <span class='object_link'><a href="beegfs_3A_3Aparams.html" title="puppet_classes::beegfs::params (puppet_class)">beegfs::params</a></span><br/>
+      
+    </dd>
+  </dl>
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/defaults.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/defaults.pp', line 2</span>
+
+class beegfs::defaults {
+
+  # lint:ignore:quoted_booleans
+  $mgmtd_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;storeMgmtdDirectory&#39; =&gt; &#39;&#39;,
+      &#39;storeAllowFirstRunInit&#39; =&gt; &#39;true&#39;,
+      &#39;sysAllowNewServers&#39; =&gt; &#39;true&#39;,
+      &#39;sysAllowNewTargets&#39; =&gt; &#39;true&#39;,
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connBacklogTCP&#39; =&gt; &#39;128&#39;,
+      &#39;connInterfacesFile&#39; =&gt; &#39;&#39;,
+      &#39;connMgmtdPortTCP&#39; =&gt; &#39;8008&#39;,
+      &#39;connMgmtdPortUDP&#39; =&gt; &#39;8008&#39;,
+      &#39;connNetFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;logType&#39; =&gt; &#39;logfile&#39;,
+      &#39;logLevel&#39; =&gt; &#39;2&#39;,
+      &#39;logNoDate&#39; =&gt; &#39;false&#39;,
+      &#39;logNumLines&#39; =&gt; &#39;50000&#39;,
+      &#39;logNumRotatedFiles&#39; =&gt; &#39;5&#39;,
+      &#39;logStdFile&#39; =&gt; &#39;/var/log/beegfs-mgmtd.log&#39;,
+      &#39;quotaQueryGIDFile&#39; =&gt; &#39;&#39;,
+      &#39;quotaQueryGIDRange&#39; =&gt; &#39;&#39;,
+      &#39;quotaQueryUIDFile&#39; =&gt; &#39;&#39;,
+      &#39;quotaQueryUIDRange&#39; =&gt; &#39;&#39;,
+      &#39;quotaQueryType&#39; =&gt; &#39;system&#39;,
+      &#39;quotaQueryWithSystemUsersGroups&#39; =&gt; &#39;false&#39;,
+      &#39;quotaUpdateIntervalMin&#39; =&gt; &#39;10&#39;,
+      &#39;runDaemonized&#39; =&gt; &#39;true&#39;,
+      &#39;sysTargetOfflineTimeoutSecs&#39; =&gt; &#39;180&#39;,
+      &#39;tuneClientAutoRemoveMins&#39; =&gt; &#39;30&#39;,
+      &#39;tuneNumWorkers&#39; =&gt; &#39;4&#39;,
+      &#39;tuneMetaDynamicPools&#39; =&gt; &#39;true&#39;,
+      &#39;tuneMetaInodesLowLimit&#39; =&gt; &#39;10M&#39;,
+      &#39;tuneMetaInodesEmergencyLimit&#39; =&gt; &#39;1M&#39;,
+      &#39;tuneMetaSpaceLowLimit&#39; =&gt; &#39;10G&#39;,
+      &#39;tuneMetaSpaceEmergencyLimit&#39; =&gt; &#39;3G&#39;,
+      &#39;tuneStorageDynamicPools&#39; =&gt; &#39;true&#39;,
+      &#39;tuneStorageInodesLowLimit&#39; =&gt; &#39;10M&#39;,
+      &#39;tuneStorageInodesEmergencyLimit&#39; =&gt; &#39;1M&#39;,
+      &#39;tuneStorageSpaceLowLimit&#39; =&gt; &#39;1T&#39;,
+      &#39;tuneStorageSpaceEmergencyLimit&#39; =&gt; &#39;20G&#39;,
+      &#39;quotaEnableEnforcement&#39; =&gt; &#39;false&#39;,
+    },
+  }
+
+  $mgmtd_config_keys = {
+    &#39;7.1&#39; =&gt; {
+      &#39;basic&#39;     =&gt; [
+        &#39;storeMgmtdDirectory&#39;,
+        &#39;storeAllowFirstRunInit&#39;,
+        &#39;sysAllowNewServers&#39;,
+        &#39;sysAllowNewTargets&#39;,
+      ],
+      &#39;advanced&#39;  =&gt; [
+        &#39;connAuthFile&#39;,
+        &#39;connBacklogTCP&#39;,
+        &#39;connInterfacesFile&#39;,
+        &#39;connMgmtdPortTCP&#39;,
+        &#39;connMgmtdPortUDP&#39;,
+        &#39;connNetFilterFile&#39;,
+        &#39;connPortShift&#39;,
+        &#39;logType&#39;,
+        &#39;logLevel&#39;,
+        &#39;logNoDate&#39;,
+        &#39;logNumLines&#39;,
+        &#39;logNumRotatedFiles&#39;,
+        &#39;logStdFile&#39;,
+        &#39;quotaQueryGIDFile&#39;,
+        &#39;quotaQueryGIDRange&#39;,
+        &#39;quotaQueryUIDFile&#39;,
+        &#39;quotaQueryUIDRange&#39;,
+        &#39;quotaQueryType&#39;,
+        &#39;quotaQueryWithSystemUsersGroups&#39;,
+        &#39;quotaUpdateIntervalMin&#39;,
+        &#39;runDaemonized&#39;,
+        &#39;sysTargetOfflineTimeoutSecs&#39;,
+        &#39;tuneClientAutoRemoveMins&#39;,
+        &#39;tuneNumWorkers&#39;,
+        &#39;tuneMetaDynamicPools&#39;,
+        &#39;tuneMetaInodesLowLimit&#39;,
+        &#39;tuneMetaInodesEmergencyLimit&#39;,
+        &#39;tuneMetaSpaceLowLimit&#39;,
+        &#39;tuneMetaSpaceEmergencyLimit&#39;,
+        &#39;tuneStorageDynamicPools&#39;,
+        &#39;tuneStorageInodesLowLimit&#39;,
+        &#39;tuneStorageInodesEmergencyLimit&#39;,
+        &#39;tuneStorageSpaceLowLimit&#39;,
+        &#39;tuneStorageSpaceEmergencyLimit&#39;,
+        # Expert
+        &#39;tuneProcessFDLimit&#39;,
+        &#39;pidFile&#39;,
+      ],
+      &#39;enterprise&#39; =&gt; [
+        &#39;quotaEnableEnforcement&#39;,
+      ]
+    },
+  }
+
+  $meta_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;sysMgmtdHost&#39; =&gt; &#39;&#39;,
+      &#39;storeMetaDirectory&#39; =&gt; &#39;&#39;,
+      &#39;storeAllowFirstRunInit&#39; =&gt; &#39;true&#39;,
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connBacklogTCP&#39; =&gt; &#39;128&#39;,
+      &#39;connFallbackExpirationSecs&#39; =&gt; &#39;900&#39;,
+      &#39;connInterfacesFile&#39; =&gt; &#39;&#39;,
+      &#39;connMaxInternodeNum&#39; =&gt; &#39;32&#39;,
+      &#39;connMetaPortTCP&#39; =&gt; &#39;8005&#39;,
+      &#39;connMetaPortUDP&#39; =&gt; &#39;8005&#39;,
+      &#39;connMgmtdPortTCP&#39; =&gt; &#39;8008&#39;,
+      &#39;connMgmtdPortUDP&#39; =&gt; &#39;8008&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;connNetFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;connUseRDMA&#39; =&gt; &#39;true&#39;,
+      &#39;connRDMATypeOfService&#39; =&gt; &#39;0&#39;,
+      &#39;connTcpOnlyFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;logType&#39; =&gt; &#39;logfile&#39;,
+      &#39;logLevel&#39; =&gt; &#39;3&#39;,
+      &#39;logNoDate&#39; =&gt; &#39;false&#39;,
+      &#39;logNumLines&#39; =&gt; &#39;50000&#39;,
+      &#39;logNumRotatedFiles&#39; =&gt; &#39;5&#39;,
+      &#39;logStdFile&#39; =&gt; &#39;/var/log/beegfs-meta.log&#39;,
+      &#39;runDaemonized&#39; =&gt; &#39;true&#39;,
+      &#39;storeClientXAttrs&#39; =&gt; &#39;false&#39;,
+      &#39;storeClientACLs&#39; =&gt; &#39;false&#39;,
+      &#39;storeUseExtendedAttribs&#39; =&gt; &#39;true&#39;,
+      &#39;sysTargetAttachmentFile&#39; =&gt; &#39;&#39;,
+      &#39;sysTargetOfflineTimeoutSecs&#39; =&gt; &#39;180&#39;,
+      &#39;sysAllowUserSetPattern&#39; =&gt; &#39;false&#39;,
+      &#39;tuneBindToNumaZone&#39; =&gt; &#39;&#39;,
+      &#39;tuneNumStreamListeners&#39; =&gt; &#39;1&#39;,
+      &#39;tuneNumWorkers&#39; =&gt; &#39;0&#39;,
+      &#39;tuneTargetChooser&#39; =&gt; &#39;randomized&#39;,
+      &#39;tuneUseAggressiveStreamPoll&#39; =&gt; &#39;false&#39;,
+      &#39;tuneUsePerUserMsgQueues&#39; =&gt; &#39;false&#39;,
+    },
+  }
+
+  $meta_config_keys = {
+    &#39;7.1&#39; =&gt; {
+      &#39;basic&#39;     =&gt; [
+        &#39;sysMgmtdHost&#39;,
+        &#39;storeMetaDirectory&#39;,
+        &#39;storeAllowFirstRunInit&#39;,
+      ],
+      &#39;advanced&#39;  =&gt; [
+        &#39;connAuthFile&#39;,
+        &#39;connBacklogTCP&#39;,
+        &#39;connFallbackExpirationSecs&#39;,
+        &#39;connInterfacesFile&#39;,
+        &#39;connMaxInternodeNum&#39;,
+        &#39;connMetaPortTCP&#39;,
+        &#39;connMetaPortUDP&#39;,
+        &#39;connMgmtdPortTCP&#39;,
+        &#39;connMgmtdPortUDP&#39;,
+        &#39;connPortShift&#39;,
+        &#39;connNetFilterFile&#39;,
+        &#39;connUseRDMA&#39;,
+        &#39;connRDMATypeOfService&#39;,
+        &#39;connTcpOnlyFilterFile&#39;,
+        &#39;logType&#39;,
+        &#39;logLevel&#39;,
+        &#39;logNoDate&#39;,
+        &#39;logNumLines&#39;,
+        &#39;logNumRotatedFiles&#39;,
+        &#39;logStdFile&#39;,
+        &#39;runDaemonized&#39;,
+        &#39;storeClientXAttrs&#39;,
+        &#39;storeClientACLs&#39;,
+        &#39;storeUseExtendedAttribs&#39;,
+        &#39;sysTargetAttachmentFile&#39;,
+        &#39;sysTargetOfflineTimeoutSecs&#39;,
+        &#39;sysAllowUserSetPattern&#39;,
+        &#39;tuneBindToNumaZone&#39;,
+        &#39;tuneNumStreamListeners&#39;,
+        &#39;tuneNumWorkers&#39;,
+        &#39;tuneTargetChooser&#39;,
+        &#39;tuneUseAggressiveStreamPoll&#39;,
+        &#39;tuneUsePerUserMsgQueues&#39;,
+        # Expert
+        &#39;storeSelfHealEmptyFiles&#39;,
+        &#39;tuneNumCommSlaves&#39;,
+        &#39;tuneCommSlaveBufSize&#39;,
+        &#39;tuneDefaultChunkSize&#39;,
+        &#39;tuneDefaultNumStripeTargets&#39;,
+        &#39;tuneProcessFDLimit&#39;,
+        &#39;tuneWorkerNumaAffinity&#39;,
+        &#39;tuneListenerNumaAffinity&#39;,
+        &#39;tuneListenerPrioShift&#39;,
+        &#39;tuneDirMetadataCacheLimit&#39;,
+        &#39;tuneLockGrantWaitMS&#39;,
+        &#39;tuneLockGrantNumRetries&#39;,
+        &#39;tuneRotateMirrorTargets&#39;,
+        &#39;tuneEarlyUnlinkResponse&#39;,
+        &#39;tuneMirrorTimestamps&#39;,
+        &#39;quotaEarlyChownResponse&#39;,
+        &#39;pidFile&#39;,
+      ],
+    }
+  }
+
+  $storage_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;sysMgmtdHost&#39; =&gt; &#39;&#39;,
+      &#39;storeStorageDirectory&#39; =&gt; &#39;&#39;,
+      &#39;storeAllowFirstRunInit&#39; =&gt; &#39;true&#39;,
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connBacklogTCP&#39; =&gt; &#39;128&#39;,
+      &#39;connInterfacesFile&#39; =&gt; &#39;&#39;,
+      &#39;connMaxInternodeNum&#39; =&gt; &#39;12&#39;,
+      &#39;connMgmtdPortTCP&#39; =&gt; &#39;8008&#39;,
+      &#39;connMgmtdPortUDP&#39; =&gt; &#39;8008&#39;,
+      &#39;connStoragePortTCP&#39; =&gt; &#39;8003&#39;,
+      &#39;connStoragePortUDP&#39; =&gt; &#39;8003&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;connNetFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;connUseRDMA&#39; =&gt; &#39;true&#39;,
+      &#39;connRDMATypeOfService&#39; =&gt; &#39;0&#39;,
+      &#39;connTcpOnlyFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;logType&#39; =&gt; &#39;logfile&#39;,
+      &#39;logLevel&#39; =&gt; &#39;3&#39;,
+      &#39;logNoDate&#39; =&gt; &#39;false&#39;,
+      &#39;logNumLines&#39; =&gt; &#39;50000&#39;,
+      &#39;logNumRotatedFiles&#39; =&gt; &#39;5&#39;,
+      &#39;logStdFile&#39; =&gt; &#39;/var/log/beegfs-storage.log&#39;,
+      &#39;quotaEnableEnforcement&#39; =&gt; &#39;false&#39;,
+      &#39;runDaemonized&#39; =&gt; &#39;true&#39;,
+      &#39;sysResyncSafetyThresholdMins&#39; =&gt; &#39;10&#39;,
+      &#39;sysTargetOfflineTimeoutSecs&#39; =&gt; &#39;180&#39;,
+      &#39;tuneBindToNumaZone&#39; =&gt; &#39;&#39;,
+      &#39;tuneFileReadAheadSize&#39; =&gt; &#39;0m&#39;,
+      &#39;tuneFileReadAheadTriggerSize&#39; =&gt; &#39;4m&#39;,
+      &#39;tuneFileReadSize&#39; =&gt; &#39;128k&#39;,
+      &#39;tuneFileWriteSize&#39; =&gt; &#39;128k&#39;,
+      &#39;tuneFileWriteSyncSize&#39; =&gt; &#39;0m&#39;,
+      &#39;tuneNumResyncGatherSlaves&#39; =&gt; &#39;6&#39;,
+      &#39;tuneNumResyncSlaves&#39; =&gt; &#39;12&#39;,
+      &#39;tuneNumStreamListeners&#39; =&gt; &#39;1&#39;,
+      &#39;tuneNumWorkers&#39; =&gt; &#39;12&#39;,
+      &#39;tuneUseAggressiveStreamPoll&#39; =&gt; &#39;false&#39;,
+      &#39;tuneUsePerTargetWorkers&#39; =&gt; &#39;true&#39;,
+      &#39;tuneUsePerUserMsgQueues&#39; =&gt; &#39;false&#39;,
+      &#39;tuneWorkerBufSize&#39; =&gt; &#39;4m&#39;,
+    },
+  }
+
+  $storage_config_keys = {
+    &#39;7.1&#39; =&gt; {
+      &#39;basic&#39;     =&gt; [
+        &#39;sysMgmtdHost&#39;,
+        &#39;storeStorageDirectory&#39;,
+        &#39;storeAllowFirstRunInit&#39;,
+      ],
+      &#39;advanced&#39;  =&gt; [
+        &#39;connAuthFile&#39;,
+        &#39;connBacklogTCP&#39;,
+        &#39;connInterfacesFile&#39;,
+        &#39;connMaxInternodeNum&#39;,
+        &#39;connMgmtdPortTCP&#39;,
+        &#39;connMgmtdPortUDP&#39;,
+        &#39;connStoragePortTCP&#39;,
+        &#39;connStoragePortUDP&#39;,
+        &#39;connPortShift&#39;,
+        &#39;connNetFilterFile&#39;,
+        &#39;connUseRDMA&#39;,
+        &#39;connRDMATypeOfService&#39;,
+        &#39;connTcpOnlyFilterFile&#39;,
+        &#39;logType&#39;,
+        &#39;logLevel&#39;,
+        &#39;logNoDate&#39;,
+        &#39;logNumLines&#39;,
+        &#39;logNumRotatedFiles&#39;,
+        &#39;logStdFile&#39;,
+        &#39;quotaEnableEnforcement&#39;,
+        &#39;runDaemonized&#39;,
+        &#39;sysResyncSafetyThresholdMins&#39;,
+        &#39;sysTargetOfflineTimeoutSecs&#39;,
+        &#39;tuneBindToNumaZone&#39;,
+        &#39;tuneFileReadAheadSize&#39;,
+        &#39;tuneFileReadAheadTriggerSize&#39;,
+        &#39;tuneFileReadSize&#39;,
+        &#39;tuneFileWriteSize&#39;,
+        &#39;tuneFileWriteSyncSize&#39;,
+        &#39;tuneNumResyncGatherSlaves&#39;,
+        &#39;tuneNumResyncSlaves&#39;,
+        &#39;tuneNumStreamListeners&#39;,
+        &#39;tuneNumWorkers&#39;,
+        &#39;tuneUseAggressiveStreamPoll&#39;,
+        &#39;tuneUsePerTargetWorkers&#39;,
+        &#39;tuneUsePerUserMsgQueues&#39;,
+        &#39;tuneWorkerBufSize&#39;,
+        # Expert
+        &#39;tuneProcessFDLimit&#39;,
+        &#39;tuneWorkerNumaAffinity&#39;,
+        &#39;tuneListenerNumaAffinity&#39;,
+        &#39;tuneListenerPrioShift&#39;,
+        &#39;tuneDirCacheLimit&#39;,
+        &#39;tuneEarlyStat&#39;,
+        &#39;quotaDisableZfsSupport&#39;,
+        &#39;pidFile&#39;,
+      ],
+    }
+  }
+
+  $admon_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;sysMgmtdHost&#39; =&gt; &#39;&#39;,
+      &#39;clearDatabase&#39; =&gt; &#39;false&#39;,
+      &#39;httpPort&#39; =&gt; &#39;8000&#39;,
+      &#39;databaseFile&#39; =&gt; &#39;/var/lib/beegfs/beegfs-admon.db&#39;,
+      &#39;queryInterval&#39; =&gt; &#39;5&#39;,
+      &#39;connAdmonPortUDP&#39; =&gt; &#39;8007&#39;,
+      &#39;connMgmtdPortTCP&#39; =&gt; &#39;8008&#39;,
+      &#39;connMgmtdPortUDP&#39; =&gt; &#39;8008&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connFallbackExpirationSecs&#39; =&gt; &#39;900&#39;,
+      &#39;connMaxInternodeNum&#39; =&gt; &#39;3&#39;,
+      &#39;connInterfacesFile&#39; =&gt; &#39;&#39;,
+      &#39;connNetFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;connTcpOnlyFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;logType&#39; =&gt; &#39;logfile&#39;,
+      &#39;logLevel&#39; =&gt; &#39;3&#39;,
+      &#39;logNoDate&#39; =&gt; &#39;false&#39;,
+      &#39;logNumLines&#39; =&gt; &#39;50000&#39;,
+      &#39;logNumRotatedFiles&#39; =&gt; &#39;2&#39;,
+      &#39;logStdFile&#39; =&gt; &#39;/var/log/beegfs-admon.log&#39;,
+      &#39;mailEnabled&#39; =&gt; &#39;false&#39;,
+      &#39;mailSmtpSendType&#39; =&gt; &#39;socket&#39;,
+      &#39;mailSendmailPath&#39; =&gt; &#39;sendmail&#39;,
+      &#39;mailCheckIntervalTimeSec&#39; =&gt; &#39;30&#39;,
+      &#39;mailMinDownTimeSec&#39; =&gt; &#39;10&#39;,
+      &#39;mailRecipient&#39; =&gt; &#39;&#39;,
+      &#39;mailResendMailTimeMin&#39; =&gt; &#39;60&#39;,
+      &#39;mailSender&#39; =&gt; &#39;&#39;,
+      &#39;mailSmtpServer&#39; =&gt; &#39;&#39;,
+      &#39;runDaemonized&#39; =&gt; &#39;true&#39;,
+      &#39;tuneNumWorkers&#39; =&gt; &#39;4&#39;,
+    },
+  }
+
+  $admon_config_keys = {
+    &#39;7.1&#39; =&gt; {
+      &#39;basic&#39;     =&gt; [
+        &#39;sysMgmtdHost&#39;,
+      ],
+      &#39;advanced&#39;  =&gt; [
+        &#39;clearDatabase&#39;,
+        &#39;httpPort&#39;,
+        &#39;databaseFile&#39;,
+        &#39;queryInterval&#39;,
+        &#39;connAdmonPortUDP&#39;,
+        &#39;connMgmtdPortTCP&#39;,
+        &#39;connMgmtdPortUDP&#39;,
+        &#39;connPortShift&#39;,
+        &#39;connAuthFile&#39;,
+        &#39;connFallbackExpirationSecs&#39;,
+        &#39;connMaxInternodeNum&#39;,
+        &#39;connInterfacesFile&#39;,
+        &#39;connNetFilterFile&#39;,
+        &#39;connTcpOnlyFilterFile&#39;,
+        &#39;logType&#39;,
+        &#39;logLevel&#39;,
+        &#39;logNoDate&#39;,
+        &#39;logNumLines&#39;,
+        &#39;logNumRotatedFiles&#39;,
+        &#39;logStdFile&#39;,
+        &#39;mailEnabled&#39;,
+        &#39;mailSmtpSendType&#39;,
+        &#39;mailSendmailPath&#39;,
+        &#39;mailCheckIntervalTimeSec&#39;,
+        &#39;mailMinDownTimeSec&#39;,
+        &#39;mailRecipient&#39;,
+        &#39;mailResendMailTimeMin&#39;,
+        &#39;mailSender&#39;,
+        &#39;mailSmtpServer&#39;,
+        &#39;runDaemonized&#39;,
+        &#39;tuneNumWorkers&#39;,
+      ],
+    }
+  }
+
+  $helperd_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connHelperdPortTCP&#39; =&gt; &#39;8006&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;logNoDate&#39; =&gt; &#39;false&#39;,
+      &#39;logNumLines&#39; =&gt; &#39;50000&#39;,
+      &#39;logNumRotatedFiles&#39; =&gt; &#39;5&#39;,
+      &#39;logStdFile&#39; =&gt; &#39;/var/log/beegfs-client.log&#39;,
+      &#39;runDaemonized&#39; =&gt; &#39;true&#39;,
+      &#39;tuneNumWorkers&#39; =&gt; &#39;2&#39;,
+    },
+  }
+
+  $helperd_config_keys = {
+    &#39;7.1&#39; =&gt; [
+      &#39;connAuthFile&#39;,
+      &#39;connHelperdPortTCP&#39;,
+      &#39;connPortShift&#39;,
+      &#39;logNoDate&#39;,
+      &#39;logNumLines&#39;,
+      &#39;logNumRotatedFiles&#39;,
+      &#39;logStdFile&#39;,
+      &#39;runDaemonized&#39;,
+      &#39;tuneNumWorkers&#39;,
+      # Expert
+      &#39;pidFile&#39;,
+    ]
+  }
+
+  $client_default_configs = {
+    &#39;7.1&#39; =&gt; {
+      &#39;sysMgmtdHost&#39; =&gt; &#39;&#39;,
+      &#39;connAuthFile&#39; =&gt; &#39;&#39;,
+      &#39;connClientPortUDP&#39; =&gt; &#39;8004&#39;,
+      &#39;connHelperdPortTCP&#39; =&gt; &#39;8006&#39;,
+      &#39;connMgmtdPortTCP&#39; =&gt; &#39;8008&#39;,
+      &#39;connMgmtdPortUDP&#39; =&gt; &#39;8008&#39;,
+      &#39;connPortShift&#39; =&gt; &#39;0&#39;,
+      &#39;connCommRetrySecs&#39; =&gt; &#39;600&#39;,
+      &#39;connFallbackExpirationSecs&#39; =&gt; &#39;900&#39;,
+      &#39;connInterfacesFile&#39; =&gt; &#39;&#39;,
+      &#39;connMaxInternodeNum&#39; =&gt; &#39;12&#39;,
+      &#39;connMaxConcurrentAttempts&#39; =&gt; &#39;0&#39;,
+      &#39;connNetFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;connUseRDMA&#39; =&gt; &#39;true&#39;,
+      &#39;connRDMABufNum&#39; =&gt; &#39;70&#39;,
+      &#39;connRDMABufSize&#39; =&gt; &#39;8192&#39;,
+      &#39;connRDMATypeOfService&#39; =&gt; &#39;0&#39;,
+      &#39;connTcpOnlyFilterFile&#39; =&gt; &#39;&#39;,
+      &#39;logClientID&#39; =&gt; &#39;false&#39;,
+      &#39;logHelperdIP&#39; =&gt; &#39;&#39;,
+      &#39;logLevel&#39; =&gt; &#39;3&#39;,
+      &#39;logType&#39; =&gt; &#39;helperd&#39;,
+      &#39;quotaEnabled&#39; =&gt; &#39;false&#39;,
+      &#39;sysCreateHardlinksAsSymlinks&#39; =&gt; &#39;false&#39;,
+      &#39;sysMountSanityCheckMS&#39; =&gt; &#39;11000&#39;,
+      &#39;sysSessionCheckOnClose&#39; =&gt; &#39;false&#39;,
+      &#39;sysSyncOnClose&#39; =&gt; &#39;false&#39;,
+      &#39;sysTargetOfflineTimeoutSecs&#39; =&gt; &#39;900&#39;,
+      &#39;sysUpdateTargetStatesSecs&#39; =&gt; &#39;30&#39;,
+      &#39;sysXAttrsEnabled&#39; =&gt; &#39;false&#39;,
+      &#39;tuneFileCacheType&#39; =&gt; &#39;buffered&#39;,
+      &#39;tunePreferredMetaFile&#39; =&gt; &#39;&#39;,
+      &#39;tunePreferredStorageFile&#39; =&gt; &#39;&#39;,
+      &#39;tuneRemoteFSync&#39; =&gt; &#39;true&#39;,
+      &#39;tuneUseGlobalAppendLocks&#39; =&gt; &#39;false&#39;,
+      &#39;tuneUseGlobalFileLocks&#39; =&gt; &#39;false&#39;,
+      &#39;sysACLsEnabled&#39; =&gt; &#39;false&#39;,
+    },
+  }
+
+  $client_config_keys = {
+    &#39;7.1&#39; =&gt; {
+      &#39;basic&#39;     =&gt; [
+        &#39;sysMgmtdHost&#39;,
+      ],
+      &#39;advanced&#39;  =&gt; [
+        &#39;connAuthFile&#39;,
+        &#39;connClientPortUDP&#39;,
+        &#39;connHelperdPortTCP&#39;,
+        &#39;connMgmtdPortTCP&#39;,
+        &#39;connMgmtdPortUDP&#39;,
+        &#39;connPortShift&#39;,
+        &#39;connCommRetrySecs&#39;,
+        &#39;connFallbackExpirationSecs&#39;,
+        &#39;connInterfacesFile&#39;,
+        &#39;connMaxInternodeNum&#39;,
+        &#39;connMaxConcurrentAttempts&#39;,
+        &#39;connNetFilterFile&#39;,
+        &#39;connUseRDMA&#39;,
+        &#39;connRDMABufNum&#39;,
+        &#39;connRDMABufSize&#39;,
+        &#39;connRDMATypeOfService&#39;,
+        &#39;connTcpOnlyFilterFile&#39;,
+        &#39;logClientID&#39;,
+        &#39;logHelperdIP&#39;,
+        &#39;logLevel&#39;,
+        &#39;logType&#39;,
+        &#39;quotaEnabled&#39;,
+        &#39;sysCreateHardlinksAsSymlinks&#39;,
+        &#39;sysMountSanityCheckMS&#39;,
+        &#39;sysSessionCheckOnClose&#39;,
+        &#39;sysSyncOnClose&#39;,
+        &#39;sysTargetOfflineTimeoutSecs&#39;,
+        &#39;sysUpdateTargetStatesSecs&#39;,
+        &#39;sysXAttrsEnabled&#39;,
+        &#39;tuneFileCacheType&#39;,
+        &#39;tunePreferredMetaFile&#39;,
+        &#39;tunePreferredStorageFile&#39;,
+        &#39;tuneRemoteFSync&#39;,
+        &#39;tuneUseGlobalAppendLocks&#39;,
+        &#39;tuneUseGlobalFileLocks&#39;,
+        # Expert
+        &#39;connUnmountRetries&#39;,
+        &#39;tuneFileCacheBufSize&#39;,
+        &#39;tuneFileCacheBufNum&#39;,
+        &#39;tunePageCacheValidityMS&#39;,
+        &#39;tuneDirSubentryCacheValidityMS&#39;,
+        &#39;tuneFileSubentryCacheValidityMS&#39;,
+        &#39;tunePathBufSize&#39;,
+        &#39;tunePathBufNum&#39;,
+        &#39;tuneMsgBufSize&#39;,
+        &#39;tuneMsgBufNum&#39;,
+        &#39;tuneRefreshOnGetAttr&#39;,
+        &#39;tuneInodeBlockBits&#39;,
+        &#39;tuneEarlyCloseResponse&#39;,
+        &#39;tuneUseBufferedAppend&#39;,
+        &#39;tuneStatFsCacheSecs&#39;,
+        &#39;sysInodeIDStyle&#39;,
+      ],
+      &#39;enterprise&#39; =&gt; [
+        &#39;sysACLsEnabled&#39;,
+      ],
+    }
+  }
+  # lint:endignore
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

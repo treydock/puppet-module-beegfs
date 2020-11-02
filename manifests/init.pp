@@ -1,98 +1,207 @@
 # @summary Manage BeeGFS
 #
 # @example
+#   include beegfs
 #
-#
-# which subcomponents should be managed
 # @param client
+#   Boolean that determines if managing BeeGFS client components
 # @param mgmtd
+#   Boolean that determines if managing BeeGFS Mgmtd components
 # @param meta
+#   Boolean that determines if managing BeeGFS Meta components
 # @param storage
+#   Boolean that determines if managing BeeGFS Storage components
 # @param admon
+#   Boolean that determines if managing BeeGFS Admon components
 # @param utils_only
+#   Boolean that determines if only BeeGFS utility packages are deployed, ie do not deploy daemons or configs
 # @param customer_login
+#   The login to use for commercial access to BeeGFS repos
 # @param release
+#   The release of BeeGFS to install
 # @param version
-# @param repo_descr 
+#   The version of BeeGFS to install
+# @param repo_descr
+#   The BeeGFS repo descr
 # @param repo_baseurl
+#   The BeeGFS repo baseurl
 # @param repo_gpgkey
+#   The BeeGFS repo gpgkey
 # @param repo_gpgcheck
+#   The BeeGFS repo gpgcheck
 # @param repo_enabled
+#   The BeeGFS repo enabled
 # @param client_package_dependencies
+#   The package dependencies for BeeGFS client
 # @param manage_client_dependencies
+#   Boolean that sets if BeeGFS client dependencies will be managed
 # @param mgmtd_host
+#   The BeeGFS mgmtd host
 # @param conn_port_shift
+#   The configuration value for connPortShift
 # @param client_conn_interfaces
+#   The values used to define connInterfacesFile on clients
+#   Mutially exclusive with client_conn_interfaces_file
 # @param client_conn_interfaces_file
+#   The value for connInterfacesFile on clients
+#   Mutially exclusive with client_conn_interfaces
 # @param mgmtd_conn_interfaces
+#   The values used to define connInterfacesFile on mgmtd
+#   Mutially exclusive with mgmtd_conn_interfaces_file
 # @param mgmtd_conn_interfaces_file
+#   The value for connInterfacesFile on mgmtd
+#   Mutially exclusive with mgmtd_conn_interfaces
 # @param meta_conn_interfaces
+#   The values used to define connInterfacesFile on metadata
+#   Mutially exclusive with meta_conn_interfaces_file
 # @param meta_conn_interfaces_file
+#   The value for connInterfacesFile on metadata
+#   Mutially exclusive with meta_conn_interfaces
 # @param storage_conn_interfaces
+#   The values used to define connInterfacesFile on storage
+#   Mutially exclusive with storage_conn_interfaces_file
 # @param storage_conn_interfaces_file
+#   The value for connInterfacesFile on storage
+#   Mutially exclusive with storage_conn_interfaces
 # @param admon_conn_interfaces
+#   The values used to define connInterfacesFile on admon
+#   Mutially exclusive with admon_conn_interfaces_file
 # @param admon_conn_interfaces_file
+#   The value for connInterfacesFile on admon
+#   Mutially exclusive with admon_conn_interfaces
 # @param client_conn_net_filters
+#   The value used to define connNetFilterFile on clients
+#   Mutially exclusive with client_conn_net_filter_file
 # @param client_conn_net_filter_file
+#   The value for connNetFilterFile on clients
+#   Mutially exclusive with client_conn_net_filter
 # @param mgmtd_conn_net_filters
+#   The value used to define connNetFilterFile on mgmtd
+#   Mutially exclusive with mgmtd_conn_net_filter_file
 # @param mgmtd_conn_net_filter_file
+#   The value for connNetFilterFile on mgmtd
+#   Mutially exclusive with mgmtd_conn_net_filter
 # @param meta_conn_net_filters
+#   The value used to define connNetFilterFile on metadata
+#   Mutially exclusive with meta_conn_net_filter_file
 # @param meta_conn_net_filter_file
+#   The value for connNetFilterFile on metadata
+#   Mutially exclusive with meta_conn_net_filter
 # @param storage_conn_net_filters
+#   The value used to define connNetFilterFile on storage
+#   Mutially exclusive with storage_conn_net_filter_file
 # @param storage_conn_net_filter_file
+#   The value for connNetFilterFile on storage
+#   Mutially exclusive with storage_conn_net_filter
 # @param admon_conn_net_filters
+#   The value used to define connNetFilterFile on admon
+#   Mutially exclusive with admon_conn_net_filter_file
 # @param admon_conn_net_filter_file
+#   The value for connNetFilterFile on admon
+#   Mutially exclusive with admon_conn_net_filter
 # @param conn_tcp_only_filters
+#   The value used to populate /etc/beegfs/tcp-only-filter
 # @param conn_tcp_only_filter_file
+#   Path to /etc/beegfs/tcp-only-filter
 # @param ib_package
+#   Package name for libbeegfs-ib
 # @param with_rdma
+#   Enable RDMA support with BeeGFS
 # @param client_mount_path
+#   Path to mount BeeGFS filesystem on client
 # @param manage_client_mount_path
+#   Manage the BeeGFS client mount path
 # @param client_build_args
+#   Value for client buildArgs
 # @param client_build_enabled
+#   Value for client buildEnabled
 # @param client_config_overrides
+#   Additional client configurations
 # @param helperd_config_overrides
+#   Additional helperd configurations
 # @param client_package
+#   Client package name
 # @param helperd_package
+#   Client helperd package name
 # @param utils_package
+#   Package name for beegfs utils
 # @param client_manage_service
+#   Boolean whether to manage client service
 # @param client_service_name
+#   Client service name
 # @param helperd_service_name
+#   Helperd service name
 # @param client_service_ensure
+#   Client service ensure
 # @param client_service_enable
+#   Client service enable
 # @param client_service_autorestart
+#   Boolean to set if client will autorestart on changes
 # @param mgmtd_store_directory
+#   The path to mgmtd storage directory
 # @param mgmtd_config_overrides
+#   Additional mgmtd configurations
 # @param mgmtd_package
+#   The BeeGFS mgmtd package
 # @param mgmtd_manage_service
+#   Boolean to set if mgmtd service is managed
 # @param mgmtd_service_name
+#   The BeeGFS mgmtd service name
 # @param mgmtd_service_ensure
+#   The beegfs-mgmtd service ensure
 # @param mgmtd_service_enable
+#   The beegfs-mgmtd service enable
 # @param mgmtd_service_autorestart
+#   Boolean to set if beegfs-mgmtd will autorestart on changes
 # @param meta_store_directory
+#   The BeeGFS metadata storage directory
 # @param meta_config_overrides
+#   Additional metadata configurations
 # @param meta_package
+#   The BeeGFS metadata package
 # @param meta_manage_service
+#   Boolean to set if beegfs-meta service is managed
 # @param meta_service_name
+#   The BeeGFS metadata service name
 # @param meta_service_ensure
+#   The beegfs-meta service ensure
 # @param meta_service_enable
+#   The beegfs-meta service enable
 # @param meta_service_autorestart
+#   Boolean to set if beegfs-meta will autorestart on changes
 # @param storage_store_directory
+#   The BeeGFS storage daemon storage directory
 # @param storage_config_overrides
+#   Additional storage configurations
 # @param storage_package
+#   The BeeGFS storage package name
 # @param storage_manage_service
+#   Boolean to set if beegfs-storage service is managed
 # @param storage_service_name
+#   The BeeGFS storage service name
 # @param storage_service_ensure
+#   The beegfs-storage service ensure
 # @param storage_service_enable
+#   The beegfs-storage service enable
 # @param storage_service_autorestart
+#   Boolean to set if beegfs-storage will autorestart on changes
 # @param admon_database_file_dir
+#   The path to BeeGFS admon database directory
 # @param admon_config_overrides
+#   Additional BeeGFS Admon configurations
 # @param admon_package
+#   The BeeGFS Admon package name
 # @param admon_manage_service
+#   Boolean to set if beegfs-admon service is managed
 # @param admon_service_name
+#   The BeeGFS Admon service name
 # @param admon_service_ensure
+#   The beegfs-admon service ensure
 # @param admon_service_enable
+#   The beegfs-admon service enable
 # @param admon_service_autorestart
+#   Boolean to set if beegfs-admon will autorestart on changes
+#
 class beegfs (
   # which subcomponents should be managed
   Boolean $client     = true,

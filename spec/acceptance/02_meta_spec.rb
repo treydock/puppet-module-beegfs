@@ -23,6 +23,7 @@ describe 'beegfs class:' do
 
       apply_manifest_on(node, pp, catch_failures: true)
       apply_manifest_on(node, pp, catch_changes: true)
+      sleep(30)
     end
 
     describe service('beegfs-meta'), node: node do

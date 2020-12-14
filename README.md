@@ -1,6 +1,7 @@
 # puppet-module-beegfs
 
-[![Build Status](https://travis-ci.org/treydock/puppet-module-beegfs.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-beegfs)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/beegfs.svg)](https://forge.puppetlabs.com/treydock/beegfs)
+[![CI Status](https://github.com/treydock/puppet-module-beegfs/workflows/CI/badge.svg?branch=master)](https://github.com/treydock/puppet-module-beegfs/actions?query=workflow%3ACI)
 
 #### Table of Contents
 

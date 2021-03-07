@@ -39,7 +39,7 @@
 
 ## Classes
 
-### `beegfs`
+### <a name="beegfs"></a>`beegfs`
 
 Manage BeeGFS
 
@@ -53,9 +53,99 @@ include beegfs
 
 #### Parameters
 
-The following parameters are available in the `beegfs` class.
+The following parameters are available in the `beegfs` class:
 
-##### `client`
+* [`client`](#client)
+* [`mgmtd`](#mgmtd)
+* [`meta`](#meta)
+* [`storage`](#storage)
+* [`admon`](#admon)
+* [`utils_only`](#utils_only)
+* [`customer_login`](#customer_login)
+* [`release`](#release)
+* [`version`](#version)
+* [`repo_descr`](#repo_descr)
+* [`repo_baseurl`](#repo_baseurl)
+* [`repo_gpgkey`](#repo_gpgkey)
+* [`repo_gpgcheck`](#repo_gpgcheck)
+* [`repo_enabled`](#repo_enabled)
+* [`client_package_dependencies`](#client_package_dependencies)
+* [`manage_client_dependencies`](#manage_client_dependencies)
+* [`mgmtd_host`](#mgmtd_host)
+* [`conn_port_shift`](#conn_port_shift)
+* [`client_conn_interfaces`](#client_conn_interfaces)
+* [`client_conn_interfaces_file`](#client_conn_interfaces_file)
+* [`mgmtd_conn_interfaces`](#mgmtd_conn_interfaces)
+* [`mgmtd_conn_interfaces_file`](#mgmtd_conn_interfaces_file)
+* [`meta_conn_interfaces`](#meta_conn_interfaces)
+* [`meta_conn_interfaces_file`](#meta_conn_interfaces_file)
+* [`storage_conn_interfaces`](#storage_conn_interfaces)
+* [`storage_conn_interfaces_file`](#storage_conn_interfaces_file)
+* [`admon_conn_interfaces`](#admon_conn_interfaces)
+* [`admon_conn_interfaces_file`](#admon_conn_interfaces_file)
+* [`client_conn_net_filters`](#client_conn_net_filters)
+* [`client_conn_net_filter_file`](#client_conn_net_filter_file)
+* [`mgmtd_conn_net_filters`](#mgmtd_conn_net_filters)
+* [`mgmtd_conn_net_filter_file`](#mgmtd_conn_net_filter_file)
+* [`meta_conn_net_filters`](#meta_conn_net_filters)
+* [`meta_conn_net_filter_file`](#meta_conn_net_filter_file)
+* [`storage_conn_net_filters`](#storage_conn_net_filters)
+* [`storage_conn_net_filter_file`](#storage_conn_net_filter_file)
+* [`admon_conn_net_filters`](#admon_conn_net_filters)
+* [`admon_conn_net_filter_file`](#admon_conn_net_filter_file)
+* [`conn_tcp_only_filters`](#conn_tcp_only_filters)
+* [`conn_tcp_only_filter_file`](#conn_tcp_only_filter_file)
+* [`ib_package`](#ib_package)
+* [`with_rdma`](#with_rdma)
+* [`client_mount_path`](#client_mount_path)
+* [`manage_client_mount_path`](#manage_client_mount_path)
+* [`client_build_args`](#client_build_args)
+* [`client_build_enabled`](#client_build_enabled)
+* [`client_config_overrides`](#client_config_overrides)
+* [`helperd_config_overrides`](#helperd_config_overrides)
+* [`client_package`](#client_package)
+* [`helperd_package`](#helperd_package)
+* [`utils_package`](#utils_package)
+* [`client_manage_service`](#client_manage_service)
+* [`client_service_name`](#client_service_name)
+* [`helperd_service_name`](#helperd_service_name)
+* [`client_service_ensure`](#client_service_ensure)
+* [`client_service_enable`](#client_service_enable)
+* [`client_service_autorestart`](#client_service_autorestart)
+* [`mgmtd_store_directory`](#mgmtd_store_directory)
+* [`mgmtd_config_overrides`](#mgmtd_config_overrides)
+* [`mgmtd_package`](#mgmtd_package)
+* [`mgmtd_manage_service`](#mgmtd_manage_service)
+* [`mgmtd_service_name`](#mgmtd_service_name)
+* [`mgmtd_service_ensure`](#mgmtd_service_ensure)
+* [`mgmtd_service_enable`](#mgmtd_service_enable)
+* [`mgmtd_service_autorestart`](#mgmtd_service_autorestart)
+* [`meta_store_directory`](#meta_store_directory)
+* [`meta_config_overrides`](#meta_config_overrides)
+* [`meta_package`](#meta_package)
+* [`meta_manage_service`](#meta_manage_service)
+* [`meta_service_name`](#meta_service_name)
+* [`meta_service_ensure`](#meta_service_ensure)
+* [`meta_service_enable`](#meta_service_enable)
+* [`meta_service_autorestart`](#meta_service_autorestart)
+* [`storage_store_directory`](#storage_store_directory)
+* [`storage_config_overrides`](#storage_config_overrides)
+* [`storage_package`](#storage_package)
+* [`storage_manage_service`](#storage_manage_service)
+* [`storage_service_name`](#storage_service_name)
+* [`storage_service_ensure`](#storage_service_ensure)
+* [`storage_service_enable`](#storage_service_enable)
+* [`storage_service_autorestart`](#storage_service_autorestart)
+* [`admon_database_file_dir`](#admon_database_file_dir)
+* [`admon_config_overrides`](#admon_config_overrides)
+* [`admon_package`](#admon_package)
+* [`admon_manage_service`](#admon_manage_service)
+* [`admon_service_name`](#admon_service_name)
+* [`admon_service_ensure`](#admon_service_ensure)
+* [`admon_service_enable`](#admon_service_enable)
+* [`admon_service_autorestart`](#admon_service_autorestart)
+
+##### <a name="client"></a>`client`
 
 Data type: `Boolean`
 
@@ -63,7 +153,7 @@ Boolean that determines if managing BeeGFS client components
 
 Default value: ``true``
 
-##### `mgmtd`
+##### <a name="mgmtd"></a>`mgmtd`
 
 Data type: `Boolean`
 
@@ -71,7 +161,7 @@ Boolean that determines if managing BeeGFS Mgmtd components
 
 Default value: ``false``
 
-##### `meta`
+##### <a name="meta"></a>`meta`
 
 Data type: `Boolean`
 
@@ -79,7 +169,7 @@ Boolean that determines if managing BeeGFS Meta components
 
 Default value: ``false``
 
-##### `storage`
+##### <a name="storage"></a>`storage`
 
 Data type: `Boolean`
 
@@ -87,7 +177,7 @@ Boolean that determines if managing BeeGFS Storage components
 
 Default value: ``false``
 
-##### `admon`
+##### <a name="admon"></a>`admon`
 
 Data type: `Boolean`
 
@@ -95,7 +185,7 @@ Boolean that determines if managing BeeGFS Admon components
 
 Default value: ``false``
 
-##### `utils_only`
+##### <a name="utils_only"></a>`utils_only`
 
 Data type: `Boolean`
 
@@ -103,7 +193,7 @@ Boolean that determines if only BeeGFS utility packages are deployed, ie do not 
 
 Default value: ``false``
 
-##### `customer_login`
+##### <a name="customer_login"></a>`customer_login`
 
 Data type: `Optional[String]`
 
@@ -111,7 +201,7 @@ The login to use for commercial access to BeeGFS repos
 
 Default value: ``undef``
 
-##### `release`
+##### <a name="release"></a>`release`
 
 Data type: `String`
 
@@ -119,7 +209,7 @@ The release of BeeGFS to install
 
 Default value: `'7.1'`
 
-##### `version`
+##### <a name="version"></a>`version`
 
 Data type: `String`
 
@@ -127,7 +217,7 @@ The version of BeeGFS to install
 
 Default value: `'present'`
 
-##### `repo_descr`
+##### <a name="repo_descr"></a>`repo_descr`
 
 Data type: `Optional[String]`
 
@@ -135,7 +225,7 @@ The BeeGFS repo descr
 
 Default value: ``undef``
 
-##### `repo_baseurl`
+##### <a name="repo_baseurl"></a>`repo_baseurl`
 
 Data type: `Optional[String]`
 
@@ -143,7 +233,7 @@ The BeeGFS repo baseurl
 
 Default value: ``undef``
 
-##### `repo_gpgkey`
+##### <a name="repo_gpgkey"></a>`repo_gpgkey`
 
 Data type: `Optional[String]`
 
@@ -151,7 +241,7 @@ The BeeGFS repo gpgkey
 
 Default value: ``undef``
 
-##### `repo_gpgcheck`
+##### <a name="repo_gpgcheck"></a>`repo_gpgcheck`
 
 Data type: `Enum['0','1']`
 
@@ -159,7 +249,7 @@ The BeeGFS repo gpgcheck
 
 Default value: `'0'`
 
-##### `repo_enabled`
+##### <a name="repo_enabled"></a>`repo_enabled`
 
 Data type: `Enum['0','1']`
 
@@ -167,7 +257,7 @@ The BeeGFS repo enabled
 
 Default value: `'1'`
 
-##### `client_package_dependencies`
+##### <a name="client_package_dependencies"></a>`client_package_dependencies`
 
 Data type: `Array`
 
@@ -175,7 +265,7 @@ The package dependencies for BeeGFS client
 
 Default value: `$beegfs::params::client_package_dependencies`
 
-##### `manage_client_dependencies`
+##### <a name="manage_client_dependencies"></a>`manage_client_dependencies`
 
 Data type: `Boolean`
 
@@ -183,7 +273,7 @@ Boolean that sets if BeeGFS client dependencies will be managed
 
 Default value: ``true``
 
-##### `mgmtd_host`
+##### <a name="mgmtd_host"></a>`mgmtd_host`
 
 Data type: `String`
 
@@ -191,7 +281,7 @@ The BeeGFS mgmtd host
 
 Default value: `''`
 
-##### `conn_port_shift`
+##### <a name="conn_port_shift"></a>`conn_port_shift`
 
 Data type: `Integer`
 
@@ -199,7 +289,7 @@ The configuration value for connPortShift
 
 Default value: `0`
 
-##### `client_conn_interfaces`
+##### <a name="client_conn_interfaces"></a>`client_conn_interfaces`
 
 Data type: `Array`
 
@@ -208,7 +298,7 @@ Mutially exclusive with client_conn_interfaces_file
 
 Default value: `[]`
 
-##### `client_conn_interfaces_file`
+##### <a name="client_conn_interfaces_file"></a>`client_conn_interfaces_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -217,7 +307,7 @@ Mutially exclusive with client_conn_interfaces
 
 Default value: `$beegfs::params::conn_interfaces_file['client']`
 
-##### `mgmtd_conn_interfaces`
+##### <a name="mgmtd_conn_interfaces"></a>`mgmtd_conn_interfaces`
 
 Data type: `Array`
 
@@ -226,7 +316,7 @@ Mutially exclusive with mgmtd_conn_interfaces_file
 
 Default value: `[]`
 
-##### `mgmtd_conn_interfaces_file`
+##### <a name="mgmtd_conn_interfaces_file"></a>`mgmtd_conn_interfaces_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -235,7 +325,7 @@ Mutially exclusive with mgmtd_conn_interfaces
 
 Default value: `$beegfs::params::conn_interfaces_file['mgmtd']`
 
-##### `meta_conn_interfaces`
+##### <a name="meta_conn_interfaces"></a>`meta_conn_interfaces`
 
 Data type: `Array`
 
@@ -244,7 +334,7 @@ Mutially exclusive with meta_conn_interfaces_file
 
 Default value: `[]`
 
-##### `meta_conn_interfaces_file`
+##### <a name="meta_conn_interfaces_file"></a>`meta_conn_interfaces_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -253,7 +343,7 @@ Mutially exclusive with meta_conn_interfaces
 
 Default value: `$beegfs::params::conn_interfaces_file['meta']`
 
-##### `storage_conn_interfaces`
+##### <a name="storage_conn_interfaces"></a>`storage_conn_interfaces`
 
 Data type: `Array`
 
@@ -262,7 +352,7 @@ Mutially exclusive with storage_conn_interfaces_file
 
 Default value: `[]`
 
-##### `storage_conn_interfaces_file`
+##### <a name="storage_conn_interfaces_file"></a>`storage_conn_interfaces_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -271,7 +361,7 @@ Mutially exclusive with storage_conn_interfaces
 
 Default value: `$beegfs::params::conn_interfaces_file['storage']`
 
-##### `admon_conn_interfaces`
+##### <a name="admon_conn_interfaces"></a>`admon_conn_interfaces`
 
 Data type: `Array`
 
@@ -280,7 +370,7 @@ Mutially exclusive with admon_conn_interfaces_file
 
 Default value: `[]`
 
-##### `admon_conn_interfaces_file`
+##### <a name="admon_conn_interfaces_file"></a>`admon_conn_interfaces_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -289,7 +379,7 @@ Mutially exclusive with admon_conn_interfaces
 
 Default value: `$beegfs::params::conn_interfaces_file['admon']`
 
-##### `client_conn_net_filters`
+##### <a name="client_conn_net_filters"></a>`client_conn_net_filters`
 
 Data type: `Array`
 
@@ -298,7 +388,7 @@ Mutially exclusive with client_conn_net_filter_file
 
 Default value: `[]`
 
-##### `client_conn_net_filter_file`
+##### <a name="client_conn_net_filter_file"></a>`client_conn_net_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -307,7 +397,7 @@ Mutially exclusive with client_conn_net_filter
 
 Default value: `$beegfs::params::conn_net_filter_file['client']`
 
-##### `mgmtd_conn_net_filters`
+##### <a name="mgmtd_conn_net_filters"></a>`mgmtd_conn_net_filters`
 
 Data type: `Array`
 
@@ -316,7 +406,7 @@ Mutially exclusive with mgmtd_conn_net_filter_file
 
 Default value: `[]`
 
-##### `mgmtd_conn_net_filter_file`
+##### <a name="mgmtd_conn_net_filter_file"></a>`mgmtd_conn_net_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -325,7 +415,7 @@ Mutially exclusive with mgmtd_conn_net_filter
 
 Default value: `$beegfs::params::conn_net_filter_file['mgmtd']`
 
-##### `meta_conn_net_filters`
+##### <a name="meta_conn_net_filters"></a>`meta_conn_net_filters`
 
 Data type: `Array`
 
@@ -334,7 +424,7 @@ Mutially exclusive with meta_conn_net_filter_file
 
 Default value: `[]`
 
-##### `meta_conn_net_filter_file`
+##### <a name="meta_conn_net_filter_file"></a>`meta_conn_net_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -343,7 +433,7 @@ Mutially exclusive with meta_conn_net_filter
 
 Default value: `$beegfs::params::conn_net_filter_file['meta']`
 
-##### `storage_conn_net_filters`
+##### <a name="storage_conn_net_filters"></a>`storage_conn_net_filters`
 
 Data type: `Array`
 
@@ -352,7 +442,7 @@ Mutially exclusive with storage_conn_net_filter_file
 
 Default value: `[]`
 
-##### `storage_conn_net_filter_file`
+##### <a name="storage_conn_net_filter_file"></a>`storage_conn_net_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -361,7 +451,7 @@ Mutially exclusive with storage_conn_net_filter
 
 Default value: `$beegfs::params::conn_net_filter_file['storage']`
 
-##### `admon_conn_net_filters`
+##### <a name="admon_conn_net_filters"></a>`admon_conn_net_filters`
 
 Data type: `Array`
 
@@ -370,7 +460,7 @@ Mutially exclusive with admon_conn_net_filter_file
 
 Default value: `[]`
 
-##### `admon_conn_net_filter_file`
+##### <a name="admon_conn_net_filter_file"></a>`admon_conn_net_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -379,7 +469,7 @@ Mutially exclusive with admon_conn_net_filter
 
 Default value: `$beegfs::params::conn_net_filter_file['admon']`
 
-##### `conn_tcp_only_filters`
+##### <a name="conn_tcp_only_filters"></a>`conn_tcp_only_filters`
 
 Data type: `Array`
 
@@ -387,7 +477,7 @@ The value used to populate /etc/beegfs/tcp-only-filter
 
 Default value: `[]`
 
-##### `conn_tcp_only_filter_file`
+##### <a name="conn_tcp_only_filter_file"></a>`conn_tcp_only_filter_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -395,7 +485,7 @@ Path to /etc/beegfs/tcp-only-filter
 
 Default value: `$beegfs::params::conn_tcp_only_filter_file`
 
-##### `ib_package`
+##### <a name="ib_package"></a>`ib_package`
 
 Data type: `String`
 
@@ -403,7 +493,7 @@ Package name for libbeegfs-ib
 
 Default value: `$beegfs::params::ib_package`
 
-##### `with_rdma`
+##### <a name="with_rdma"></a>`with_rdma`
 
 Data type: `Boolean`
 
@@ -411,7 +501,7 @@ Enable RDMA support with BeeGFS
 
 Default value: `$beegfs::params::with_rdma`
 
-##### `client_mount_path`
+##### <a name="client_mount_path"></a>`client_mount_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -419,7 +509,7 @@ Path to mount BeeGFS filesystem on client
 
 Default value: `'/mnt/beegfs'`
 
-##### `manage_client_mount_path`
+##### <a name="manage_client_mount_path"></a>`manage_client_mount_path`
 
 Data type: `Boolean`
 
@@ -427,7 +517,7 @@ Manage the BeeGFS client mount path
 
 Default value: ``true``
 
-##### `client_build_args`
+##### <a name="client_build_args"></a>`client_build_args`
 
 Data type: `String`
 
@@ -435,7 +525,7 @@ Value for client buildArgs
 
 Default value: `$beegfs::params::client_build_args`
 
-##### `client_build_enabled`
+##### <a name="client_build_enabled"></a>`client_build_enabled`
 
 Data type: `Boolean`
 
@@ -443,7 +533,7 @@ Value for client buildEnabled
 
 Default value: ``true``
 
-##### `client_config_overrides`
+##### <a name="client_config_overrides"></a>`client_config_overrides`
 
 Data type: `Hash`
 
@@ -451,7 +541,7 @@ Additional client configurations
 
 Default value: `{}`
 
-##### `helperd_config_overrides`
+##### <a name="helperd_config_overrides"></a>`helperd_config_overrides`
 
 Data type: `Hash`
 
@@ -459,7 +549,7 @@ Additional helperd configurations
 
 Default value: `{}`
 
-##### `client_package`
+##### <a name="client_package"></a>`client_package`
 
 Data type: `String`
 
@@ -467,7 +557,7 @@ Client package name
 
 Default value: `$beegfs::params::client_package`
 
-##### `helperd_package`
+##### <a name="helperd_package"></a>`helperd_package`
 
 Data type: `String`
 
@@ -475,7 +565,7 @@ Client helperd package name
 
 Default value: `$beegfs::params::helperd_package`
 
-##### `utils_package`
+##### <a name="utils_package"></a>`utils_package`
 
 Data type: `String`
 
@@ -483,7 +573,7 @@ Package name for beegfs utils
 
 Default value: `$beegfs::params::utils_package`
 
-##### `client_manage_service`
+##### <a name="client_manage_service"></a>`client_manage_service`
 
 Data type: `Boolean`
 
@@ -491,7 +581,7 @@ Boolean whether to manage client service
 
 Default value: ``true``
 
-##### `client_service_name`
+##### <a name="client_service_name"></a>`client_service_name`
 
 Data type: `String`
 
@@ -499,7 +589,7 @@ Client service name
 
 Default value: `$beegfs::params::client_service_name`
 
-##### `helperd_service_name`
+##### <a name="helperd_service_name"></a>`helperd_service_name`
 
 Data type: `String`
 
@@ -507,7 +597,7 @@ Helperd service name
 
 Default value: `$beegfs::params::helperd_service_name`
 
-##### `client_service_ensure`
+##### <a name="client_service_ensure"></a>`client_service_ensure`
 
 Data type: `String`
 
@@ -515,7 +605,7 @@ Client service ensure
 
 Default value: `'running'`
 
-##### `client_service_enable`
+##### <a name="client_service_enable"></a>`client_service_enable`
 
 Data type: `Boolean`
 
@@ -523,7 +613,7 @@ Client service enable
 
 Default value: ``true``
 
-##### `client_service_autorestart`
+##### <a name="client_service_autorestart"></a>`client_service_autorestart`
 
 Data type: `Boolean`
 
@@ -531,7 +621,7 @@ Boolean to set if client will autorestart on changes
 
 Default value: ``true``
 
-##### `mgmtd_store_directory`
+##### <a name="mgmtd_store_directory"></a>`mgmtd_store_directory`
 
 Data type: `Any`
 
@@ -539,7 +629,7 @@ The path to mgmtd storage directory
 
 Default value: `''`
 
-##### `mgmtd_config_overrides`
+##### <a name="mgmtd_config_overrides"></a>`mgmtd_config_overrides`
 
 Data type: `Hash`
 
@@ -547,7 +637,7 @@ Additional mgmtd configurations
 
 Default value: `{}`
 
-##### `mgmtd_package`
+##### <a name="mgmtd_package"></a>`mgmtd_package`
 
 Data type: `String`
 
@@ -555,7 +645,7 @@ The BeeGFS mgmtd package
 
 Default value: `$beegfs::params::mgmtd_package`
 
-##### `mgmtd_manage_service`
+##### <a name="mgmtd_manage_service"></a>`mgmtd_manage_service`
 
 Data type: `Boolean`
 
@@ -563,7 +653,7 @@ Boolean to set if mgmtd service is managed
 
 Default value: ``true``
 
-##### `mgmtd_service_name`
+##### <a name="mgmtd_service_name"></a>`mgmtd_service_name`
 
 Data type: `String`
 
@@ -571,7 +661,7 @@ The BeeGFS mgmtd service name
 
 Default value: `$beegfs::params::mgmtd_service_name`
 
-##### `mgmtd_service_ensure`
+##### <a name="mgmtd_service_ensure"></a>`mgmtd_service_ensure`
 
 Data type: `String`
 
@@ -579,7 +669,7 @@ The beegfs-mgmtd service ensure
 
 Default value: `'running'`
 
-##### `mgmtd_service_enable`
+##### <a name="mgmtd_service_enable"></a>`mgmtd_service_enable`
 
 Data type: `Boolean`
 
@@ -587,7 +677,7 @@ The beegfs-mgmtd service enable
 
 Default value: ``true``
 
-##### `mgmtd_service_autorestart`
+##### <a name="mgmtd_service_autorestart"></a>`mgmtd_service_autorestart`
 
 Data type: `Boolean`
 
@@ -595,7 +685,7 @@ Boolean to set if beegfs-mgmtd will autorestart on changes
 
 Default value: ``false``
 
-##### `meta_store_directory`
+##### <a name="meta_store_directory"></a>`meta_store_directory`
 
 Data type: `Any`
 
@@ -603,7 +693,7 @@ The BeeGFS metadata storage directory
 
 Default value: `''`
 
-##### `meta_config_overrides`
+##### <a name="meta_config_overrides"></a>`meta_config_overrides`
 
 Data type: `Hash`
 
@@ -611,7 +701,7 @@ Additional metadata configurations
 
 Default value: `{}`
 
-##### `meta_package`
+##### <a name="meta_package"></a>`meta_package`
 
 Data type: `String`
 
@@ -619,7 +709,7 @@ The BeeGFS metadata package
 
 Default value: `$beegfs::params::meta_package`
 
-##### `meta_manage_service`
+##### <a name="meta_manage_service"></a>`meta_manage_service`
 
 Data type: `Boolean`
 
@@ -627,7 +717,7 @@ Boolean to set if beegfs-meta service is managed
 
 Default value: ``true``
 
-##### `meta_service_name`
+##### <a name="meta_service_name"></a>`meta_service_name`
 
 Data type: `String`
 
@@ -635,7 +725,7 @@ The BeeGFS metadata service name
 
 Default value: `$beegfs::params::meta_service_name`
 
-##### `meta_service_ensure`
+##### <a name="meta_service_ensure"></a>`meta_service_ensure`
 
 Data type: `String`
 
@@ -643,7 +733,7 @@ The beegfs-meta service ensure
 
 Default value: `'running'`
 
-##### `meta_service_enable`
+##### <a name="meta_service_enable"></a>`meta_service_enable`
 
 Data type: `Boolean`
 
@@ -651,7 +741,7 @@ The beegfs-meta service enable
 
 Default value: ``true``
 
-##### `meta_service_autorestart`
+##### <a name="meta_service_autorestart"></a>`meta_service_autorestart`
 
 Data type: `Boolean`
 
@@ -659,7 +749,7 @@ Boolean to set if beegfs-meta will autorestart on changes
 
 Default value: ``false``
 
-##### `storage_store_directory`
+##### <a name="storage_store_directory"></a>`storage_store_directory`
 
 Data type: `Any`
 
@@ -667,7 +757,7 @@ The BeeGFS storage daemon storage directory
 
 Default value: `''`
 
-##### `storage_config_overrides`
+##### <a name="storage_config_overrides"></a>`storage_config_overrides`
 
 Data type: `Hash`
 
@@ -675,7 +765,7 @@ Additional storage configurations
 
 Default value: `{}`
 
-##### `storage_package`
+##### <a name="storage_package"></a>`storage_package`
 
 Data type: `String`
 
@@ -683,7 +773,7 @@ The BeeGFS storage package name
 
 Default value: `$beegfs::params::storage_package`
 
-##### `storage_manage_service`
+##### <a name="storage_manage_service"></a>`storage_manage_service`
 
 Data type: `Boolean`
 
@@ -691,7 +781,7 @@ Boolean to set if beegfs-storage service is managed
 
 Default value: ``true``
 
-##### `storage_service_name`
+##### <a name="storage_service_name"></a>`storage_service_name`
 
 Data type: `String`
 
@@ -699,7 +789,7 @@ The BeeGFS storage service name
 
 Default value: `$beegfs::params::storage_service_name`
 
-##### `storage_service_ensure`
+##### <a name="storage_service_ensure"></a>`storage_service_ensure`
 
 Data type: `String`
 
@@ -707,7 +797,7 @@ The beegfs-storage service ensure
 
 Default value: `'running'`
 
-##### `storage_service_enable`
+##### <a name="storage_service_enable"></a>`storage_service_enable`
 
 Data type: `Boolean`
 
@@ -715,7 +805,7 @@ The beegfs-storage service enable
 
 Default value: ``true``
 
-##### `storage_service_autorestart`
+##### <a name="storage_service_autorestart"></a>`storage_service_autorestart`
 
 Data type: `Boolean`
 
@@ -723,7 +813,7 @@ Boolean to set if beegfs-storage will autorestart on changes
 
 Default value: ``false``
 
-##### `admon_database_file_dir`
+##### <a name="admon_database_file_dir"></a>`admon_database_file_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -731,7 +821,7 @@ The path to BeeGFS admon database directory
 
 Default value: `'/var/lib/beegfs'`
 
-##### `admon_config_overrides`
+##### <a name="admon_config_overrides"></a>`admon_config_overrides`
 
 Data type: `Hash`
 
@@ -739,7 +829,7 @@ Additional BeeGFS Admon configurations
 
 Default value: `{}`
 
-##### `admon_package`
+##### <a name="admon_package"></a>`admon_package`
 
 Data type: `String`
 
@@ -747,7 +837,7 @@ The BeeGFS Admon package name
 
 Default value: `$beegfs::params::admon_package`
 
-##### `admon_manage_service`
+##### <a name="admon_manage_service"></a>`admon_manage_service`
 
 Data type: `Boolean`
 
@@ -755,7 +845,7 @@ Boolean to set if beegfs-admon service is managed
 
 Default value: ``true``
 
-##### `admon_service_name`
+##### <a name="admon_service_name"></a>`admon_service_name`
 
 Data type: `String`
 
@@ -763,7 +853,7 @@ The BeeGFS Admon service name
 
 Default value: `$beegfs::params::admon_service_name`
 
-##### `admon_service_ensure`
+##### <a name="admon_service_ensure"></a>`admon_service_ensure`
 
 Data type: `String`
 
@@ -771,7 +861,7 @@ The beegfs-admon service ensure
 
 Default value: `'running'`
 
-##### `admon_service_enable`
+##### <a name="admon_service_enable"></a>`admon_service_enable`
 
 Data type: `Boolean`
 
@@ -779,7 +869,7 @@ The beegfs-admon service enable
 
 Default value: ``true``
 
-##### `admon_service_autorestart`
+##### <a name="admon_service_autorestart"></a>`admon_service_autorestart`
 
 Data type: `Boolean`
 

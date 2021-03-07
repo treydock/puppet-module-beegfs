@@ -3,7 +3,7 @@
   acceptance_matrix:
     set:
       - centos-7
-      - ---centos-8
+      - centos-8
     puppet:
       - puppet6
       - puppet7
@@ -12,6 +12,8 @@
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/centos-7.yml:
+  unmanaged: true
+spec/acceptance/nodesets/centos-8.yml:
   unmanaged: true
 spec/acceptance/nodesets/debian-8.yml:
   delete: true
